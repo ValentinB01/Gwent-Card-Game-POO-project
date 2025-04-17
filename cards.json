@@ -1,0 +1,265 @@
+{
+    "cards": [
+    {
+        "name": "Arachas",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "CLOSE",
+        "faction": "MONSTER",
+        "effect": "NONE",
+        "effectValue": 0
+    },
+    {
+        "name": "Barclay Els",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "CLOSE",
+        "faction": "SOCIATEL",
+        "effect": "DRAW_CARD",
+        "effectValue": 1
+    },
+    {
+        "name": "Berserker",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 2
+    },
+    {
+        "name": "Bloodcurdling Roar",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "MONSTER",
+        "effect": "DAMAGE_ROW"
+    },
+    {
+        "name": "Briana Bran",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "effect": "MEDIC",
+        "effectValue": 1
+    },
+    {
+        "name": "Bovine Defense Force",
+        "type": "UNIT",
+        "power": 8,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "DESTROY_WEAKEST",
+        "effectValue": 1
+    },
+    {
+        "name": "Calaeno Harpy",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "RANGE",
+        "faction": "MONSTER",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 1
+    },
+    {
+        "name": "Cerys",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "COMMANDERS_HORN",
+        "abilityValue": 2
+    },
+    {
+        "name": "Cirila",
+        "type": "HERO",
+        "power": 15,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "ability": "ALCHEMY",
+        "abilityValue": 3
+    },
+    {
+        "name": "Geralt of Rivia",
+        "type": "HERO",
+        "power": 15,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "SCORCH",
+        "abilityValue": 10
+    },
+    {
+        "name": "Draug",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "ability": "REVENGE",
+        "abilityValue": 1.5
+    },
+    {
+        "name": "John Natalis",
+        "type": "HERO",
+        "power": 12,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "DECOY",
+        "abilityValue": 1
+    },
+    {
+        "name": "Kikimora",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "MONSTER",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 2
+    },
+    {
+        "name": "Letho of Gulet",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "ability": "COMMANDERS_HORN",
+        "abilityValue": 2
+    },
+    {
+        "name": "Manticore Venom",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "DAMAGE_ROW"
+    },
+    {
+        "name": "Mardroeme",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "COMMANDO_TRAINING"
+    },
+    {
+        "name": "Mysterious Elf",
+        "type": "UNIT",
+        "power": 3,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "SPY",
+        "effectValue": 2
+    },
+    {
+        "name": "Olaf",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "CLOSE",
+        "faction": "NORTH"
+    },
+    {
+        "name": "Pavetta",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "COMMANDERS_HORN",
+        "abilityValue": 2
+    },
+
+    {
+        "name": "Kairan",
+        "type": "HERO",
+        "power": 8,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "ability": "ALCHEMY",
+        "abilityValue": 2
+    },
+    {
+        "name": "Raging Bear",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "MONSTER",
+        "effect": "DESTROY_WEAKEST",
+        "effectValue": 1
+    },
+    {
+        "name": "Lifecatching Fog",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "FOGLET_SPAWN"
+    },
+    {
+        "name": "Shilard Fitz-Oesterlen",
+        "type": "HERO",
+        "power": 10,
+        "zone": "RANGED",
+        "faction": "NILFGARD",
+        "ability": "REVENGE",
+        "abilityValue": 2
+    },
+    {
+        "name": "Sile de Tansarville",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "ability": "COMMANDERS_HORN",
+        "abilityValue": 2
+    },
+    {
+        "name": "Biting Frost",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "BITING_FROST",
+        "penalty": -99,
+        "description": "Sets all non-hero units from close combat zone to 1 power."
+    },
+    {
+        "name": "Impenetrable Fog",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "IMPENETRABLE_FOG",
+        "penalty": -99,
+        "description": "Sets all non-hero units from the ranged combat zone to 1 power."
+    },
+    {
+        "name": "Torrential Rain",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "TORRENTIAL_RAIN",
+        "penalty": -99,
+        "description": "Sets all non-hero units from the siege combat zone to 1 power."
+    },
+    {
+        "name": "Skellige Storm",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "SKELLIGE_STORM",
+        "penalty": -99,
+        "description": "Demages random units."
+    },
+    {
+        "name": "Dragon Dream",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "DRAGON_DREAM",
+        "penalty": -99,
+        "description": "Damages the strongest units."
+    },
+    {
+        "name": "Blue Stripes Commander",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "MORALE_BOOST",
+        "effectValue": 1
+    }
+    ]
+  }
