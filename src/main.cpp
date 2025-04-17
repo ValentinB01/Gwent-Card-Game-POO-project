@@ -121,16 +121,24 @@ void runGame() {
         while (!game.isGameOver()) {
             clearScreen();
             game.printGameState();
-            handleGameInput(game);
             
-            // Check if both players passed
-            if (game.getPlayer(0).getRoundsLost() > 0 || game.getPlayer(1).getRoundsLost() > 0) {
-                game.calculateRoundWinner();
-                if (!game.isGameOver()) {
-                    game.nextRound();
-                    std::cout << "\nPress Enter to continue to next round...";
-                    std::cin.ignore();
+            // Handle turns until both players pass
+            while (!game.haveBothPlayersPassed()) {
+                handleGameInput(game);
+                
+                // Check if round ended after this move
+                if (game.haveBothPlayersPassed()) {
+                    break;
                 }
+            }
+            
+            // Round ended - calculate winner
+            game.calculateRoundWinner();
+            
+            if (!game.isGameOver()) {
+                std::cout << "\nPress Enter to continue to next round...";
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                game.nextRound();
             }
         }
     } catch (const std::exception& e) {

@@ -6,8 +6,9 @@
 
 Game::Game(const std::string& player1Name, const std::string& player2Name) 
     : players{Player(player1Name, 0), Player(player2Name, 1)},
-      currentRound(0), currentPlayerIndex(0), gameOver(false) {}
-
+      currentRound(0), currentPlayerIndex(0), gameOver(false) {
+        resetPassStates();
+      }
 void Game::loadDeck(const std::string& filename) {
     try {
         deck.loadFromJson(filename);
@@ -32,6 +33,7 @@ void Game::startGame() {
     currentRound = 1;
     currentPlayerIndex = 0;
     gameOver = false;
+    resetPassStates();
     
     std::cout << "\n=== Game Started ===\n";
     std::cout << players[0].getName() << " vs " << players[1].getName() << "\n";
@@ -42,12 +44,13 @@ void Game::nextRound() {
     if (gameOver) return;
 
     board.clearBoard();
+    resetPassStates();
     currentRound++;
     currentPlayerIndex = (currentRound - 1) % 2; // Alternate who starts each round
     
     // Each player draws a card at start of round
-    players[0].drawCard();
-    players[1].drawCard();
+    players[0].drawCards(3);
+    players[1].drawCards(3);
     
     std::cout << "\n=== Round " << currentRound << " ===\n";
     std::cout << players[currentPlayerIndex].getName() << " starts this round.\n";
@@ -87,6 +90,7 @@ void Game::pass(int playerIndex) {
         throw std::runtime_error("Not your turn!");
     }
 
+    playerPassed[playerIndex] = true;
     std::cout << players[playerIndex].getName() << " passes." << std::endl;
     endTurn();
 }
@@ -177,6 +181,14 @@ const Player& Game::getPlayer(int index) const {
         throw std::out_of_range("Invalid player index");
     }
     return players[index];
+}
+
+void Game::resetPassStates() {
+    playerPassed[0] = false;
+    playerPassed[1] = false;
+}
+bool Game::haveBothPlayersPassed() const {
+    return playerPassed[0] && playerPassed[1];
 }
 
 const Board& Game::getBoard() const {

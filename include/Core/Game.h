@@ -11,6 +11,7 @@ class Game {
 private:
     Board board;
     std::array<Player, 2> players;
+    std::array<bool, 2> playerPassed;
     Deck deck;
     int currentRound;
     int currentPlayerIndex;
@@ -27,6 +28,8 @@ public:
     void pass(int playerIndex);
     void calculateRoundWinner();
     void printGameState() const;
+    void resetPassStates();
+    bool haveBothPlayersPassed() const;
     
     // Getters
     bool isGameOver() const;
