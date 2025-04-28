@@ -11,6 +11,7 @@ namespace CardUtils {
     std::string heroAbilityToString(HeroAbility ability);
     std::string abilityEffectToString(AbilityEffect effect);
     std::string weatherEffectDescription(WeatherType type);
+    std::string deployEffectToString(DeployEffect effect);
 }
 
 #endif

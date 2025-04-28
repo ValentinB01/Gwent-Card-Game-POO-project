@@ -20,6 +20,7 @@ private:
 public:
     Game(const std::string& player1Name, const std::string& player2Name);
     
+    void activateHeroAbility(int playerId);
     void loadDeck(const std::string& filename);
     void startGame();
     void nextRound();
@@ -31,7 +32,6 @@ public:
     void resetPassStates();
     bool haveBothPlayersPassed() const;
     
-    // Getters
     bool isGameOver() const;
     const Player& getCurrentPlayer() const;
     const Player& getPlayer(int index) const;

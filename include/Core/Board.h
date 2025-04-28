@@ -8,6 +8,13 @@
 #include <map>
 #include <array>
 
+struct ScorchResult {
+    std::string destroyedName;
+    int power;
+    CombatZone zone;
+    bool wasHero;
+};
+
 class Board {
 private:
     struct PlayerBoard {
@@ -19,33 +26,36 @@ private:
     std::vector<std::unique_ptr<Card>> weatherEffects;
 
 public:
-    // Card management
     void addCard(int playerIndex, std::unique_ptr<Card> card);
     
-    // Weather effects
+    void cleanupDestroyedUnits(int playerId, CombatZone zone);
+    ScorchResult destroyStrongestEnemyUnit(int attackingPlayerId, Card* activatingCard = nullptr);   
     WeatherType getWeatherType(CombatZone zone) const;
+    const WeatherCard* getActiveWeatherForZone(CombatZone zone) const;
     void addWeather(std::unique_ptr<Card> weatherCard);
-    void applyWeather(WeatherType type, CombatZone zone, int value);
+    void applyWeather(WeatherType type, const std::vector<CombatZone>& zones, int value);
     void clearWeather();
     bool hasWeather(WeatherType type) const;
     bool hasWeather(CombatZone zone) const;
-    
-    // Graveyard access
+    bool shouldApplyWeather(CombatZone weatherZone, CombatZone targetZone) const;
+    void applyWeatherEffectsToZone(WeatherType type, CombatZone zone, int value);
+
     std::vector<std::unique_ptr<Card>>& getPlayerGraveyard(int playerIndex);
     const std::vector<std::unique_ptr<Card>>& getPlayerGraveyard(int playerIndex) const;
     
-    // Board state queries
     int getPlayerPower(int playerIndex, CombatZone zone) const;
     std::vector<Card*> getPlayerUnits(int playerIndex) const;
     std::vector<Card*> getPlayerUnits(int playerIndex, CombatZone zone) const;
     
-    // Board modifications
     void boostRow(int playerIndex, CombatZone zone, int boostValue);
     void doubleRowPower(int playerIndex, CombatZone zone);
     void damageRow(int playerIndex, CombatZone zone, int damage);
-    void destroyWeakestUnit(int playerIndex);
-    void destroyStrongestUnits(int playerIndex, int threshold);
+    std::string destroyWeakestUnit(int playerIndex);
+    int destroyStrongestUnits(int playerIndex, int threshold);
     void clearBoard();
+
+    std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone);
+    const std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone) const;
 };
 
 #endif

@@ -40,15 +40,27 @@ void Game::startGame() {
     std::cout << players[currentPlayerIndex].getName() << " goes first.\n";
 }
 
+void Game::activateHeroAbility(int playerId) {
+    if (playerId != currentPlayerIndex) {
+        throw std::runtime_error("Not your turn!");
+    }
+
+    Player& player = (playerId == 0) ? players[0] : players[1];
+    Player& opponent = (playerId == 0) ? players[0] : players[1];
+    
+    player.activateHeroAbility(board, opponent);
+}
+
 void Game::nextRound() {
     if (gameOver) return;
 
+    players[0].resetHeroAbilitiesForNewRound();
+    players[1].resetHeroAbilitiesForNewRound();
     board.clearBoard();
     resetPassStates();
     currentRound++;
-    currentPlayerIndex = (currentRound - 1) % 2; // Alternate who starts each round
+    currentPlayerIndex = (currentRound - 1) % 2;
     
-    // Each player draws a card at start of round
     players[0].drawCards(3);
     players[1].drawCards(3);
     
@@ -99,7 +111,6 @@ void Game::calculateRoundWinner() {
     int player1Score = 0;
     int player2Score = 0;
 
-    // Calculate scores for each combat zone
     for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
         player1Score += board.getPlayerPower(0, zone);
         player2Score += board.getPlayerPower(1, zone);
@@ -119,7 +130,6 @@ void Game::calculateRoundWinner() {
         std::cout << "Round ends in a draw! No winner.\n";
     }
 
-    // Check for game over condition
     if (players[0].getRoundsWon() >= 2) {
         gameOver = true;
         std::cout << "\n=== Game Over ===\n";
@@ -136,13 +146,11 @@ void Game::printGameState() const {
     std::cout << "Round: " << currentRound << "\n";
     std::cout << "Current turn: " << players[currentPlayerIndex].getName() << "\n";
     
-    // Print player states
     for (int i = 0; i < 2; ++i) {
         std::cout << "\n" << players[i].getName() << ":\n";
         std::cout << "  Rounds won: " << players[i].getRoundsWon() << "/2\n";
         std::cout << "  Cards in hand: " << players[i].getHandSize() << "\n";
         
-        // Print board presence
         std::cout << "  Board presence:\n";
         for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
             int power = board.getPlayerPower(i, zone);
@@ -153,7 +161,6 @@ void Game::printGameState() const {
         }
     }
     
-    // Print weather effects
     if (board.hasWeather(CombatZone::CLOSE)) {
         std::cout << "\nWeather effect in Close combat: " 
                   << CardUtils::weatherTypeToSymbol(board.getWeatherType(CombatZone::CLOSE)) << "\n";

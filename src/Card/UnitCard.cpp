@@ -9,24 +9,19 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
                    Faction faction, bool isHero, DeployEffect effect, 
                    int effectValue, bool isSpy)
     : Card(name, power, CardType::UNIT, zone, faction, 
-           "Deploys a unit to the battlefield."), 
+           "Deploys a unit card with the deploy effect: " + CardUtils::deployEffectToString(effect)),
       isHero(isHero), deployEffect(effect), 
       effectValue(effectValue), isSpy(isSpy) {}
 
 void UnitCard::play(Player& owner, Player& opponent, Board& board) {
     std::cout << "⚔️ Unit deployed: " << name << " | Power: " << power 
-              << " | Zone: " << CardUtils::zoneToString(zone) 
-              << (isHero ? " (Hero)" : "") << std::endl;
+              << " | Zone: " << CardUtils::zoneToString(zone) << " | Deploy Effect: "
+              << CardUtils::deployEffectToString(deployEffect)
+              << (isHero ? " (Hero)" : "")  << std::endl;
     
-    if (isSpy) {
-        auto spyCopy = std::make_unique<UnitCard>(*this);
-        std::cout << "Spy unit placed on opponent's side!" << std::endl;
-        opponent.playCardToBoard(std::move(spyCopy), board);
-        owner.drawCards(2);
-    } else {
-        auto unitCopy = std::make_unique<UnitCard>(*this);
-        owner.playCardToBoard(std::move(unitCopy), board);
-    }
+              auto unitCopy = std::make_unique<UnitCard>(*this);
+              owner.playCardToBoard(std::move(unitCopy), board);
+              this->applyEffect(owner, opponent, board);
 }
 
 void UnitCard::applyEffect(Player& owner, Player& opponent, Board& board) {
@@ -42,7 +37,7 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
                 int randomIndex = rand() % units.size();
                 units[randomIndex]->takeDamage(effectValue);
                 std::cout << "Dealt " << effectValue << " damage to " 
-                     << units[randomIndex]->getName() << std::endl;
+                     << units[randomIndex]->getName() <<"."<< std::endl;
             }
             break;
         }
@@ -53,7 +48,7 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
                 if (unit->getName() != name) {
                     unit->setPower(unit->getPower() + effectValue);
                     std::cout << "Boosted " << unit->getName() 
-                         << " by " << effectValue << std::endl;
+                         << " by " << effectValue <<"."<< std::endl;
                 }
             }
             break;
@@ -61,12 +56,18 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
             
         case DeployEffect::DRAW_CARD:
             owner.drawCards(effectValue);
-            std::cout << "Drew " << effectValue << " card(s)" << std::endl;
+            std::cout << "Drew " << effectValue << " card(s)." << std::endl;
             break;
             
-        case DeployEffect::DESTROY_WEAKEST:
-            board.destroyWeakestUnit(opponent.getPlayerId());
-            break;
+            case DeployEffect::DESTROY_WEAKEST: {
+                std::string destroyedName = board.destroyWeakestUnit(opponent.getPlayerId());
+                if (!destroyedName.empty()) {
+                    std::cout << "Destroyed opponent's weakest unit: " << destroyedName <<".";
+                } else {
+                    std::cout << "No units to destroy!\n";
+                }
+                break;
+            }
             
         case DeployEffect::CLEAR_WEATHER:
             board.clearWeather();
@@ -89,7 +90,7 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
             
         case DeployEffect::MORALE_BOOST:
             board.boostRow(owner.getPlayerId(), zone, effectValue);
-            std::cout << "Morale boost applied to row!" << std::endl;
+            std::cout << "Morale boost applied to the "<<CardUtils::zoneToString(zone) <<" battle zone!" << std::endl;
             break;
             
         case DeployEffect::NONE:
@@ -108,4 +109,7 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
     }
     bool UnitCard::getIsSpy() const {
         return isSpy;
+    }
+    int UnitCard::getBasePower() const { 
+        return basePower; 
     }

@@ -6,7 +6,7 @@ std::string CardUtils::zoneToString(CombatZone zone) {
         case CombatZone::CLOSE: return "Close";
         case CombatZone::RANGED: return "Ranged";
         case CombatZone::SIEGE: return "Siege";
-        default: return "Any";
+        default: return "All";
     }
 }
 
@@ -62,5 +62,19 @@ std::string CardUtils::weatherEffectDescription(WeatherType type) {
         case WeatherType::SKELIGE_STORM: return "Storm damages random units";
         case WeatherType::DRAGON_DREAM: return "Dragon fire damages strongest units";
         default: return "Unknown weather effect";
+    }
+}
+
+std::string CardUtils::deployEffectToString(DeployEffect effect) {
+    switch(effect) {
+        case DeployEffect::DAMAGE_RANDOM_ENEMY: return "Damage Random Enemy";
+        case DeployEffect::BOOST_ADJACENT: return "Boost Adjacent Units";
+        case DeployEffect::DRAW_CARD: return "Draw Card";
+        case DeployEffect::DESTROY_WEAKEST: return "Destroy Weakest Enemy Unit";
+        case DeployEffect::MEDIC: return "Revive Unit";
+        case DeployEffect::CLEAR_WEATHER: return "Clear Weather";
+        case DeployEffect::SPY: return "Spy";
+        case DeployEffect::MORALE_BOOST: return "Morale Boost";
+        default: return "NONE";
     }
 }

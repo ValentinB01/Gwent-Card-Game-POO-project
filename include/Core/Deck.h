@@ -30,6 +30,7 @@ public:
     size_t size() const;
     size_t graveyardSize() const;
     void reshuffleGraveyard();
+    CombatZone getDefaultZoneForWeather(WeatherType type) const;
 };
 
 #endif

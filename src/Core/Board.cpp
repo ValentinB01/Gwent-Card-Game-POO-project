@@ -1,6 +1,7 @@
 #include "../include/Core/Board.h"
 #include "../include/Card/UnitCard.h"
 #include "../include/Card/WeatherCard.h"
+#include "../include/Utils/CardUtils.h"
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -8,7 +9,7 @@
 
 void Board::addCard(int playerIndex, std::unique_ptr<Card> card) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     if (card->getType() == CardType::WEATHER) {
@@ -21,121 +22,190 @@ void Board::addCard(int playerIndex, std::unique_ptr<Card> card) {
     playerBoards[playerIndex].zones[card->getZone()].push_back(std::move(card));
 }
 
-void Board::addWeather(std::unique_ptr<Card> weatherCard) {
-    if (auto weather = dynamic_cast<WeatherCard*>(weatherCard.get())) {
-        // Remove existing weather effects for this zone
-        weatherEffects.erase(
-            remove_if(weatherEffects.begin(), weatherEffects.end(),
-                [&weather](const auto& w) { 
-                    if (auto wc = dynamic_cast<const WeatherCard*>(w.get())) {
-                        return wc->getZone() == weather->getZone(); 
-                    }
-                    return false;
-                }),
-            weatherEffects.end());
-            
-        weatherEffects.push_back(std::move(weatherCard));
-        applyWeather(weather->getWeatherType(), weather->getZone(), weather->getEffectValue());
+std::vector<std::unique_ptr<Card>>& Board::getPlayerZone(int playerIndex, CombatZone zone) {
+    if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
+        throw std::out_of_range("Invalid player index.");
     }
+    
+    auto& zones = playerBoards[playerIndex].zones;
+    if (zones.count(zone) == 0) {
+        zones[zone] = std::vector<std::unique_ptr<Card>>();
+    }
+    return zones[zone];
 }
 
-WeatherType Board::getWeatherType(CombatZone zone) const {
-    for (const auto& weather : weatherEffects) {
-        // Safely downcast to WeatherCard
-        const WeatherCard* weatherCard = dynamic_cast<const WeatherCard*>(weather.get());
-        if (weatherCard && 
-            (weatherCard->getZone() == zone || weatherCard->getZone() == CombatZone::ANY)) {
-            return weatherCard->getWeatherType();
-        }
+const std::vector<std::unique_ptr<Card>>& Board::getPlayerZone(int playerIndex, CombatZone zone) const {
+    if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
+        throw std::out_of_range("Invalid player index.");
     }
-    return WeatherType::CLEAR_WEATHER;
+    
+    static const std::vector<std::unique_ptr<Card>> emptyZone;
+    const auto& zones = playerBoards[playerIndex].zones;
+    
+    if (zones.count(zone)) {
+        return zones.at(zone);
+    }
+    return emptyZone;
 }
 
 std::vector<std::unique_ptr<Card>>& Board::getPlayerGraveyard(int playerIndex) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
     return playerBoards[playerIndex].graveyard;
 }
 
 const std::vector<std::unique_ptr<Card>>& Board::getPlayerGraveyard(int playerIndex) const {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
     return playerBoards[playerIndex].graveyard;
 }
 
-void Board::applyWeather(WeatherType type, CombatZone zone, int value) {
-    switch(type) {
-        case WeatherType::BITING_FROST:
-        case WeatherType::IMPENETRABLE_FOG:
-        case WeatherType::TORRENTIAL_RAIN:
-            for (auto& pb : playerBoards) {
-                for (auto& card : pb.zones[zone]) {
+
+void Board::addWeather(std::unique_ptr<Card> weatherCard) {
+    if (auto weather = dynamic_cast<WeatherCard*>(weatherCard.get())) {
+        weatherEffects.erase(
+            remove_if(weatherEffects.begin(), weatherEffects.end(),
+                [&weather](const auto& w) {
+                    if (auto wc = dynamic_cast<const WeatherCard*>(w.get())) {
+                        if (wc->getWeatherType() == weather->getWeatherType()) {
+                            for (auto zone : wc->getAffectedZones()) {
+                                if (weather->affectsZone(zone)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                    return false;
+                }),
+            weatherEffects.end());
+                    
+        for (auto zone : weather->getAffectedZones()) {
+            if (zone == CombatZone::ANY) {
+                applyWeather(weather->getWeatherType(), {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}, weather->getEffectValue());
+            } else {
+                applyWeather(weather->getWeatherType(), {zone}, weather->getEffectValue());
+            }
+        }
+    }
+}
+
+bool Board::shouldApplyWeather(CombatZone weatherZone, CombatZone targetZone) const {
+    return weatherZone == CombatZone::ANY || weatherZone == targetZone;
+}
+
+const WeatherCard* Board::getActiveWeatherForZone(CombatZone zone) const {
+    const WeatherCard* zoneSpecificWeather = nullptr;
+    const WeatherCard* globalWeather = nullptr;
+
+    for (const auto& weather : weatherEffects) {
+        if (auto wc = dynamic_cast<const WeatherCard*>(weather.get())) {
+            if (wc->getZone() == zone) {
+                zoneSpecificWeather = wc;
+            }
+            else if (wc->getZone() == CombatZone::ANY) {
+                globalWeather = wc;
+            }
+        }
+    }
+
+    return zoneSpecificWeather ? zoneSpecificWeather : globalWeather;
+}
+
+WeatherType Board::getWeatherType(CombatZone zone) const {
+    if (const WeatherCard* weather = getActiveWeatherForZone(zone)) {
+        return weather->getWeatherType();
+    }
+    return WeatherType::CLEAR_WEATHER;
+}
+
+void Board::applyWeather(WeatherType type, const std::vector<CombatZone>& zones, int value) {
+    for (auto zone : zones) {
+        applyWeatherEffectsToZone(type, zone, value);
+    }
+}
+
+void Board::applyWeatherEffectsToZone(WeatherType type, CombatZone zone, int value) {
+    for (auto& pb : playerBoards) {
+        if (!pb.zones.count(zone)) continue;
+        
+        auto& cards = pb.zones[zone];
+        switch(type) {
+            case WeatherType::BITING_FROST:
+            case WeatherType::IMPENETRABLE_FOG:
+            case WeatherType::TORRENTIAL_RAIN:
+                for (auto& card : cards) {
                     if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
                         if (!unit->isHeroCard()) {
                             unit->setPower(1);
+                            std::cout << "Set " << unit->getName() 
+                                      << " power to 1 in " 
+                                      << CardUtils::zoneToString(zone) << ".\n";
                         }
                     }
                 }
-            }
-            break;
-            
-        case WeatherType::SKELIGE_STORM:
-            for (auto& pb : playerBoards) {
-                for (auto& [z, cards] : pb.zones) {
-                    if (!cards.empty()) {
-                        std::random_device rd;
-                        std::mt19937 gen(rd());
-                        std::uniform_int_distribution<> distr(0, cards.size()-1);
-                        int randomIndex = distr(gen);
-                        cards[randomIndex]->takeDamage(value);
-                        if (cards[randomIndex]->getPower() <= 0) {
-                            pb.graveyard.push_back(std::move(cards[randomIndex]));
-                            cards.erase(cards.begin() + randomIndex);
-                        }
+                break;
+                
+            case WeatherType::SKELIGE_STORM:
+                if (!cards.empty()) {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_int_distribution<> distr(0, cards.size()-1);
+                    int randomIndex = distr(gen);
+                    cards[randomIndex]->takeDamage(value);
+                    std::cout << "⚡ Damaged " << cards[randomIndex]->getName()
+                              << " by " << value << " in "
+                              << CardUtils::zoneToString(zone) << ".\n";
+                    
+                    if (cards[randomIndex]->getPower() <= 0) {
+                        pb.graveyard.push_back(std::move(cards[randomIndex]));
+                        cards.erase(cards.begin() + randomIndex);
                     }
                 }
-            }
-            break;
-            
-        case WeatherType::DRAGON_DREAM:
-            for (auto& pb : playerBoards) {
-                for (auto& [z, cards] : pb.zones) {
-                    if (!cards.empty()) {
-                        auto strongest = std::max_element(
-                            cards.begin(),
-                            cards.end(),
-                            [](const auto& a, const auto& b) {
-                                return a->getPower() < b->getPower();
-                            }
-                        );
-                        (*strongest)->takeDamage(value);
-                        if ((*strongest)->getPower() <= 0) {
-                            pb.graveyard.push_back(std::move(*strongest));
-                            cards.erase(strongest);
+                break;
+                
+            case WeatherType::DRAGON_DREAM:
+                if (!cards.empty()) {
+                    auto strongest = std::max_element(
+                        cards.begin(),
+                        cards.end(),
+                        [](const auto& a, const auto& b) {
+                            return a->getPower() < b->getPower();
                         }
+                    );
+                    (*strongest)->takeDamage(value);
+                    std::cout << "🔥 Dragon's Dream hit " << (*strongest)->getName()
+                              << " for " << value << " damage in "
+                              << CardUtils::zoneToString(zone) << ".\n";
+                    
+                    if ((*strongest)->getPower() <= 0) {
+                        pb.graveyard.push_back(std::move(*strongest));
+                        cards.erase(strongest);
                     }
                 }
-            }
-            break;
-            
-        case WeatherType::CLEAR_WEATHER:
-            clearWeather();
-            break;
+                break;
+                
+            case WeatherType::CLEAR_WEATHER:
+                break;
+        }
     }
 }
 
 void Board::clearWeather() {
     weatherEffects.clear();
-    // Restore original power to affected units
+    std::cout << "☀️ All weather effects cleared.\n";
+    
     for (auto& pb : playerBoards) {
-        for (auto& [zone, cards] : pb.zones) {
-            for (auto& card : cards) {
+        for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
+            for (auto& card : pb.zones[zone]) {
                 if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
                     if (!unit->isHeroCard()) {
-                        // Note: This assumes units remember their base power
-                        // You may need to modify Card class to track base power
+                        unit->setPower(unit->getBasePower());
+                        std::cout << "🔄 Restored " << unit->getName() 
+                                  << " to base power (" 
+                                  << unit->getPower() << ").\n";
                     }
                 }
             }
@@ -145,19 +215,41 @@ void Board::clearWeather() {
 
 bool Board::hasWeather(WeatherType type) const {
     return std::any_of(weatherEffects.begin(), weatherEffects.end(),
-        [type](const auto& w) { return w->getWeatherType() == type; });
+        [type](const auto& w) {
+            if (auto wc = dynamic_cast<const WeatherCard*>(w.get())) {
+                return wc->getWeatherType() == type;
+            }
+            return false;
+        });
 }
 
 bool Board::hasWeather(CombatZone zone) const {
-    return std::any_of(weatherEffects.begin(), weatherEffects.end(),
-        [zone](const auto& w) { 
-            return w->getZone() == zone || w->getZone() == CombatZone::ANY; 
+    return getActiveWeatherForZone(zone) != nullptr;
+}
+
+void Board::cleanupDestroyedUnits(int playerId, CombatZone zone) {
+    if (playerId < 0 || playerId >= playerBoards.size()) {
+        throw std::out_of_range("Invalid player index.");
+    }
+
+    auto& zoneUnits = playerBoards[playerId].zones[zone];
+    auto& graveyard = playerBoards[playerId].graveyard;
+
+    auto newEnd = std::remove_if(zoneUnits.begin(), zoneUnits.end(),
+        [&graveyard](std::unique_ptr<Card>& unit) {
+            if (unit->getPower() <= 0) {
+                graveyard.push_back(std::move(unit));
+                return true;
+            }
+            return false;
         });
+
+    zoneUnits.erase(newEnd, zoneUnits.end());
 }
 
 int Board::getPlayerPower(int playerIndex, CombatZone zone) const {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     int total = 0;
@@ -172,7 +264,7 @@ int Board::getPlayerPower(int playerIndex, CombatZone zone) const {
 
 std::vector<Card*> Board::getPlayerUnits(int playerIndex) const {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     std::vector<Card*> units;
@@ -186,7 +278,7 @@ std::vector<Card*> Board::getPlayerUnits(int playerIndex) const {
 
 std::vector<Card*> Board::getPlayerUnits(int playerIndex, CombatZone zone) const {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     std::vector<Card*> units;
@@ -201,7 +293,7 @@ std::vector<Card*> Board::getPlayerUnits(int playerIndex, CombatZone zone) const
 
 void Board::boostRow(int playerIndex, CombatZone zone, int boostValue) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     auto& zones = playerBoards[playerIndex].zones;
@@ -214,7 +306,7 @@ void Board::boostRow(int playerIndex, CombatZone zone, int boostValue) {
 
 void Board::doubleRowPower(int playerIndex, CombatZone zone) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     auto& zones = playerBoards[playerIndex].zones;
@@ -227,7 +319,7 @@ void Board::doubleRowPower(int playerIndex, CombatZone zone) {
 
 void Board::damageRow(int playerIndex, CombatZone zone, int damage) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     auto& zones = playerBoards[playerIndex].zones;
@@ -245,9 +337,9 @@ void Board::damageRow(int playerIndex, CombatZone zone, int damage) {
     }
 }
 
-void Board::destroyWeakestUnit(int playerIndex) {
+std::string Board::destroyWeakestUnit(int playerIndex) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
+        throw std::out_of_range("Invalid player index.");
     }
 
     Card* weakest = nullptr;
@@ -257,6 +349,11 @@ void Board::destroyWeakestUnit(int playerIndex) {
 
     for (auto& [zone, cards] : playerBoards[playerIndex].zones) {
         for (size_t i = 0; i < cards.size(); ++i) {
+            if (auto unit = dynamic_cast<UnitCard*>(cards[i].get())) {
+                if (unit->isHeroCard()) {
+                    continue;
+                }
+            }
             if (cards[i]->getPower() < minPower) {
                 minPower = cards[i]->getPower();
                 weakest = cards[i].get();
@@ -267,50 +364,52 @@ void Board::destroyWeakestUnit(int playerIndex) {
     }
 
     if (weakest) {
+        std::string destroyedName = weakest->getName();
+        
         playerBoards[playerIndex].graveyard.push_back(
             std::move(playerBoards[playerIndex].zones[weakestZone][weakestIndex]));
         playerBoards[playerIndex].zones[weakestZone].erase(
             playerBoards[playerIndex].zones[weakestZone].begin() + weakestIndex);
+        
+        return destroyedName;
     }
+    return "";
 }
 
-void Board::destroyStrongestUnits(int playerIndex, int threshold) {
-    if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
-        throw std::out_of_range("Invalid player index");
-    }
-
-    std::vector<std::pair<CombatZone, size_t>> toDestroy;
+ScorchResult Board::destroyStrongestEnemyUnit(int attackingPlayerId, Card* activatingCard) {
+    ScorchResult result;
+    int enemyPlayerId = 1 - attackingPlayerId;
+    
+    Card* strongestEnemy = nullptr;
+    CombatZone strongestZone;
+    size_t strongestIndex = 0;
     int maxPower = 0;
 
-    // First find the maximum power
-    for (auto& [zone, cards] : playerBoards[playerIndex].zones) {
-        for (const auto& card : cards) {
-            if (card->getPower() > maxPower) {
-                maxPower = card->getPower();
-            }
-        }
-    }
-
-    // Skip if no units meet the threshold
-    if (maxPower < threshold) return;
-
-    // Collect all strongest units
-    for (auto& [zone, cards] : playerBoards[playerIndex].zones) {
+    for (auto& [zone, cards] : playerBoards[enemyPlayerId].zones) {
         for (size_t i = 0; i < cards.size(); ++i) {
-            if (cards[i]->getPower() == maxPower) {
-                toDestroy.emplace_back(zone, i);
+            bool isSelf = (activatingCard && cards[i].get() == activatingCard);
+            if (!isSelf && cards[i]->getPower() > maxPower) {
+                maxPower = cards[i]->getPower();
+                strongestEnemy = cards[i].get();
+                strongestZone = zone;
+                strongestIndex = i;
             }
         }
     }
 
-    // Destroy from back to front to preserve indices
-    std::sort(toDestroy.rbegin(), toDestroy.rend());
-    for (auto& [zone, index] : toDestroy) {
-        playerBoards[playerIndex].graveyard.push_back(
-            std::move(playerBoards[playerIndex].zones[zone][index]));
-        playerBoards[playerIndex].zones[zone].erase(
-            playerBoards[playerIndex].zones[zone].begin() + index);
+    if (strongestEnemy && maxPower > 0) {
+        result.destroyedName = strongestEnemy->getName();
+        result.power = strongestEnemy->getPower();
+        result.zone = strongestZone;
+        result.wasHero = (strongestEnemy->getType() == CardType::HERO);
+
+        playerBoards[enemyPlayerId].graveyard.push_back(
+            std::move(playerBoards[enemyPlayerId].zones[strongestZone][strongestIndex]));
+        playerBoards[enemyPlayerId].zones[strongestZone].erase(
+            playerBoards[enemyPlayerId].zones[strongestZone].begin() + strongestIndex);
     }
+
+    return result;
 }
 
 void Board::clearBoard() {

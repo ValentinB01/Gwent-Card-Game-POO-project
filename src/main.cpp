@@ -20,11 +20,12 @@ void displayWelcome() {
 void displayHelp() {
     std::cout << "\nAvailable Commands:\n";
     std::cout << "1. Play card [index] - Play a card from your hand\n";
-    std::cout << "2. Pass - End your turn without playing\n";
-    std::cout << "3. Hand - Show your current hand\n";
-    std::cout << "4. Board - Show current board state\n";
-    std::cout << "5. Help - Show this help message\n";
-    std::cout << "6. Quit - Exit the game\n\n";
+    std::cout << "2. Hero - Activate a hero ability\n";  // New option
+    std::cout << "3. Pass - End your turn without playing\n";
+    std::cout << "4. Hand - Show your current hand\n";
+    std::cout << "5. Board - Show current board state\n";
+    std::cout << "6. Help - Show this help message\n";
+    std::cout << "7. Quit - Exit the game\n\n";
 }
 
 void clearScreen() {
@@ -57,7 +58,7 @@ void handleGameInput(Game& game) {
         std::getline(std::cin, input);
 
         if (input == "1" || input.find("play") == 0) {
-            // Play card
+            // Play card (existing code)
             if (currentPlayer.getHandSize() == 0) {
                 std::cout << "No cards in hand to play!\n";
                 continue;
@@ -79,22 +80,33 @@ void handleGameInput(Game& game) {
                 std::cout << "Error: " << e.what() << "\n";
             }
         }
-        else if (input == "2" || input == "pass") {
+        else if (input == "2" || input == "hero") {
+            try {
+                game.activateHeroAbility(currentPlayer.getPlayerId());
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
+                return;
+            } catch (const std::exception& e) {
+                std::cout << "Error activating hero ability: " << e.what() << "\n";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+        }
+        else if (input == "3" || input == "pass") {
             game.pass(currentPlayer.getPlayerId());
             return;
         }
-        else if (input == "3" || input == "hand") {
+        else if (input == "4" || input == "hand") {
             clearScreen();
             currentPlayer.printHand();
         }
-        else if (input == "4" || input == "board") {
+        else if (input == "5" || input == "board") {
             clearScreen();
             game.printGameState();
         }
-        else if (input == "5" || input == "help") {
+        else if (input == "6" || input == "help") {
             displayHelp();
         }
-        else if (input == "6" || input == "quit") {
+        else if (input == "7" || input == "quit") {
             std::cout << "Thanks for playing!\n";
             exit(0);
         }

@@ -3,25 +3,24 @@
 
 #include "../Card/Card.h"
 #include "../Utils/enums.h"
+#include <vector>
 
 class WeatherCard : public Card {
 private:
     WeatherType weatherType;
+    std::vector<CombatZone> affectedZones;
     int effectValue;
 
-public:
-    WeatherCard(const std::string& name, CombatZone zone, 
-                WeatherType type, int effectValue = 0);
-    
-    // Overridden virtual functions
+    public:
+    WeatherCard(const std::string& name, WeatherType type, 
+        const std::vector<CombatZone>& affectedZones, int effectValue);
+    bool affectsZone(CombatZone zone) const;
+    const std::vector<CombatZone>& getAffectedZones() const;
     void play(Player& owner, Player& opponent, Board& board) override;
     void applyEffect(Player& owner, Player& opponent, Board& board) override;
-    
-    // Getters
     WeatherType getWeatherType() const override;
     int getEffectValue() const;
     
-    // Static helper
     static std::string weatherEffectDescription(WeatherType type);
 };
 

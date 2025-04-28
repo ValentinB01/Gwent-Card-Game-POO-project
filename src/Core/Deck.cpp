@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 #include "../json.hpp"
 
 using json = nlohmann::json;
@@ -143,9 +144,22 @@ void Deck::loadFromJson(const std::string& filename) {
             else if (cardType == "WEATHER") {
                 WeatherType weatherType = stringToWeatherType(cardData["weatherType"]);
                 int effectValue = cardData.value("effectValue", 0);
-
+                
+                std::vector<CombatZone> affectedZones;
+                
+                if (cardData.contains("affectedZones")) {
+                    for (const auto& zoneStr : cardData["affectedZones"]) {
+                        affectedZones.push_back(stringToCombatZone(zoneStr));
+                    }
+                } else {
+                    affectedZones = {getDefaultZoneForWeather(weatherType)};
+                }
+                
                 cards.push_back(std::make_unique<WeatherCard>(
-                    name, zone, weatherType, effectValue
+                    name, 
+                    weatherType, 
+                    affectedZones,
+                    effectValue
                 ));
             }
         } catch (const json::exception& e) {
@@ -155,6 +169,24 @@ void Deck::loadFromJson(const std::string& filename) {
     }
 
     std::cout << "Loaded " << cards.size() << " cards from " << filename << std::endl;
+}
+CombatZone Deck::getDefaultZoneForWeather(WeatherType type) const {
+    switch(type) {
+        case WeatherType::BITING_FROST:
+            return CombatZone::CLOSE;
+        case WeatherType::IMPENETRABLE_FOG:
+            return CombatZone::RANGED;
+        case WeatherType::TORRENTIAL_RAIN:
+            return CombatZone::SIEGE;
+        case WeatherType::SKELIGE_STORM:
+            return CombatZone::ANY;
+        case WeatherType::DRAGON_DREAM:
+            return CombatZone::ANY;   
+        case WeatherType::CLEAR_WEATHER:
+            return CombatZone::ANY;     
+        default:
+            throw std::invalid_argument("Unknown weather type");
+    }
 }
 
 void Deck::shuffle() {

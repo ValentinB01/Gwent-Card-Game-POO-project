@@ -21,7 +21,6 @@ public:
     Card(const std::string& name, int power, CardType type, CombatZone zone, 
          Faction faction, const std::string& description);
     virtual ~Card() = default;
-
     virtual void play(Player& owner, Player& opponent, Board& board) = 0;
     virtual void applyEffect(Player& owner, Player& opponent, Board& board) = 0;
 
@@ -35,7 +34,7 @@ public:
     virtual void takeDamage(int amount);
 
     virtual WeatherType getWeatherType() const { 
-        return WeatherType::CLEAR_WEATHER; // Default implementation
+        return WeatherType::CLEAR_WEATHER;
     }
 };
 
