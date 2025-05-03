@@ -53,6 +53,7 @@ public:
     std::string destroyWeakestUnit(int playerIndex);
     int destroyStrongestUnits(int playerIndex, int threshold);
     void clearBoard();
+    bool hasUnitsInZone(int playerId, CombatZone zone) const;
 
     std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone);
     const std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone) const;

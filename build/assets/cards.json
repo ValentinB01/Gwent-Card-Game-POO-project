@@ -1,0 +1,608 @@
+{
+    "cards": [
+    {
+        "name": "Mysterious Elf",
+        "type": "UNIT",
+        "power": 3,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "SPY"
+    },
+    {
+        "name": "Fiend",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "CLOSE",
+        "faction": "MONSTERS"
+    },
+    {
+        "name": "Impera Brigade",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 4
+    },
+    {
+        "name": "Plague Maiden",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "effect": "MORALE_BOOST"
+    },
+    {
+        "name": "Olaf",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 5
+    },
+    {
+        "name": "Arachas",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "CLOSE",
+        "faction": "MONSTERS"
+    },
+    {
+        "name": "Kikimora",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 4
+    },
+    {
+        "name": "Barclay Els",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "CLOSE",
+        "faction": "SCOIATEL",
+        "effect": "DRAW_CARD",
+        "effectValue": 1
+    },
+    {
+        "name": "Berserker",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 3
+    },
+    {
+        "name": "Briana Bran",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "effect": "MEDIC"
+    },
+    {
+        "name": "Bovine Defense Force",
+        "type": "UNIT",
+        "power": 8,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Calaeno Harpy",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 4
+    },
+    {
+        "name": "Raging Bear",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Prince Stennis",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "SPY"
+    },
+    {
+        "name": "Vesemir",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "effect": "MEDIC"
+    },
+
+    {
+        "name": "Black Infantry Archer",
+        "type": "UNIT",
+        "power": 8,
+        "zone": "RANGED",
+        "faction": "NILFGARD"
+    },    
+    {
+        "name": "Dethmold",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "RANGED",
+        "faction": "NORTH",
+        "effect": "DRAW_CARD",
+        "effectValue": 2
+    },
+    {
+        "name": "Endrega",
+        "type": "UNIT",
+        "power": 3,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Fringilla",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "RANGED",
+        "faction": "NILFGARD",
+        "effect": "MORALE_BOOST"
+    },
+    {
+        "name": "Gargoyle",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 3
+    },
+    {
+        "name": "Grave Hag",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "RANGED",
+        "faction": "MONSTERS"
+    },
+    {
+        "name": "Havekar Healer",
+        "type": "UNIT",
+        "power": 1,
+        "zone": "RANGED",
+        "faction": "NILFGARD",
+        "effect": "MEDIC"
+    },
+    {
+        "name": "Keira Metz",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "RANGED",
+        "faction": "NORTH",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 3
+    },
+    {
+        "name": "Milva",
+        "type": "UNIT",
+        "power": 8,
+        "zone": "RANGED",
+        "faction": "SCOIATEL",
+        "effect": "MORALE_BOOST"
+    },
+    {
+        "name": "Puttkammer",
+        "type": "UNIT",
+        "power": 3,
+        "zone": "RANGED",
+        "faction": "NILFGARD",
+        "effect": "SPY",
+        "isSpy": "true"
+    },
+    {
+        "name": "Riordain",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "RANGED",
+        "faction": "SCOIATEL",
+        "effect": "DRAW_CARD",
+        "effectValue": 2
+    },
+    {
+        "name": "Wyvern",
+        "type": "UNIT",
+        "power": 2,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Sweers",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "RANGED",
+        "faction": "NILFGARD",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 3
+    },
+    {
+        "name": "Toruviel",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "RANGED",
+        "faction": "SCOIATEL",
+        "effect": "MORALE_BOOST"
+    },
+
+    {
+        "name": "Siege Tower",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "SIEGE",
+        "faction": "NORTH",
+        "effect": "DRAW_CARD",
+        "effectValue": 1
+    },
+    {
+        "name": "Siege Technician",
+        "type": "UNIT",
+        "power": 0,
+        "zone": "SIEGE",
+        "faction": "NILFGARD",
+        "effect": "MEDIC"
+    },
+    {
+        "name": "War Logship",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "SIEGE",
+        "faction": "SCOIATEL"
+    },
+    {
+        "name": "Ice Giant",
+        "type": "UNIT",
+        "power": 5,
+        "zone": "SIEGE",
+        "faction": "MONSTERS",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Holger Blackhand",
+        "type": "UNIT",
+        "power": 4,
+        "zone": "SIEGE",
+        "faction": "NILFGARD",
+        "effect": "BOOST_ADJACENT",
+        "effectValue": 2
+    },
+    {
+        "name": "Kaedweni Siege Expert",
+        "type": "UNIT",
+        "power": 1,
+        "zone": "SIEGE",
+        "faction": "NORTH",
+        "effect": "MORALE_BOOST"
+    },
+    {
+        "name": "Rotten Mangonel",
+        "type": "UNIT",
+        "power": 3,
+        "zone": "SIEGE",
+        "faction": "NILFGARD",
+        "effect": "MORALE_BOOST"
+    },
+    {
+        "name": "Fire Elemental",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "SIEGE",
+        "faction": "MONSTERS",
+        "effect": "DESTROY_WEAKEST"
+    },
+    {
+        "name": "Earth Elemental",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "SIEGE",
+        "faction": "MONSTERS"
+    },
+    {
+        "name": "Ballista",
+        "type": "UNIT",
+        "power": 6,
+        "zone": "SIEGE",
+        "faction": "NORTH",
+        "effect": "DRAW_CARD",
+        "effectValue": 2
+    },
+    {
+        "name": "Catapult",
+        "type": "UNIT",
+        "power": 8,
+        "zone": "SIEGE",
+        "faction": "NORTH",
+        "effect": "DAMAGE_RANDOM_ENEMY",
+        "effectValue": 2
+    },
+
+    {
+        "name": "Cerys",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "COMMANDERS_HORN"
+    },
+    {
+        "name": "Cirila",
+        "type": "HERO",
+        "power": 15,
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "ability": "ALCHEMY",
+        "abilityValue": 3
+    },
+    {
+        "name": "Geralt of Rivia",
+        "type": "HERO",
+        "power": 15,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "SCORCH"
+    },
+    {
+        "name": "Draug",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "ability": "REVENGE",
+        "abilityValue": 3
+    },
+    {
+        "name": "John Natalis",
+        "type": "HERO",
+        "power": 12,
+        "zone": "CLOSE",
+        "faction": "NORTH",
+        "ability": "DECOY"
+    },
+    {
+        "name": "Letho of Gulet",
+        "type": "HERO",
+        "power": 10,
+        "zone": "CLOSE",
+        "faction": "NILFGARD",
+        "ability": "COMMANDERS_HORN"
+    },
+    {
+        "name": "Sile de Tansarville",
+        "type": "HERO",
+        "power": 8,
+        "zone": "CLOSE",
+        "faction": "SCOIATEL",
+        "ability": "ALCHEMY",
+        "abilityValue": 4
+    },
+
+    {
+        "name": "Ermion",
+        "type": "HERO",
+        "power": 10,
+        "zone": "RANGED",
+        "faction": "SCOIATEL",
+        "ability": "SCORCH"
+    },
+    {
+        "name": "Kayran",
+        "type": "HERO",
+        "power": 8,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "ability": "REVENGE",
+        "abilityValue": 4
+    },
+    {
+        "name": "Yennefer of Vangerberg",
+        "type": "HERO",
+        "power": 7,
+        "zone": "RANGED",
+        "faction": "NEUTRAL",
+        "ability": "DECOY"
+    },
+    {
+        "name": "Leshen",
+        "type": "HERO",
+        "power": 11,
+        "zone": "RANGED",
+        "faction": "MONSTERS",
+        "ability": "SCORCH"
+    },
+    {
+        "name": "Iorveth",
+        "type": "HERO",
+        "power": 9,
+        "zone": "RANGED",
+        "faction": "SCOIATEL",
+        "ability": "REVENGE",
+        "abilityValue": 3
+    },
+
+    {
+        "name": "Morvran Voorhis",
+        "type": "HERO",
+        "power": 10,
+        "zone": "SIEGE",
+        "faction": "NILFGARD",
+        "ability": "COMMANDERS_HORN"
+    },
+    {
+        "name": "Schirru",
+        "type": "HERO",
+        "power": 8,
+        "zone": "SIEGE",
+        "faction": "SCOIATEL",
+        "ability": "SCORCH"
+    },
+    {
+        "name": "Trebuchet",
+        "type": "HERO",
+        "power": 7,
+        "zone": "SIEGE",
+        "faction": "NORTH",
+        "ability": "ALCHEMY",
+        "abilityValue": 3
+    },
+
+    {
+        "name": "Bloodcurdling Roar",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "MONSTERS",
+        "effect": "DAMAGE_ROW",
+        "effectValue": 2
+    },
+    {
+        "name": "Thunderstorm",
+        "type": "ABILITY",
+        "zone": "RANGED",
+        "faction": "NEUTRAL",
+        "effect": "DAMAGE_ROW",
+        "effectValue": 2
+    },
+    {
+        "name": "Earthquake",
+        "type": "ABILITY",
+        "zone": "SIEGE",
+        "faction": "NEUTRAL",
+        "effect": "DAMAGE_ROW",
+        "effectValue": 2
+    },
+    {
+        "name": "Lifecatching Fog",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "FOGLET_SPAWN"
+    },
+    {
+        "name": "Manticore Venom",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "VENOM_EXTRACT",
+        "effectValue": 5
+    },
+    {
+        "name": "Scorpion Touch",
+        "type": "ABILITY",
+        "zone": "RANGED",
+        "faction": "NEUTRAL",
+        "effect": "VENOM_EXTRACT",
+        "effectValue": 6
+    },
+    {
+        "name": "Mardroeme",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "COMMANDO_TRAINING",
+        "effectValue": 3
+    },
+    {
+        "name": "Conch Call",
+        "type": "ABILITY",
+        "zone": "SIEGE",
+        "faction": "NEUTRAL",
+        "effect": "COMMANDO_TRAINING",
+        "effectValue": 2
+    },
+    {
+        "name": "Spring Approach",
+        "type": "ABILITY",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "effect": "CLEAR_SKIES",
+        "effectValue": 2
+    },
+    {
+        "name": "Summer Approach",
+        "type": "ABILITY",
+        "zone": "RANGED",
+        "faction": "NEUTRAL",
+        "effect": "CLEAR_SKIES",
+        "effectValue": 2
+    },
+    {
+        "name": "Autumn Approach",
+        "type": "ABILITY",
+        "zone": "SIEGE",
+        "faction": "NEUTRAL",
+        "effect": "CLEAR_SKIES",
+        "effectValue": 2
+    },
+
+    {
+        "name": "Biting Frost",
+        "type": "WEATHER",
+        "zone": "CLOSE",
+        "faction": "NEUTRAL",
+        "weatherType": "BITING_FROST",
+        "description": "Sets all non-hero units from close combat zone to 1 power."
+    },
+    {
+        "name": "Impenetrable Fog",
+        "type": "WEATHER",
+        "zone": "RANGED",
+        "faction": "NEUTRAL",
+        "weatherType": "IMPENETRABLE_FOG",
+        "description": "Sets all non-hero units from the ranged combat zone to 1 power."
+    },
+    {
+        "name": "Torrential Rain",
+        "type": "WEATHER",
+        "zone": "SIEGE",
+        "faction": "NEUTRAL",
+        "weatherType": "TORRENTIAL_RAIN",
+        "description": "Sets all non-hero units from the siege combat zone to 1 power."
+    },
+    {
+        "name": "Skellige Storm",
+        "type": "WEATHER",
+        "zone": "ANY",
+        "faction": "NEUTRAL",
+        "weatherType": "SKELIGE_STORM",
+        "description": "Demages random units."
+    },
+    {
+        "name": "Dragon Dream",
+        "type": "WEATHER",
+        "zone": "ANY",
+        "faction": "NEUTRAL",
+        "weatherType": "DRAGON_DREAM",
+        "description": "Damages the strongest units."
+    },
+    {
+        "name": "Calming Breeze",
+        "type": "WEATHER",
+        "zone": "ANY",
+        "faction": "NEUTRAL",
+        "weatherType": "CLEAR_WEATHER"
+    },
+    {
+        "name": "Clear Sky",
+        "type": "WEATHER",
+        "zone": "ANY",
+        "faction": "NEUTRAL",
+        "weatherType": "CLEAR_WEATHER"
+    }
+    ]
+  }

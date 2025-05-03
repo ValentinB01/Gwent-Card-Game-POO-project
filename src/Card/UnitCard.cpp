@@ -13,16 +13,26 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
       isHero(isHero), deployEffect(effect), 
       effectValue(effectValue), isSpy(isSpy) {}
 
-void UnitCard::play(Player& owner, Player& opponent, Board& board) {
-    std::cout << "⚔️ Unit deployed: " << name << " | Power: " << power 
-              << " | Zone: " << CardUtils::zoneToString(zone) << " | Deploy Effect: "
-              << CardUtils::deployEffectToString(deployEffect)
-              << (isHero ? " (Hero)" : "")  << std::endl;
+      void UnitCard::play(Player& owner, Player& opponent, Board& board) {
+        std::cout << "⚔️ Unit deployed: " << name << " | Power: " << power 
+                  << " | Zone: " << CardUtils::zoneToString(zone) 
+                  << (isHero ? " (Hero)" : "")
+                  << (isSpy ? " (Spy)" : "") << std::endl;
     
-              auto unitCopy = std::make_unique<UnitCard>(*this);
-              owner.playCardToBoard(std::move(unitCopy), board);
-              this->applyEffect(owner, opponent, board);
-}
+        if (isSpy) {
+            auto spyCopy = std::make_unique<UnitCard>(*this);
+            spyCopy->isSpy = false;
+            
+            opponent.playCardTBoard(std::move(spyCopy), opponent, board);
+            owner.drawCards(2);
+        } else {
+            auto unitCopy = std::make_unique<UnitCard>(*this);
+            owner.playCardToBoard(std::move(unitCopy), board);
+        }
+        if (deployEffect != DeployEffect::SPY) {
+            applyEffect(owner, opponent, board);
+        }
+    }
 
 void UnitCard::applyEffect(Player& owner, Player& opponent, Board& board) {
     std::cout << name << " enters combat!" << std::endl;

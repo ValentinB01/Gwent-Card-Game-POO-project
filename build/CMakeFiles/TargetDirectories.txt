@@ -1,0 +1,3 @@
+/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles/gwent.dir
+/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles/edit_cache.dir
+/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles/rebuild_cache.dir

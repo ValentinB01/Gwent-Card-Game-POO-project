@@ -26,6 +26,8 @@ public:
     void nextRound();
     void playCard(int playerIndex, int cardIndex);
     void endTurn();
+    bool isPlayerTurn(int playerIndex) const;
+
     void pass(int playerIndex);
     void calculateRoundWinner();
     void printGameState() const;

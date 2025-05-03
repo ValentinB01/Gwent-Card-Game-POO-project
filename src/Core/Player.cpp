@@ -12,6 +12,27 @@
 #include <memory>
 #include <limits>
 
+void Player::selectCard(int index) {
+    if (index >= 0 && index < hand.size()) {
+        selectedCardIndex = index;
+    }
+}
+
+void Player::deselectCard() {
+    selectedCardIndex = -1;
+}
+
+int Player::getSelectedCardIndex() const {
+    return selectedCardIndex;
+}
+
+const Card* Player::getSelectedCard() const {
+    if (selectedCardIndex >= 0 && selectedCardIndex < hand.size()) {
+        return hand[selectedCardIndex].get();
+    }
+    return nullptr;
+}
+
 Player::Player(const std::string& name, int id, int startingLifepoints)
     : name(name), lifepoints(startingLifepoints), 
       roundsWon(0), playerId(id), deck(nullptr) {}
@@ -87,37 +108,6 @@ void Player::addCardToHand(std::unique_ptr<Card> card) {
     hand.push_back(std::move(card));
 }
 
-void Player::printHand() const {
-    std::cout << "\n" << name << "'s hand (" << hand.size() << " cards):\n";
-    for (size_t i = 0; i < hand.size(); ++i) {
-        const auto& card = hand[i];
-        std::cout << i << ". " << card->getName() 
-                  << " (" << card->getPower() << " power) - "
-                  << "Zone: " << CardUtils::zoneToString(card->getZone()) 
-                  << " | Type: ";
-        
-        switch(card->getType()) {
-            case CardType::UNIT:
-                std::cout << "Unit";
-                if (dynamic_cast<const UnitCard*>(card.get())->getIsSpy()) {
-                    std::cout << " (Spy)";
-                }
-                break;
-            case CardType::HERO:
-                std::cout << "Hero";
-                break;
-            case CardType::ABILITY:
-                std::cout << "Ability";
-                break;
-            case CardType::WEATHER:
-                std::cout << "Weather";
-                break;
-        }
-        
-        std::cout << "\n   " << card->getDescription() << "\n";
-    }
-}
-
 const std::string& Player::getName() const {
     return name;
 }
@@ -134,16 +124,16 @@ int Player::getRoundsWon() const {
     return roundsWon;
 }
 
+int Player::getRoundsLost() const {
+    return roundsWon;
+}
+
 void Player::winRound() {
     roundsWon++;
 }
 
 int Player::getPlayerId() const {
     return playerId;
-}
-
-int Player::getRoundsLost() const {
-    return roundsWon;
 }
 
 void Player::loseLifepoint() {
@@ -166,6 +156,15 @@ void Player::clearHand() {
     hand.clear();
 }
 
+void Player::playCardTBoard(std::unique_ptr<Card> card, Player& opponent, Board& board) {
+    if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
+        if (unit->getIsSpy()) {
+            board.addCard(opponent.getPlayerId(), std::move(card));
+        }
+    }
+    return;
+}
+
 void Player::playCardToBoard(std::unique_ptr<Card> card, Board& board) {
     board.addCard(playerId, std::move(card));
 }
@@ -178,6 +177,17 @@ void Player::resetHeroAbilitiesForNewRound() {
     usedHeroAbilitiesThisRound.clear();
 }
 
+bool Player::canUseHeroAbility() const {
+    for (const auto& card : hand) {
+        if (card->getType() == CardType::HERO) {
+            const HeroCard* hero = dynamic_cast<const HeroCard*>(card.get());
+            if (hero && canUseHeroAbility(hero->getName())) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 bool Player::canUseHeroAbility(const std::string& heroName) const {
     return usedHeroAbilitiesThisRound.find(heroName) == usedHeroAbilitiesThisRound.end();
 }

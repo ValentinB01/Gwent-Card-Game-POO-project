@@ -78,19 +78,18 @@ void AbilityCard::handleDamageRow(Player& target, Board& board) {
 
 void AbilityCard::handleClearSkies(Player& owner, Board& board) {
     board.clearWeather();
-    size_t playerIndex = owner.getPlayerId();
-    auto& playerBoard = board.getPlayerBoard(playerIndex);
     
-    if (playerBoard.zones.count(zone) && !playerBoard.zones[zone].empty()) {
-        board.boostRow(playerIndex, zone, effectValue);
+    if (board.hasUnitsInZone(owner.getPlayerId(), zone)) {
+        board.boostRow(owner.getPlayerId(), zone, effectValue);
         std::cout << "☀️ Cleared weather and boosted " 
-                 << CardUtils::zoneToString(zone) << " battle zone by " 
+                 << CardUtils::zoneToString(zone) << " by " 
                  << effectValue << ".\n";
     } else {
         std::cout << "☀️ Cleared weather (no units in " 
-                 << CardUtils::zoneToString(zone) << " to boost).\n";
+                 << CardUtils::zoneToString(zone) << ").\n";
     }
 }
+
 
 void AbilityCard::handleFogletSpawn(Player& owner,CombatZone zone, Board& board) {
     if (board.hasWeather(WeatherType::IMPENETRABLE_FOG)) {

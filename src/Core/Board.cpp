@@ -423,3 +423,10 @@ void Board::clearBoard() {
     }
     weatherEffects.clear();
 }
+
+bool Board::hasUnitsInZone(int playerId, CombatZone zone) const {
+    if (playerId < 0 || playerId >= playerBoards.size()) return false;
+    const auto& zones = playerBoards[playerId].zones;
+    auto it = zones.find(zone);
+    return it != zones.end() && !it->second.empty();
+}

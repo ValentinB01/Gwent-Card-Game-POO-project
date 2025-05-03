@@ -26,7 +26,6 @@ void Game::startGame() {
 
     deck.shuffle();
     
-    // Initial draw
     players[0].drawCards(10);
     players[1].drawCards(10);
     
@@ -90,7 +89,17 @@ void Game::playCard(int playerIndex, int cardIndex) {
 
 void Game::endTurn() {
     currentPlayerIndex = 1 - currentPlayerIndex;
-    std::cout << "\nTurn passed to " << players[currentPlayerIndex].getName() << std::endl;
+    
+    if (playerPassed[0] && playerPassed[1]) {
+        calculateRoundWinner();
+        if (!gameOver) {
+            nextRound();
+        }
+    }
+}
+
+bool Game::isPlayerTurn(int playerIndex) const {
+    return playerIndex == currentPlayerIndex;
 }
 
 void Game::pass(int playerIndex) {

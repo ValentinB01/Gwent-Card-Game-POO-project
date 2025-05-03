@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/gwent.dir/src/Card/AbilityCard.cpp.o"
+  "CMakeFiles/gwent.dir/src/Card/AbilityCard.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Card/Card.cpp.o"
+  "CMakeFiles/gwent.dir/src/Card/Card.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Card/HeroCard.cpp.o"
+  "CMakeFiles/gwent.dir/src/Card/HeroCard.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Card/UnitCard.cpp.o"
+  "CMakeFiles/gwent.dir/src/Card/UnitCard.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Card/WeatherCard.cpp.o"
+  "CMakeFiles/gwent.dir/src/Card/WeatherCard.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Core/Board.cpp.o"
+  "CMakeFiles/gwent.dir/src/Core/Board.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Core/Deck.cpp.o"
+  "CMakeFiles/gwent.dir/src/Core/Deck.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Core/Game.cpp.o"
+  "CMakeFiles/gwent.dir/src/Core/Game.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Core/Player.cpp.o"
+  "CMakeFiles/gwent.dir/src/Core/Player.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o"
+  "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o"
+  "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o"
+  "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o"
+  "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o"
+  "CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o"
+  "CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o.d"
+  "CMakeFiles/gwent.dir/src/main.cpp.o"
+  "CMakeFiles/gwent.dir/src/main.cpp.o.d"
+  "gwent"
+  "gwent.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/gwent.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
