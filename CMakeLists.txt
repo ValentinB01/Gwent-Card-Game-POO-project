@@ -4,6 +4,9 @@ project(Gwent)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 include_directories(

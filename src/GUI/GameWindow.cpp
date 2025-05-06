@@ -4,28 +4,30 @@
 #include <iostream>
 #include <stdexcept>
 
-GameWindow::GameWindow(const std::string& player1Name, const std::string& player2Name) 
-    : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Gwent"),
+GameWindow::GameWindow(const std::string& p1, const std::string& p2) 
+    : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Gwent", sf::Style::Default),
       game(nullptr),
-      cardRenderer(),
       font(),
       gameUI(nullptr) 
 {
+    window.setVerticalSyncEnabled(true);
     try {
         std::cout << "1. Window created successfully\n";
 
         std::cout << "2. Loading font...\n";
-        if (!font.loadFromFile("assets/fonts/OldLondon.ttf")) {
+        if (!font.loadFromFile("../assets/fonts/times.ttf")) {
             throw std::runtime_error("Font load failed");
         }
         std::cout << "3. Font loaded successfully\n";
+        cardRenderer = std::make_unique<CardRenderer>(font, window);
+        std::cout << "3.5.Rednered successfully\n";
 
         std::cout << "4. Creating game instance...\n";
-        game = std::make_unique<Game>(player1Name, player2Name);
+        game = std::make_unique<Game>(p1, p2);
         std::cout << "5. Game instance created\n";
 
         std::cout << "6. Initializing GameUI...\n";
-        gameUI = std::make_unique<GameUI>(*game, cardRenderer, font);
+        gameUI = std::make_unique<GameUI>(*game, *cardRenderer, font);
         std::cout << "7. GameUI initialized\n";
 
         std::cout << "8. Loading deck...\n";
@@ -36,11 +38,15 @@ GameWindow::GameWindow(const std::string& player1Name, const std::string& player
         game->startGame();
         std::cout << "11. Game started successfully\n";
 
+        if (!cardRenderer->loadResources()) {
+            throw std::runtime_error("Card renderer initialization failed");
+        }
+
     } catch (const std::exception& e) {
         std::cerr << "CRASH POINT: " << e.what() << std::endl;
         if (window.isOpen()) window.close();
         throw;
-    }
+    }    
 }
 
 void GameWindow::run() {
@@ -50,7 +56,7 @@ void GameWindow::run() {
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();
         processEvents();
-        update();
+        update(deltaTime.asSeconds());  // Pass delta time in seconds
         render();
     }
 }
@@ -69,26 +75,32 @@ void GameWindow::processEvents() {
     }
 }
 
-void GameWindow::update() {
-    gameUI->update(window);
+void GameWindow::update(float deltaTime) {
+    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    cardRenderer->updateHover(mousePos, getAllVisibleCards());
+    
+    game->update(deltaTime);
 }
 
 void GameWindow::render() {
-    window.clear(sf::Color(30, 30, 40));
+    window.clear();
     window.draw(background);
     
     renderGameBoard();
+    cardRenderer->drawTooltip(window);
     gameUI->render(window);
     
     window.display();
 }
 
+
 void GameWindow::loadResources() {
-    if (!font.loadFromFile("../assets/fonts/OldLondon.ttf")) {
-        throw std::runtime_error("Failed to load font");
+    if (!font.loadFromFile("../assets/fonts/times.ttf")) {
+        std::cerr << "ERROR: Failed to load font from: assets/fonts/myfont.ttf\n";
+        return; 
     }
     
-    if (!backgroundTexture.loadFromFile("../assets/images/background.jpg")) {
+    if (!backgroundTexture.loadFromFile("../assets/cards/background.jpg")) {
         throw std::runtime_error("Failed to load background");
     }
     background.setTexture(backgroundTexture);
@@ -96,8 +108,8 @@ void GameWindow::loadResources() {
     float scaleX = static_cast<float>(WINDOW_WIDTH) / backgroundTexture.getSize().x;
     float scaleY = static_cast<float>(WINDOW_HEIGHT) / backgroundTexture.getSize().y;
     background.setScale(scaleX, scaleY);
-    
-    if (!cardRenderer.loadResources()) {
+
+    if (!cardRenderer->loadResources()) {
         throw std::runtime_error("Failed to load card renderer resources");
     }
 }
@@ -116,20 +128,20 @@ void GameWindow::renderPlayerHand(const Player& player, bool isBottomPlayer) {
     const auto& hand = player.getHand();
     if (hand.empty()) return;
     
-    float cardWidth = cardRenderer.getCardSize().x;
-    float cardHeight = cardRenderer.getCardSize().y;
+    float cardWidth = cardRenderer->getCardSize().x;
+    float cardHeight = cardRenderer->getCardSize().y;
     float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * CARD_SPACING;
     float startX = (WINDOW_WIDTH - totalWidth) / 2;
     float y = isBottomPlayer ? WINDOW_HEIGHT - cardHeight - 20 : 20;
     
     for (size_t i = 0; i < hand.size(); ++i) {
         if (isBottomPlayer) {
-            cardRenderer.renderCard(window, *hand[i], 
+            cardRenderer->renderCard(window, *hand[i], 
                                   startX + i * (cardWidth + CARD_SPACING), 
                                   y,
                                   player.getSelectedCardIndex() == static_cast<int>(i));
         } else {
-            cardRenderer.renderCardBack(window, 
+            cardRenderer->renderCardBack(window, 
                                       startX + i * (cardWidth + CARD_SPACING), 
                                       y);
         }
@@ -137,7 +149,7 @@ void GameWindow::renderPlayerHand(const Player& player, bool isBottomPlayer) {
 }
 
 void GameWindow::renderCombatZones() {
-    const float zoneHeight = cardRenderer.getCardSize().y;
+    const float zoneHeight = cardRenderer->getCardSize().y;
     const float zoneWidth = WINDOW_WIDTH - 100;
     const float centerY = WINDOW_HEIGHT / 2;
     
@@ -189,14 +201,14 @@ void GameWindow::renderCombatZones() {
 }
 
 void GameWindow::renderCardsInZone(const std::vector<std::unique_ptr<Card>>& cards, float x, float y) {
-    const float cardWidth = cardRenderer.getCardSize().x;
-    const float cardHeight = cardRenderer.getCardSize().y;
+    const float cardWidth = cardRenderer->getCardSize().x;
+    const float cardHeight = cardRenderer->getCardSize().y;
     const float spacing = 5.f;
     
     for (size_t i = 0; i < cards.size(); ++i) {
-        cardRenderer.renderCard(window, *cards[i], 
+        cardRenderer->renderCard(window, *cards[i], 
                               x + i * (cardWidth + spacing), 
-                              y);
+                              y, false);
     }
 }
 
@@ -216,4 +228,33 @@ void GameWindow::renderPlayerInfo(const Player& player, bool isBottomPlayer) {
     
     window.draw(playerText);
     window.draw(scoreText);
+}
+
+std::vector<const Card*> GameWindow::getAllVisibleCards() const {
+    std::vector<const Card*> visibleCards;
+    
+    const auto& currentHand = game->getCurrentPlayer().getHand();
+    for (const auto& card : currentHand) {
+        visibleCards.push_back(card.get());
+    }
+
+    const std::array<CombatZone, 3> zones = {
+        CombatZone::CLOSE,
+        CombatZone::RANGED,
+        CombatZone::SIEGE
+    };
+
+    for (auto zone : zones) {
+        const auto& playerCards = game->getBoard().getPlayerZone(0, zone);
+        for (const auto& card : playerCards) {
+            visibleCards.push_back(card.get());
+        }
+        
+        const auto& opponentCards = game->getBoard().getPlayerZone(1, zone);
+        for (const auto& card : opponentCards) {
+            visibleCards.push_back(card.get());
+        }
+    }
+
+    return visibleCards;
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <functional>
@@ -23,6 +24,10 @@ public:
     
     void showMessage(const std::string& message, float duration = 3.0f);
     void updateButtonStates(const Player& currentPlayer);
+
+    void renderCombatScores(sf::RenderTarget& target);
+    void renderRoundCounter(sf::RenderTarget& target);
+    void renderFactionBanners(sf::RenderTarget& target);
     
 private:
     Game& game;
@@ -33,6 +38,10 @@ private:
     sf::Text messageText;
     sf::RectangleShape messageBackground;
     float messageTimer = 0.0f;
+    sf::Texture northBannerTexture;
+    sf::Texture nilfgaardBannerTexture;
+    sf::Texture scoiatelBannerTexture;
+    sf::Texture monstersBannerTexture;
     
     void createUIElements();
     void onPassClicked();

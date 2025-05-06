@@ -18,6 +18,16 @@ void Game::loadDeck(const std::string& filename) {
         throw std::runtime_error("Failed to load deck: " + std::string(e.what()));
     }
 }
+void Game::update(float deltaTime) {
+    if (gameOver) return;
+    
+    if (haveBothPlayersPassed()) {
+        calculateRoundWinner();
+        if (!gameOver) {
+            nextRound();
+        }
+    }
+}
 
 void Game::startGame() {
     if (deck.size() < 20) {
@@ -209,4 +219,16 @@ bool Game::haveBothPlayersPassed() const {
 
 const Board& Game::getBoard() const {
     return board;
+}
+std::string Game::getWinnerName() const {
+    if (players[0].getRoundsWon() > players[1].getRoundsWon()) {
+        return players[0].getName();
+    } else if (players[1].getRoundsWon() > players[0].getRoundsWon()) {
+        return players[1].getName();
+    }
+    return "Draw - No winner";
+}
+
+Player& Game::getPlayer(int index) {
+    return const_cast<Player&>(static_cast<const Game*>(this)->getPlayer(index));
 }

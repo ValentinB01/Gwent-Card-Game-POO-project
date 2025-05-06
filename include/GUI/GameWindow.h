@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include "Core/Game.h"
+#include "../GUI/Tooltip.h"
 #include "../GUI/CardRender.h"
 #include "../GUI/GameUI.h"
 
@@ -15,10 +16,11 @@ public:
 
 private:
     void processEvents();
-    void update();
+    void update(float deltaTime);
     void render();
     void loadResources();
-    
+    std::vector<const Card*> getAllVisibleCards() const;
+
     void renderGameBoard();
     void renderPlayerHand(const Player& player, bool isBottomPlayer);
     void renderCombatZones();
@@ -27,15 +29,15 @@ private:
 
     sf::RenderWindow window;
     std::unique_ptr<Game> game;
-    CardRenderer cardRenderer;
+    std::unique_ptr<CardRenderer> cardRenderer;
     std::unique_ptr<GameUI> gameUI;
     
     sf::Font font;
     sf::Texture backgroundTexture;
     sf::Sprite background;
     
-    static constexpr unsigned int WINDOW_WIDTH = 1280;
-    static constexpr unsigned int WINDOW_HEIGHT = 720;
+    static constexpr unsigned int WINDOW_WIDTH = 1580;
+    static constexpr unsigned int WINDOW_HEIGHT = 920;
     static constexpr float CARD_SPACING = 10.f;
 };
 

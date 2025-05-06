@@ -243,42 +243,6 @@ CMakeFiles/gwent.dir/src/GUI/Button.cpp.o: \
  /usr/include/c++/13/bits/hashtable_policy.h \
  /usr/include/c++/13/bits/enable_special_members.h \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/GameWindow.h \
- /usr/include/c++/13/memory \
- /usr/include/c++/13/bits/stl_raw_storage_iter.h \
- /usr/include/c++/13/bits/align.h /usr/include/c++/13/bits/unique_ptr.h \
- /usr/include/c++/13/bits/shared_ptr.h \
- /usr/include/c++/13/bits/shared_ptr_base.h \
- /usr/include/c++/13/bits/allocated_ptr.h \
- /usr/include/c++/13/ext/concurrence.h \
- /usr/include/c++/13/bits/shared_ptr_atomic.h \
- /usr/include/c++/13/bits/atomic_base.h \
- /usr/include/c++/13/bits/atomic_lockfree_defines.h \
- /usr/include/c++/13/backward/auto_ptr.h \
- /usr/include/c++/13/pstl/glue_memory_defs.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/Game.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/Player.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/../Card/Card.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/../Card/../Utils/enums.h \
- /usr/include/c++/13/unordered_set \
- /usr/include/c++/13/bits/unordered_set.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/Board.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/../Card/WeatherCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/../Card/../Card/Card.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../Core/../Core/Deck.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/Card.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/UnitCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/../Card/Card.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/../Utils/enums.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/HeroCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/AbilityCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/WeatherCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/Game.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameStateManager.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Core/Game.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/CardRender.h \
  /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \

@@ -1,6 +1,7 @@
 #ifndef GWENT_HEROCARD_H
 #define GWENT_HEROCARD_H
 
+#include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
 #include "../Utils/enums.h"
 
@@ -21,6 +22,8 @@ public:
     
     HeroAbility getAbility() const;
     int getAbilityValue() const;
+    sf::FloatRect getGlobalBounds() const;
+
 };
 
 #endif

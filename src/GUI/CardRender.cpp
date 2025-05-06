@@ -1,8 +1,18 @@
 #include "GUI/CardRender.h"
 #include <iostream>
+#include <sstream>
 
-CardRenderer::CardRenderer() {
-    if (!font.loadFromFile("../assets/fonts/OldLondon.ttf")) {
+
+const sf::Vector2f CardRenderer::CARD_SIZE(90.0f, 150.0f);
+const float CardRenderer::CARD_CORNER_RADIUS = 5.0f;
+const float CardRenderer::CARD_ELEVATION = 3.0f;
+
+sf::Vector2f CardRenderer::getCardSize() const {
+    return CARD_SIZE;
+}
+
+CardRenderer::CardRenderer(sf::Font& font, sf::RenderWindow& window) : tooltip(font, window){
+    if (!font.loadFromFile("../assets/fonts/times.ttf")) {
         std::cerr << "Failed to load font\n";
     }
     
@@ -32,24 +42,35 @@ CardRenderer::CardRenderer() {
 }
 
 bool CardRenderer::loadResources() {
-    if (!cardBackTexture.loadFromFile("../assets/images/card_back.png")) {
-        std::cerr << "Failed to load card back texture\n";
-        return false;
-    }
-    cardBackTexture.setSmooth(true);
-    cardBackTexture.setRepeated(false);
-    
-    if (!cardBaseTexture.loadFromFile("../assets/images/card_base.png")) {
-        std::cerr << "Failed to load card base texture\n";
-        return false;
-    }
+    auto loadSafe = [](sf::Texture& tex, const std::string& path) -> bool {
+        if (!tex.loadFromFile(path)) {
+            std::cerr << "ERROR: Failed to load texture: " << path << "\n";
+            return false;
+        }
+        tex.setSmooth(true);
+        return true;
+    };
+
+    bool success = true;
+
+    if (!loadSafe(cardBackTexture, "assets/cards/card_back.png")) success = false;
+    if (!loadSafe(cardBaseTexture, "assets/cards/card_base.png")) success = false;
+    if (!loadSafe(powerCircleTexture, "assets/cards/power_circle.png")) success = false;
+    if (!loadSafe(cardGlowTexture, "assets/cards/card_glow.png")) success = false;
+  
     cardBaseTexture.setSmooth(true);
     cardBaseTexture.setRepeated(false);
 
-    return true;
+    return success;
 }
 
 void CardRenderer::renderCard(sf::RenderTarget& target, const Card& card, float x, float y, bool highlight) {
+    if (powerCircleTexture.getSize().x == 0) return;
+    
+    sf::Sprite powerCircle(powerCircleTexture);
+    powerCircle.setPosition(x, y);
+    target.draw(powerCircle);
+
     sf::RectangleShape cardBase(getCardSize());
     setupCardBase(cardBase, card);
     cardBase.setPosition(x, y);
@@ -73,6 +94,10 @@ void CardRenderer::renderCard(sf::RenderTarget& target, const Card& card, float 
 }
 
 void CardRenderer::renderCardBack(sf::RenderTarget& target, float x, float y) {
+    if (cardBackTexture.getSize().x == 0) {
+        std::cerr << "Card back texture not loaded!\n";
+        return;
+    }
     sf::Sprite cardBack(cardBackTexture);
     cardBack.setPosition(x, y);
     cardBack.setScale(
@@ -138,15 +163,104 @@ void CardRenderer::setupCardText(sf::Text& text, const std::string& str, unsigne
 }
 
 void CardRenderer::renderCardPower(sf::RenderTarget& target, const Card& card, float x, float y) const {
-    sf::CircleShape powerCircle(15);
+    if (powerCircleTexture.getSize().x == 0) return;
+    
+    sf::Sprite powerCircle(powerCircleTexture);
     powerCircle.setPosition(x, y);
-    powerCircle.setFillColor(sf::Color::Black);
-    powerCircle.setOutlineColor(sf::Color::White);
-    powerCircle.setOutlineThickness(2.f);
     target.draw(powerCircle);
     
     sf::Text powerText;
     setupCardText(powerText, std::to_string(card.getPower()), 16, x + 5, y + 5);
     powerText.setStyle(sf::Text::Bold);
     target.draw(powerText);
+}
+
+void CardRenderer::updateHover(const sf::Vector2f& mousePos, const std::vector<const Card*>& cards) {
+    tooltip.show(false);
+    for (const Card* card : cards) {
+        if (card->getGlobalBounds().contains(mousePos)) {
+            tooltip.setText(generateTooltipText(*card));
+            tooltip.setPosition(mousePos.x + 15, mousePos.y + 15);
+            tooltip.show(true);
+            break;
+        }
+    }
+}
+
+std::string CardRenderer::generateTooltipText(const Card& card) const {
+    std::stringstream tooltip;
+    
+    // Basic card info
+    tooltip << "Name: " << card.getName() << "\n";
+    tooltip << "Faction: " << CardUtils::factionToString(card.getFaction()) << "\n";
+    tooltip << "Zone: " << CardUtils::zoneToString(card.getZone()) << "\n";
+    //tooltip << "Type: " << CardUtils::cardTypeToString(card.getType()) << "\n";
+
+    // Type-specific information
+    try {
+        switch(card.getType()) {
+            case CardType::UNIT: {
+                const UnitCard* unit = dynamic_cast<const UnitCard*>(&card);
+                if (unit) {
+                    tooltip << "Power: " << unit->getPower() << "\n";
+                    if (unit->getDeployEffect() != DeployEffect::NONE) {
+                        tooltip << "Deploy: " << CardUtils::deployEffectToString(unit->getDeployEffect());
+                        if (unit->getEffectValue() > 0) {
+                            tooltip << " (" << unit->getEffectValue() << ")";
+                        }
+                        tooltip << "\n";
+                    }
+                    if (unit->getIsSpy()) {
+                        tooltip << "Spy: Draw 2 cards when played\n";
+                    }
+                }
+                break;
+            }
+            
+            case CardType::HERO: {
+                const HeroCard* hero = dynamic_cast<const HeroCard*>(&card);
+                if (hero) {
+                    tooltip << "Power: " << hero->getPower() << "\n";
+                    tooltip << "Ability: " << CardUtils::heroAbilityToString(hero->getAbility()) << "\n";
+                }
+                break;
+            }
+            
+            case CardType::ABILITY: {
+                const AbilityCard* ability = dynamic_cast<const AbilityCard*>(&card);
+                if (ability) {
+                    tooltip << "Effect: " << CardUtils::abilityEffectToString(ability->getEffect());
+                    if (ability->getEffectValue() > 0) {
+                        tooltip << " (" << ability->getEffectValue() << ")";
+                    }
+                    tooltip << "\n";
+                }
+                break;
+            }
+            
+            case CardType::WEATHER: {
+                const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
+                if (weather) {
+                    tooltip << "Weather Effect: " 
+                          << CardUtils::weatherEffectDescription(weather->getWeatherType()) << "\n";
+                }
+                break;
+            }
+            
+            default:
+                tooltip << "Special card effect\n";
+        }
+    } catch (const std::bad_cast& e) {
+        tooltip << "\n[Error: Invalid card type conversion]";
+    }
+
+    if (!card.getDescription().empty()) {
+        tooltip << "\n" << card.getDescription();
+    }
+
+    return tooltip.str();
+}
+
+void CardRenderer::drawTooltip(sf::RenderTarget& target) const {
+    tooltip.draw(target);
 }

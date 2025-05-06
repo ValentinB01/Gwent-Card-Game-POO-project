@@ -1,6 +1,7 @@
 #ifndef GWENT_UNITCARD_H
 #define GWENT_UNITCARD_H
 
+#include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
 #include "../Utils/enums.h"
 
@@ -20,7 +21,8 @@ public:
     void play(Player& owner, Player& opponent, Board& board) override;
     void applyEffect(Player& owner, Player& opponent, Board& board) override;
     void triggerDeployEffect(Player& owner, Player& opponent, Board& board);
-    
+    sf::FloatRect getGlobalBounds() const;
+
     int getBasePower() const;
     bool isHeroCard() const;
     DeployEffect getDeployEffect() const;

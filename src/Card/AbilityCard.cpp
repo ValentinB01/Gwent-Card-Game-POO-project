@@ -144,3 +144,6 @@ void AbilityCard::handleVenomExtract(Player& target, Board& board) {
         std::cout << "No units to poison\n";
     }
 }
+sf::FloatRect AbilityCard::getGlobalBounds() const {
+    return sf::FloatRect(position.x, position.y, size.x, size.y);
+}

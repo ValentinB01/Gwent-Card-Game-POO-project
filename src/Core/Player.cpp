@@ -66,6 +66,10 @@ void Player::playCard(int index, Player& opponent, Board& board) {
         throw std::out_of_range("Invalid card index");
     }
 
+    if (!hand[index]) {
+        throw std::runtime_error("Null card in hand");
+    }
+
     Card* card = hand[index].get();
     std::cout << name << " plays " << card->getName() 
               << " (Power: " << card->getPower() << ")" << std::endl;
@@ -236,4 +240,11 @@ void Player::activateHeroAbility(Board& board, Player& opponent) {
     } catch (const std::exception& e) {
         std::cerr << "Error activating ability: " << e.what() << "\n";
     }
+}
+    void Player::setGameWindow(GameWindow* window) {
+        gameWindow = window;
+}
+
+    GameWindow* Player::getGameWindow() const {
+        return gameWindow;
 }

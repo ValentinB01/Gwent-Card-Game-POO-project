@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include -I/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card -I/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core -I/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils -I/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS =  -g -O0 -g -std=gnu++17
 

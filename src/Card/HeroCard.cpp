@@ -115,3 +115,6 @@ void HeroCard::triggerHeroAbility(Player& owner, Player& opponent, Board& board)
 HeroAbility HeroCard::getAbility() const {
     return ability;
 }
+sf::FloatRect HeroCard::getGlobalBounds() const {
+    return sf::FloatRect(position.x, position.y, size.x, size.y);
+}

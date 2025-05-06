@@ -123,3 +123,6 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
     int UnitCard::getBasePower() const { 
         return basePower; 
     }
+sf::FloatRect UnitCard::getGlobalBounds() const {
+    return sf::FloatRect(position.x, position.y, size.x, size.y);
+}

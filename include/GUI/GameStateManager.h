@@ -2,28 +2,41 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 #include "../Core/Game.h"
-#include "GUI/Button.h"
-#include "GUI/CardRender.h"
+#include "../include/GUI/Button.h"
+#include "../include/GUI/CardRender.h"
+#include "../include/GUI/GameWindow.h"
 
 class GameStateManager {
 public:
     GameStateManager(Game& game, CardRenderer& renderer);
     
-    void handleEvent(const sf::Event& event);
-    void update();
-    void render(sf::RenderWindow& window);
-    
+    enum class State {
+        MainMenu,
+        DeckBuilding,
+        InGame,
+        Paused,
+        GameOver
+    };
+
+    void changeState(State newState);
+    void handleEvent(const sf::Event& event, sf::RenderWindow& window);
+    void update(float deltaTime, sf::RenderWindow& window);
+    void render(sf::RenderWindow& window);    
     void setHandVisible(bool visible);
     void setBoardVisible(bool visible);
     
 private:
+    State currentState;
+
     Game& game;
     CardRenderer& cardRenderer;
     
     std::vector<Button> buttons;
     std::vector<sf::Text> infoTexts;
+    sf::Font font;
     
     bool handVisible;
     bool boardVisible;

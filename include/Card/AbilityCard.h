@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
 #include "../Utils/enums.h"
 class Player;
@@ -12,7 +13,11 @@ public:
     
     void play(Player& owner, Player& opponent, Board& board) override;
     void applyEffect(Player& owner, Player& opponent, Board& board) override;
-    
+    AbilityEffect getEffect() const { return effect; }
+    int getEffectValue() const { return effectValue; }
+    sf::FloatRect getGlobalBounds() const;
+
+
 private:
     void handleDamageZone(Player& target, Board& board);
     void handleDamageRow(Player& target, Board& board);

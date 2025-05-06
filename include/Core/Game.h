@@ -20,6 +20,9 @@ private:
 public:
     Game(const std::string& player1Name, const std::string& player2Name);
     
+    std::string getWinnerName() const;
+    int getCurrentPlayerIndex() const { return currentPlayerIndex; };
+    void update(float deltaTime);
     void activateHeroAbility(int playerId);
     void loadDeck(const std::string& filename);
     void startGame();
@@ -37,6 +40,7 @@ public:
     bool isGameOver() const;
     const Player& getCurrentPlayer() const;
     const Player& getPlayer(int index) const;
+    Player& getPlayer(int index);
     const Board& getBoard() const;
 };
 

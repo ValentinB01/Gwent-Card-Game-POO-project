@@ -1,6 +1,7 @@
 #ifndef GWENT_WEATHERCARD_H
 #define GWENT_WEATHERCARD_H
 
+#include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
 #include "../Utils/enums.h"
 #include <vector>
@@ -20,7 +21,8 @@ private:
     void applyEffect(Player& owner, Player& opponent, Board& board) override;
     WeatherType getWeatherType() const override;
     int getEffectValue() const;
-    
+    sf::FloatRect getGlobalBounds() const;
+
     static std::string weatherEffectDescription(WeatherType type);
 };
 

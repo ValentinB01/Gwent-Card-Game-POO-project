@@ -34,13 +34,28 @@ void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
     }
 }
 
+void Button::setActive(bool active) { 
+    isActive = active;
+    shape.setFillColor(active ? sf::Color(100, 100, 100, 200) : sf::Color(70, 70, 70, 200));
+}
+
 void Button::update(const sf::Vector2f& mousePos) {
-    if (!isEnabled) return;
+    if (!isEnabled) {
+        shape.setFillColor(sf::Color(70, 70, 70, 200));
+        shape.setScale(1.f, 1.f);
+        return;
+    }
     
     if (isHovered(mousePos)) {
-        shape.setFillColor(sf::Color(100, 100, 100, 200));
+        float pulseSpeed = 5.0f;
+        float pulseIntensity = 0.05f;
+        float scale = 1.0f + pulseIntensity * sin(pulseClock.getElapsedTime().asSeconds() * pulseSpeed);
+        shape.setScale(scale, scale);
+        shape.setFillColor(sf::Color(150, 150, 150, 200));
     } else {
-        shape.setFillColor(sf::Color(70, 70, 70, 200));
+        shape.setScale(1.f, 1.f);
+        shape.setFillColor(isActive ? sf::Color(100, 100, 100, 200) : sf::Color(70, 70, 70, 200));
+        pulseClock.restart();
     }
 }
 

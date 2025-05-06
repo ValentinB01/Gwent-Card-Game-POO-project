@@ -49,3 +49,6 @@ int WeatherCard::getEffectValue() const {
 const std::vector<CombatZone>& WeatherCard::getAffectedZones() const {
     return affectedZones;
 }
+sf::FloatRect WeatherCard::getGlobalBounds() const {
+    return sf::FloatRect(position.x, position.y, size.x, size.y);
+}

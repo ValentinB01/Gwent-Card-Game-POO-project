@@ -8,6 +8,7 @@
 
 class Board;
 class Deck;
+class GameWindow;
 
 class Player {
 private:
@@ -20,9 +21,13 @@ private:
     int playerId;
     Deck* deck;
     int selectedCardIndex = -1;
+    GameWindow* gameWindow = nullptr;
 
 public:
     Player(const std::string& name, int id, int startingLifepoints = 2);
+
+    void setGameWindow(GameWindow* window);
+    GameWindow* getGameWindow() const;
 
     //Card management
     void drawCard();
@@ -30,6 +35,7 @@ public:
     void playCard(int index, Player& opponent, Board& board);
     void discardCard(size_t handIndex);
     void addCardToHand(std::unique_ptr<Card> card);
+
 
     //Selection
     void selectCard(int index);

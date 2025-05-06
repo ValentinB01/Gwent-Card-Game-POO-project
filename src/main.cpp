@@ -8,7 +8,7 @@ int main() {
         settings.majorVersion = 3;
         settings.minorVersion = 3;
 
-        sf::RenderWindow window(sf::VideoMode(1280, 720), "Gwent", 
+        sf::RenderWindow window(sf::VideoMode(1580, 920), "Gwent", 
                               sf::Style::Default, settings);
         window.setVerticalSyncEnabled(true);
 

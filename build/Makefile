@@ -345,6 +345,30 @@ src/Core/Player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/Core/Player.cpp.s
 .PHONY : src/Core/Player.cpp.s
 
+src/GUI/AnimationSystem.o: src/GUI/AnimationSystem.cpp.o
+.PHONY : src/GUI/AnimationSystem.o
+
+# target to build an object file
+src/GUI/AnimationSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o
+.PHONY : src/GUI/AnimationSystem.cpp.o
+
+src/GUI/AnimationSystem.i: src/GUI/AnimationSystem.cpp.i
+.PHONY : src/GUI/AnimationSystem.i
+
+# target to preprocess a source file
+src/GUI/AnimationSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.i
+.PHONY : src/GUI/AnimationSystem.cpp.i
+
+src/GUI/AnimationSystem.s: src/GUI/AnimationSystem.cpp.s
+.PHONY : src/GUI/AnimationSystem.s
+
+# target to generate assembly for a file
+src/GUI/AnimationSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.s
+.PHONY : src/GUI/AnimationSystem.cpp.s
+
 src/GUI/Button.o: src/GUI/Button.cpp.o
 .PHONY : src/GUI/Button.o
 
@@ -465,6 +489,30 @@ src/GUI/GameWindow.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.s
 .PHONY : src/GUI/GameWindow.cpp.s
 
+src/GUI/Tooltip.o: src/GUI/Tooltip.cpp.o
+.PHONY : src/GUI/Tooltip.o
+
+# target to build an object file
+src/GUI/Tooltip.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o
+.PHONY : src/GUI/Tooltip.cpp.o
+
+src/GUI/Tooltip.i: src/GUI/Tooltip.cpp.i
+.PHONY : src/GUI/Tooltip.i
+
+# target to preprocess a source file
+src/GUI/Tooltip.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.i
+.PHONY : src/GUI/Tooltip.cpp.i
+
+src/GUI/Tooltip.s: src/GUI/Tooltip.cpp.s
+.PHONY : src/GUI/Tooltip.s
+
+# target to generate assembly for a file
+src/GUI/Tooltip.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.s
+.PHONY : src/GUI/Tooltip.cpp.s
+
 src/Utils/CardUtils.o: src/Utils/CardUtils.cpp.o
 .PHONY : src/Utils/CardUtils.o
 
@@ -549,6 +597,9 @@ help:
 	@echo "... src/Core/Player.o"
 	@echo "... src/Core/Player.i"
 	@echo "... src/Core/Player.s"
+	@echo "... src/GUI/AnimationSystem.o"
+	@echo "... src/GUI/AnimationSystem.i"
+	@echo "... src/GUI/AnimationSystem.s"
 	@echo "... src/GUI/Button.o"
 	@echo "... src/GUI/Button.i"
 	@echo "... src/GUI/Button.s"
@@ -564,6 +615,9 @@ help:
 	@echo "... src/GUI/GameWindow.o"
 	@echo "... src/GUI/GameWindow.i"
 	@echo "... src/GUI/GameWindow.s"
+	@echo "... src/GUI/Tooltip.o"
+	@echo "... src/GUI/Tooltip.i"
+	@echo "... src/GUI/Tooltip.s"
 	@echo "... src/Utils/CardUtils.o"
 	@echo "... src/Utils/CardUtils.i"
 	@echo "... src/Utils/CardUtils.s"

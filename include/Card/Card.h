@@ -1,6 +1,7 @@
 #ifndef GWENT_CARD_H
 #define GWENT_CARD_H
 
+#include <SFML/Graphics.hpp>
 #include "../Utils/enums.h"
 #include <string>
 #include <memory>
@@ -16,14 +17,19 @@ protected:
     CombatZone zone;
     Faction faction;
     std::string description;
+    
 
 public:
+    sf::Vector2f position;
+    sf::Vector2f size;
+    
     Card(const std::string& name, int power, CardType type, CombatZone zone, 
          Faction faction, const std::string& description);
     virtual ~Card() = default;
     virtual void play(Player& owner, Player& opponent, Board& board) = 0;
     virtual void applyEffect(Player& owner, Player& opponent, Board& board) = 0;
 
+    virtual sf::FloatRect getGlobalBounds() const = 0;
     const std::string& getName() const;
     int getPower() const;
     void setPower(int newPower);
