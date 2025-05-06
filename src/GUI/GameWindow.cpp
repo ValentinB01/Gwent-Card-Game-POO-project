@@ -139,7 +139,7 @@ void GameWindow::renderPlayerHand(const Player& player, bool isBottomPlayer) {
             cardRenderer->renderCard(window, *hand[i], 
                                   startX + i * (cardWidth + CARD_SPACING), 
                                   y,
-                                  player.getSelectedCardIndex() == static_cast<int>(i));
+                                  player.getSelectedCardIndex() == static_cast<int>(i), true);
         } else {
             cardRenderer->renderCardBack(window, 
                                       startX + i * (cardWidth + CARD_SPACING), 
@@ -208,7 +208,7 @@ void GameWindow::renderCardsInZone(const std::vector<std::unique_ptr<Card>>& car
     for (size_t i = 0; i < cards.size(); ++i) {
         cardRenderer->renderCard(window, *cards[i], 
                               x + i * (cardWidth + spacing), 
-                              y, false);
+                              y, true, true);
     }
 }
 
@@ -258,3 +258,4 @@ std::vector<const Card*> GameWindow::getAllVisibleCards() const {
 
     return visibleCards;
 }
+

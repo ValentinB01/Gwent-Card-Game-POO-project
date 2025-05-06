@@ -4,8 +4,6 @@
 
 
 const sf::Vector2f CardRenderer::CARD_SIZE(90.0f, 150.0f);
-const float CardRenderer::CARD_CORNER_RADIUS = 5.0f;
-const float CardRenderer::CARD_ELEVATION = 3.0f;
 
 sf::Vector2f CardRenderer::getCardSize() const {
     return CARD_SIZE;
@@ -23,22 +21,7 @@ CardRenderer::CardRenderer(sf::Font& font, sf::RenderWindow& window) : tooltip(f
         {Faction::MONSTERS, sf::Color(139, 0, 0)},      // Dark red
         {Faction::NEUTRAL, sf::Color(169, 169, 169)}    // Dark gray
     };
-    
-    typeColors = {
-        {CardType::UNIT, sf::Color(255, 215, 0)},       // Gold
-        {CardType::HERO, sf::Color(218, 165, 32)},      // Golden rod
-        {CardType::ABILITY, sf::Color(75, 0, 130)},     // Indigo
-        {CardType::WEATHER, sf::Color(135, 206, 235)}   // Sky steel
-    };
-    
-    weatherColors = {
-        {WeatherType::BITING_FROST, sf::Color(173, 216, 230)},  // Light blue
-        {WeatherType::IMPENETRABLE_FOG, sf::Color(211, 211, 211)}, // Light gray
-        {WeatherType::TORRENTIAL_RAIN, sf::Color(65, 105, 225)}, // Royal blue
-        {WeatherType::CLEAR_WEATHER, sf::Color(255, 255, 255)},  // White
-        {WeatherType::SKELIGE_STORM, sf::Color(138, 43, 226)},   // Blue violet
-        {WeatherType::DRAGON_DREAM, sf::Color(220, 20, 60)}      // Crimson
-    };
+
 }
 
 bool CardRenderer::loadResources() {
@@ -55,106 +38,199 @@ bool CardRenderer::loadResources() {
 
     if (!loadSafe(cardBackTexture, "assets/cards/card_back.png")) success = false;
     if (!loadSafe(cardBaseTexture, "assets/cards/card_base.png")) success = false;
-    if (!loadSafe(powerCircleTexture, "assets/cards/power_circle.png")) success = false;
     if (!loadSafe(cardGlowTexture, "assets/cards/card_glow.png")) success = false;
   
     cardBaseTexture.setSmooth(true);
     cardBaseTexture.setRepeated(false);
 
+    std::vector<std::pair<Faction, std::string>> factionFiles = {
+        {Faction::NORTH, "northern"},
+        {Faction::NILFGARD, "nilfgaard"},
+        {Faction::SCOIATAEL, "scoiatael"},
+        {Faction::MONSTERS, "monsters"},
+        {Faction::NEUTRAL, "neutral"}
+    };
+    
+    for (const auto& [faction, name] : factionFiles) {
+        sf::Texture texture;
+        if (texture.loadFromFile("../assets/cards/" + name + "_faction.png")) {
+            factionTextures[faction] = texture;
+        } else {
+            std::cerr << "Failed to load texture for faction: " << name << "\n";
+        }
+    }
+
+    // std::vector<std::pair<WeatherType, std::string>> weatherFiles = {
+    //     {WeatherType::BITING_FROST, "frost"},
+    //     {WeatherType::IMPENETRABLE_FOG, "fog"},
+    //     {WeatherType::TORRENTIAL_RAIN, "rain"},
+    //     {WeatherType::CLEAR_WEATHER, "clear"},
+    //     {WeatherType::SKELIGE_STORM, "storm"},
+    //     {WeatherType::DRAGON_DREAM, "dragon"}
+    // };
+    
+    // for (const auto& [weather, name] : weatherFiles) {
+    //     sf::Texture texture;
+    //     if (texture.loadFromFile("../assets/weather/" + name + ".png")) {
+    //         weatherIconTextures[weather] = texture;
+    //     } else {
+    //         std::cerr << "Failed to load texture for weather: " << name << "\n";
+    //     }
+    // }           Asta se face *****
+
     return success;
 }
 
-void CardRenderer::renderCard(sf::RenderTarget& target, const Card& card, float x, float y, bool highlight) {
-    if (powerCircleTexture.getSize().x == 0) return;
-    
-    sf::Sprite powerCircle(powerCircleTexture);
-    powerCircle.setPosition(x, y);
-    target.draw(powerCircle);
-
-    sf::RectangleShape cardBase(getCardSize());
-    setupCardBase(cardBase, card);
-    cardBase.setPosition(x, y);
+void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float x, float y,
+                              bool highlight, bool isCurrentPlayer)
+{
+    float hoverOffset = 0.f;
+    float hoverScale = 1.f;
     
     if (highlight) {
-        cardBase.setOutlineColor(sf::Color::Yellow);
-        cardBase.setOutlineThickness(3.f);
+        // hoverOffset = -20.f;
+        // hoverScale = 1.05f;
+        
+        float pulse = sin(hoverClock.getElapsedTime().asSeconds() * 5.f) * 0.05f;
+        hoverScale += pulse;
+        
+        // renderCardHoverEffect(target, x, y);
     }
+
+    const_cast<Card&>(card).position = sf::Vector2f(x, y);
+    const_cast<Card&>(card).size = CARD_SIZE;
+
+    renderRoundedRectangle(target, 
+                         sf::FloatRect(x + CARD_ELEVATION, y + CARD_ELEVATION, 
+                                      CARD_SIZE.x, CARD_SIZE.y),
+                         CARD_CORNER_RADIUS, 
+                         sf::Color(0, 0, 0, 100));
     
+    sf::RectangleShape cardBase(CARD_SIZE);
+    setupCardBase(cardBase, card);
+    cardBase.setPosition(x, y + hoverOffset);
+    cardBase.setScale(hoverScale, hoverScale);
     target.draw(cardBase);
     
-    sf::Text nameText;
-    setupCardText(nameText, card.getName(), 14, x + 10, y + 10);
-    target.draw(nameText);
+    sf::Text titleText;
+    setupCardText(titleText, card.getName(), 18, x + 15, y + 10 + hoverOffset, 
+                 sf::Color::White, true);
+    titleText.setFont(font);
     
-    if (card.getType() != CardType::WEATHER && card.getType() != CardType::ABILITY) {
-        renderCardPower(target, card, x + getCardSize().x - 30, y + getCardSize().y - 30);
+    sf::RectangleShape titleBg(sf::Vector2f(titleText.getLocalBounds().width + 20, 30));
+    titleBg.setPosition(x + 5, y + 5 + hoverOffset);
+    titleBg.setFillColor(factionColors.at(card.getFaction()));
+    titleBg.setOutlineColor(sf::Color::Black);
+    titleBg.setOutlineThickness(1.f);
+    // target.draw(titleBg);
+    // target.draw(titleText);
+    
+    sf::RectangleShape artArea(sf::Vector2f(CARD_SIZE.x - 20, CARD_SIZE.y * 0.5f));
+    artArea.setPosition(x + 10, y + 40 + hoverOffset);
+    artArea.setFillColor(sf::Color(50, 50, 50));
+    artArea.setOutlineColor(sf::Color::Black);
+    artArea.setOutlineThickness(1.f);
+    // target.draw(artArea);
+    
+    renderCardInfo(target, card, x, y + hoverOffset);
+    
+    if (card.getType() != CardType::WEATHER) {
+        renderCardPower(target, card, x + CARD_SIZE.x - 25, y + CARD_SIZE.y - 25 + hoverOffset);
+    
+    if (highlight) {
+        renderCardGlow(target, x, y + hoverOffset, sf::Color(255, 255, 100, 150));
     }
-    
-    renderCardInfo(target, card, x, y);
+}
 }
 
 void CardRenderer::renderCardBack(sf::RenderTarget& target, float x, float y) {
-    if (cardBackTexture.getSize().x == 0) {
-        std::cerr << "Card back texture not loaded!\n";
-        return;
-    }
     sf::Sprite cardBack(cardBackTexture);
     cardBack.setPosition(x, y);
     cardBack.setScale(
-        getCardSize().x / cardBack.getLocalBounds().width,
-        getCardSize().y / cardBack.getLocalBounds().height
+        CARD_SIZE.x / cardBack.getLocalBounds().width,
+        CARD_SIZE.y / cardBack.getLocalBounds().height
     );
+    
+    static std::map<int, float> offsets = {{0, 0}, {1, 2}, {2, 4}, {3, 6}};
+    static int counter = 0;
+    
+    float offset = offsets[counter % 4];
+    cardBack.setRotation(offset * 0.5f);
+    cardBack.move(offset * 0.3f, -offset * 0.2f);
+    
     target.draw(cardBack);
+    counter++;
 }
 
-void CardRenderer::renderCardInfo(sf::RenderTarget& target, const Card& card, float x, float y) {
-    sf::Text typeText;
+void CardRenderer::renderCardInfo(sf::RenderTarget& target, const Card& card, float x, float y) const {
     std::string typeStr;
-    
     switch(card.getType()) {
         case CardType::UNIT:
             typeStr = "Unit";
-            if (dynamic_cast<const UnitCard*>(&card)->getIsSpy()) {
-                typeStr += " (Spy)";
-            }
-            break;
         case CardType::HERO: typeStr = "Hero"; break;
         case CardType::ABILITY: typeStr = "Ability"; break;
         case CardType::WEATHER: typeStr = "Weather"; break;
     }
     
-    setupCardText(typeText, typeStr, 12, x + 10, y + 30);
+    sf::Text typeText;
+    setupCardText(typeText, typeStr, 14, x + 15, y + CARD_SIZE.y - 60);
     target.draw(typeText);
     
-    sf::Text zoneText;
     std::string zoneStr;
     switch(card.getZone()) {
-        case CombatZone::CLOSE: zoneStr = "Close"; break;
-        case CombatZone::RANGED: zoneStr = "Ranged"; break;
-        case CombatZone::SIEGE: zoneStr = "Siege"; break;
-        case CombatZone::ANY: zoneStr = "Any"; break;
+        case CombatZone::CLOSE: zoneStr = "Close Combat"; break;
+        case CombatZone::RANGED: zoneStr = "Ranged Combat"; break;
+        case CombatZone::SIEGE: zoneStr = "Siege Combat"; break;
+        case CombatZone::ANY: zoneStr = "Any Zone"; break;
     }
     
-    setupCardText(zoneText, zoneStr, 12, x + 10, y + 50);
+    sf::Text zoneText;
+    setupCardText(zoneText, zoneStr, 14, x + 15, y + CARD_SIZE.y - 40);
     target.draw(zoneText);
     
     if (card.getType() == CardType::WEATHER) {
-        const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
-        sf::RectangleShape weatherIcon(sf::Vector2f(20, 20));
-        weatherIcon.setPosition(x + getCardSize().x - 30, y + 10);
-        weatherIcon.setFillColor(weatherColors.at(weather->getWeatherType()));
-        target.draw(weatherIcon);
+        // const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
+        // if (weather && weatherIconTextures.count(weather->getWeatherType())) {
+        //     sf::Sprite weatherIcon(weatherIconTextures.at(weather->getWeatherType()));
+        //     weatherIcon.setPosition(x + CARD_SIZE.x - 40, y + 15);
+        //     weatherIcon.setScale(0.5f, 0.5f);
+        //     target.draw(weatherIcon);
+        // }
     }
 }
 
+
 void CardRenderer::setupCardBase(sf::RectangleShape& cardBase, const Card& card) const {
-    cardBase.setTexture(&cardBaseTexture);
-    cardBase.setFillColor(factionColors.at(card.getFaction()));
-    cardBase.setOutlineColor(sf::Color::Black);
-    cardBase.setOutlineThickness(1.f);
+    // 1. First try to get faction-specific texture
+    const Faction faction = card.getFaction();
+    auto factionIt = factionTextures.find(faction);
+    
+    if (factionIt != factionTextures.end()) {
+        // Use faction-specific texture
+        cardBase.setTexture(&factionIt->second);
+        cardBase.setFillColor(sf::Color::White); // Neutral color for proper texture display
+    } else {
+        // Fallback to default texture
+        cardBase.setTexture(&cardBaseTexture);
+        cardBase.setFillColor(sf::Color(255, 255, 255, 150)); // Semi-transparent white
+    }
+
+    // 2. Add faction-colored accent
+    auto colorIt = factionColors.find(faction);
+    if (colorIt != factionColors.end()) {
+        // Apply colored outline/border
+        cardBase.setOutlineColor(colorIt->second);
+        cardBase.setOutlineThickness(3.f);
+    } else {
+        // Default outline
+        cardBase.setOutlineColor(sf::Color(255, 255, 255, 100));
+        cardBase.setOutlineThickness(2.f);
+    }
+
+    
 }
 
-void CardRenderer::setupCardText(sf::Text& text, const std::string& str, unsigned size, float x, float y) const {
+void CardRenderer::setupCardsText(sf::Text& text, const std::string& str, unsigned size, float x, float y) const {
     text.setFont(font);
     text.setString(str);
     text.setCharacterSize(size);
@@ -162,29 +238,35 @@ void CardRenderer::setupCardText(sf::Text& text, const std::string& str, unsigne
     text.setPosition(x, y);
 }
 
-void CardRenderer::renderCardPower(sf::RenderTarget& target, const Card& card, float x, float y) const {
-    if (powerCircleTexture.getSize().x == 0) return;
-    
-    sf::Sprite powerCircle(powerCircleTexture);
-    powerCircle.setPosition(x, y);
-    target.draw(powerCircle);
-    
-    sf::Text powerText;
-    setupCardText(powerText, std::to_string(card.getPower()), 16, x + 5, y + 5);
-    powerText.setStyle(sf::Text::Bold);
-    target.draw(powerText);
-}
 
-void CardRenderer::updateHover(const sf::Vector2f& mousePos, const std::vector<const Card*>& cards) {
-    tooltip.show(false);
-    for (const Card* card : cards) {
-        if (card->getGlobalBounds().contains(mousePos)) {
-            tooltip.setText(generateTooltipText(*card));
-            tooltip.setPosition(mousePos.x + 15, mousePos.y + 15);
-            tooltip.show(true);
-            break;
-        }
-    }
+void CardRenderer::renderCardPower(sf::RenderTarget& target, const Card& card, float x, float y) const {
+    // const float radius = 15.f;
+    
+    // // 1. Draw power circle
+    // sf::CircleShape powerCircle(radius);
+    // powerCircle.setPosition(x, y);
+    // powerCircle.setFillColor(sf::Color::Transparent);
+    // powerCircle.setOutlineColor(sf::Color::Red);
+    // powerCircle.setOutlineThickness(2.f);
+    // target.draw(powerCircle);
+
+    // // 2. Create power text
+    // sf::Text powerText;
+    // powerText.setString("TEST");  // Force known text
+    // powerText.setCharacterSize(20);
+    // powerText.setFillColor(sf::Color::Magenta);
+    // powerText.setFont(font);  // Direct font set
+    
+    // // 3. Simple positioning
+    // sf::FloatRect textBounds = powerText.getLocalBounds();
+    // powerText.setOrigin(textBounds.width/2, textBounds.height/2);
+    // powerText.setPosition(x + radius, y + radius);
+
+    // // 4. Draw order verification
+    // target.draw(powerText);
+    
+    // std::cout << "Text position: (" << powerText.getPosition().x 
+    //           << ", " << powerText.getPosition().y << ")\n";
 }
 
 std::string CardRenderer::generateTooltipText(const Card& card) const {
@@ -194,7 +276,6 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
     tooltip << "Name: " << card.getName() << "\n";
     tooltip << "Faction: " << CardUtils::factionToString(card.getFaction()) << "\n";
     tooltip << "Zone: " << CardUtils::zoneToString(card.getZone()) << "\n";
-    //tooltip << "Type: " << CardUtils::cardTypeToString(card.getType()) << "\n";
 
     // Type-specific information
     try {
@@ -209,9 +290,6 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
                             tooltip << " (" << unit->getEffectValue() << ")";
                         }
                         tooltip << "\n";
-                    }
-                    if (unit->getIsSpy()) {
-                        tooltip << "Spy: Draw 2 cards when played\n";
                     }
                 }
                 break;
@@ -262,5 +340,120 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
 }
 
 void CardRenderer::drawTooltip(sf::RenderTarget& target) const {
-    tooltip.draw(target);
+    sf::View originalView = target.getView();
+    target.setView(target.getDefaultView());
+        
+    tooltip.draw(target); //original era doar asta
+        
+    target.setView(originalView);
+}
+
+
+void CardRenderer::updateHover(const sf::Vector2f& mousePos, 
+                             const std::vector<const Card*>& cards) {
+    hoveredCard = nullptr;
+    
+    for (const Card* card : cards) {
+        if (card->getGlobalBounds().contains(mousePos)) {
+            hoveredCard = card;
+            tooltip.setText(generateTooltipText(*card));
+            tooltip.setPosition(mousePos.x + 15, mousePos.y + 15);
+            break;
+        }
+    }
+    tooltip.show(hoveredCard != nullptr);
+}
+
+void CardRenderer::renderCardHoverEffect(sf::RenderTarget& target, float x, float y) const {
+    sf::RectangleShape shadow(CARD_SIZE);
+    shadow.setPosition(x + 5, y + 10);
+    shadow.setFillColor(sf::Color(0, 0, 0, 50));
+    renderRoundedRectangle(target, shadow.getGlobalBounds(), CARD_CORNER_RADIUS, shadow.getFillColor());
+    
+    sf::ConvexShape highlight(4);
+    highlight.setPoint(0, sf::Vector2f(x, y + CARD_SIZE.y * 0.7f));
+    highlight.setPoint(1, sf::Vector2f(x + CARD_SIZE.x * 0.3f, y + CARD_SIZE.y * 0.3f));
+    highlight.setPoint(2, sf::Vector2f(x + CARD_SIZE.x, y + CARD_SIZE.y * 0.3f));
+    highlight.setPoint(3, sf::Vector2f(x + CARD_SIZE.x, y + CARD_SIZE.y * 0.7f));
+    highlight.setFillColor(sf::Color(255, 255, 255, 30));
+    target.draw(highlight);
+}
+
+ void CardRenderer::renderRoundedRectangle(sf::RenderTarget& target, const sf::FloatRect& rect, 
+                                        float radius, const sf::Color& fillColor, 
+                                        float outlineThickness, const sf::Color& outlineColor) const {
+    sf::CircleShape corner(radius);
+    corner.setPointCount(32);
+    corner.setFillColor(fillColor);
+    corner.setOutlineThickness(outlineThickness);
+    corner.setOutlineColor(outlineColor);
+    
+    sf::RectangleShape center(sf::Vector2f(rect.width - 2 * radius, rect.height));
+    center.setPosition(rect.left + radius, rect.top);
+    center.setFillColor(fillColor);
+    center.setOutlineThickness(outlineThickness);
+    center.setOutlineColor(outlineColor);
+    target.draw(center);
+    
+    sf::RectangleShape left(sf::Vector2f(rect.width, rect.height - 2 * radius));
+    left.setPosition(rect.left, rect.top + radius);
+    left.setFillColor(fillColor);
+    left.setOutlineThickness(outlineThickness);
+    left.setOutlineColor(outlineColor);
+    target.draw(left);
+    
+    corner.setPosition(rect.left, rect.top);
+    target.draw(corner);
+    
+    corner.setPosition(rect.left + rect.width - 2 * radius, rect.top);
+    target.draw(corner);
+    
+    corner.setPosition(rect.left, rect.top + rect.height - 2 * radius);
+    target.draw(corner);
+    
+    corner.setPosition(rect.left + rect.width - 2 * radius, 
+                      rect.top + rect.height - 2 * radius);
+    target.draw(corner);
+ }
+
+void CardRenderer::setupCardText(sf::Text& text,
+                                const std::string& str,
+                                unsigned size,
+                                float x,
+                                float y,
+                                const sf::Color& color,
+                                bool bold) const 
+{
+    text.setFont(font);
+    text.setString(str);
+    text.setCharacterSize(size);
+    text.setFillColor(color);
+    text.setPosition(x, y);
+    
+    if (bold) {
+        text.setStyle(sf::Text::Bold);
+    }
+}
+
+void CardRenderer::setupCardTexts(sf::Text& text,
+                                const std::string& str,
+                                unsigned size) const 
+{
+    text.setFont(font);
+    text.setString(str);
+    text.setCharacterSize(size);
+}
+
+void CardRenderer::renderCardGlow(sf::RenderTarget& target,
+                                 float x,
+                                 float y,
+                                 const sf::Color& color) const 
+{
+    const float glowRadius = 25.f;
+    const int points = 16;
+    
+    sf::CircleShape glow(glowRadius, points);
+    glow.setPosition(x - glowRadius, y - glowRadius);
+    glow.setFillColor(color);
+    target.draw(glow);
 }

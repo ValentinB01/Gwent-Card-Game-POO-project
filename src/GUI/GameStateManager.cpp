@@ -161,7 +161,7 @@ void GameStateManager::renderHand(sf::RenderWindow& window) {
     
     for (size_t i = 0; i < hand.size(); ++i) {
         bool highlight = (selectedCardIndex == static_cast<int>(i));
-        cardRenderer.renderCard(window, *hand[i], startX + i * (cardWidth + spacing), y, highlight);
+        cardRenderer.renderCard(window, *hand[i], startX + i * (cardWidth + spacing), y, highlight,true); // true e in plus
     }
 }
 
