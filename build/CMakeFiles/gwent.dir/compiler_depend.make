@@ -4054,12 +4054,13 @@ CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o: /home/buse-valentin/Anul1_s
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/HeroCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/UnitCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/WeatherCard.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameWindow.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/CardUtils.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/enums.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/Card.h \
@@ -4798,9 +4799,11 @@ CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: /home/buse-valentin/Anul1_sem2/PO
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/UnitCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/WeatherCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameWindow.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/Card.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/enums.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/Card.h \
@@ -5613,12 +5616,13 @@ CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/HeroCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/UnitCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/WeatherCard.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameWindow.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \
@@ -5967,6 +5971,8 @@ CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/
 
 
 /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameWindow.cpp:
+
+/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h:
 
 /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h:
 
@@ -6645,6 +6651,8 @@ CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/
 /usr/include/SFML/Graphics/Text.hpp:
 
 /usr/include/c++/13/bits/ptr_traits.h:
+
+/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h:
 
 /usr/include/c++/13/bits/refwrap.h:
 

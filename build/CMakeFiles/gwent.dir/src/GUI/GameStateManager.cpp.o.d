@@ -301,8 +301,10 @@ CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o: \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/enums.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/GameWindow.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/Game.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../GUI/CardRender.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/../GUI/GameUI.h \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/CardRender.h \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/GameUI.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/DropdownMenu.h \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/GUI/HelpPanel.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc
