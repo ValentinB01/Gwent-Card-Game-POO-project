@@ -12,8 +12,6 @@ AbilityCard::AbilityCard(const std::string& name, CombatZone zone, Faction facti
       effect(effect), effectValue(effectValue), _targetsEnemy(targetsEnemy) {}
 
 void AbilityCard::play(Player& owner, Player& opponent, Board& board) {
-    std::cout << "✨ Playing ability: " << name << " (" 
-              << CardUtils::abilityEffectToString(effect) << ")\n";
     applyEffect(owner, opponent, board);
 }
 
@@ -40,9 +38,6 @@ void AbilityCard::applyEffect(Player& owner, Player& opponent, Board& board) {
         case AbilityEffect::VENOM_EXTRACT:
             handleVenomExtract(target, board);
             break;
-            
-        default:
-            std::cerr << "Unknown ability effect!\n";
     }
 }
 

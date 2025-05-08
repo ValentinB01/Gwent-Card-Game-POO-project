@@ -202,11 +202,11 @@ void GameStateManager::onCardSelected(int index) {
 }
 
 void GameStateManager::onHeroAbilityClicked() {
-    try {
-        game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
-    } catch (const std::exception& e) {
-        infoTexts[0].setString("Hero ability failed: " + std::string(e.what()));
-    }
+    // try {
+    //     game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
+    // } catch (const std::exception& e) {
+    //     infoTexts[0].setString("Hero ability failed: " + std::string(e.what()));
+    // }
 }
 
 void GameStateManager::renderPlayerInfo(sf::RenderWindow& window) {

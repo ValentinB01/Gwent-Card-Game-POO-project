@@ -6,9 +6,12 @@
 
 GameWindow::GameWindow(const std::string& p1, const std::string& p2) 
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Gwent", sf::Style::Default),
-      game(nullptr),
+      game(std::make_unique<Game>(p1, p2)),
       font(),
-      gameUI(nullptr) 
+      gameUI(nullptr),
+      currentPlayerIndex(0),
+      mainMenu(font,sf::Vector2f(30, 30)),
+      helpPanel(font, window)
 {
     window.setVerticalSyncEnabled(true);
     try {
@@ -23,7 +26,6 @@ GameWindow::GameWindow(const std::string& p1, const std::string& p2)
         std::cout << "3.5.Rednered successfully\n";
 
         std::cout << "4. Creating game instance...\n";
-        game = std::make_unique<Game>(p1, p2);
         std::cout << "5. Game instance created\n";
 
         std::cout << "6. Initializing GameUI...\n";
@@ -47,18 +49,87 @@ GameWindow::GameWindow(const std::string& p1, const std::string& p2)
         if (window.isOpen()) window.close();
         throw;
     }    
+    mainMenu.addOption("Pass", [this]() { 
+        game->pass(game->getCurrentPlayerIndex());
+    });
+    mainMenu.addOption("Help", [this]() { 
+        helpPanel.toggle();
+    });
+    mainMenu.addOption("Quit", [this]() { 
+        window.close();
+    });
+    mainMenu.setSize({120, 30});
+
+
+    turnText.setFont(font);
+    turnText.setCharacterSize(24);
+    messageText.setFont(font);
+    messageText.setCharacterSize(24);
+    messageText.setFillColor(sf::Color::White);
+    
+    messageBackground.setFillColor(sf::Color(0, 0, 0, 180));
+    messageBackground.setOutlineColor(sf::Color::White);
+    messageBackground.setOutlineThickness(1.f);
+    
+    messageTimer = 0.f;
 }
 
 void GameWindow::run() {
     if (!window.isOpen()) return;
 
-    sf::Clock clock;
+    sf::Clock frameClock;
     while (window.isOpen()) {
-        sf::Time deltaTime = clock.restart();
+        sf::Time deltaTime = frameClock.restart();
+        float deltaSeconds = deltaTime.asSeconds();
+        
+        if (deltaSeconds > 0.1f) {
+            deltaSeconds = 0.1f;
+        }
+        
         processEvents();
-        update(deltaTime.asSeconds());  // Pass delta time in seconds
+        update(deltaSeconds);
         render();
     }
+}
+
+sf::FloatRect GameWindow::getHandCardPosition(const Player& player, int index) const {
+    const auto& hand = player.getHand();
+    if (hand.empty() || index < 0 || index >= hand.size()) return {};
+    
+    const float cardWidth = cardRenderer->getCardSize().x;
+    const float cardHeight = cardRenderer->getCardSize().y;
+    const float spacing = 10.f;
+    const float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+    const float startX = (window.getSize().x - totalWidth) / 2;
+    const float y = window.getSize().y - cardHeight - 20;
+    
+    return {
+        startX + index * (cardWidth + spacing),
+        y,
+        cardWidth,
+        cardHeight
+    };
+}
+
+void GameWindow::showMessage(const std::string& message, float duration) {
+    messageText.setString(message);
+    
+    sf::FloatRect textRect = messageText.getLocalBounds();
+    messageText.setOrigin(textRect.left + textRect.width/2.0f,
+                        textRect.top + textRect.height/2.0f);
+    messageText.setPosition(window.getSize().x/2.0f, 50.f);
+    
+    messageBackground.setSize(sf::Vector2f(
+        textRect.width + 40.f,
+        textRect.height + 20.f
+    ));
+    messageBackground.setOrigin(
+        messageBackground.getSize().x/2.0f,
+        messageBackground.getSize().y/2.0f
+    );
+    messageBackground.setPosition(window.getSize().x/2.0f, 50.f);
+    
+    messageTimer = duration;
 }
 
 void GameWindow::processEvents() {
@@ -67,30 +138,175 @@ void GameWindow::processEvents() {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
-        
-        if (game)
+        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        if (event.type == sf::Event::MouseButtonReleased && 
+            event.mouseButton.button == sf::Mouse::Left) 
         {
-            gameUI->handleEvent(event, window);
+            mainMenu.handleClick(mousePos);
         }
+
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        mainMenu.update(mousePos);
+
+        
+
+        if (event.type == sf::Event::MouseButtonReleased && 
+            event.mouseButton.button == sf::Mouse::Left) 
+        {
+            sf::Vector2f mousePos = window.mapPixelToCoords(
+                {event.mouseButton.x, event.mouseButton.y},
+                window.getDefaultView()
+            );
+
+            // First handle hand cards
+            handleCardSelection(mousePos);
+
+            // Then handle hero abilities
+            Player& currentPlayer = game->getCurrentPlayer();
+            const int playerId = currentPlayer.getPlayerId();
+            
+            const float cardWidth = cardRenderer->getCardSize().x;
+            const float cardHeight = cardRenderer->getCardSize().y;
+            const float spacing = 10.f;
+            const float centerY = window.getSize().y / 2.f;
+            const float zoneHeight = cardHeight + 35.f;
+
+            // Check all combat zones
+            for (int zoneIdx = 0; zoneIdx < 3; zoneIdx++) {
+                CombatZone zone = static_cast<CombatZone>(zoneIdx);
+                auto& cards = game->getBoard().getPlayerZone(playerId, zone);
+
+                float zoneY = centerY - 200.f + zoneIdx * (zoneHeight + 15.f);
+                float startX = (playerId == 0) ? 60.f : window.getSize().x/2.f + 10.f;
+                float startY = zoneY + 30.f;
+
+                for (size_t i = 0; i < cards.size(); ++i) {
+                    sf::FloatRect cardRect(
+                        startX + i * (cardWidth + spacing),
+                        startY,
+                        cardWidth,
+                        cardHeight
+                    );
+
+                    if (cardRect.contains(mousePos)) {
+                        if (auto* hero = dynamic_cast<HeroCard*>(cards[i].get())) {
+                            if (currentPlayer.canUseHeroAbility(hero->getName())) {
+                                try {
+                                    hero->activateAbility(currentPlayer, 
+                                                        game->getOpponent(), 
+                                                        game->getBoard());
+                                    currentPlayer.markHeroAbilityUsed(hero->getName());
+                                    showMessage("Activated " + hero->getName() + "'s ability");
+                                } catch (const std::exception& e) {
+                                    showMessage(e.what());
+                                }
+                            } else {
+                                showMessage(hero->getName() + "'s ability already used");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        cardRenderer->updateHover(mousePos, getAllVisibleCards());
     }
 }
 
+void GameWindow::handleCardSelection(const sf::Vector2f& mousePos) {
+    Player& currentPlayer = game->getCurrentPlayer();
+    const auto& hand = currentPlayer.getHand();
+    
+    const float cardWidth = cardRenderer->getCardSize().x;
+    const float cardHeight = cardRenderer->getCardSize().y;
+    const float spacing = 10.f;
+    const float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+    const float startX = (window.getSize().x - totalWidth) / 2;
+    const float yPos = window.getSize().y - cardHeight - 20;
+
+    for (size_t i = 0; i < hand.size(); ++i) {
+        sf::FloatRect cardRect(
+            startX + i * (cardWidth + spacing),
+            yPos,
+            cardWidth,
+            cardHeight
+        );
+
+        if (cardRect.contains(mousePos)) {
+            const int selectedIndex = currentPlayer.getSelectedCardIndex();
+            
+            if (selectedIndex == static_cast<int>(i)) {
+                // Play card on second click
+                try {
+                    game->playCard(currentPlayer.getPlayerId(), i);
+                    currentPlayer.deselectCard();
+                } catch (const std::exception& e) {
+                    showMessage(e.what());
+                }
+            } else {
+                // Select card on first click
+                currentPlayer.selectCard(i);
+            }
+            return; // Stop after finding clicked card
+        }
+    }
+    
+    // Deselect if clicking outside cards
+    currentPlayer.deselectCard();
+}
+
 void GameWindow::update(float deltaTime) {
-    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    sf::Vector2f mousePos = window.mapPixelToCoords(
+        sf::Mouse::getPosition(window),
+        window.getDefaultView()
+    );
     cardRenderer->updateHover(mousePos, getAllVisibleCards());
     
     game->update(deltaTime);
 }
 
 void GameWindow::render() {
-    window.clear();
+    window.clear(sf::Color(30, 30, 30));
     window.draw(background);
+    renderGameBoard();
+
     
     renderGameBoard();
+
+    const int currentIdx = game->getCurrentPlayerIndex();
+    renderPlayerHand(game->getPlayer(currentIdx), true); 
+    renderPlayerHand(game->getPlayer(1 - currentIdx), false);
+
+    renderPlayerInfo();
+
     cardRenderer->drawTooltip(window);
     gameUI->render(window);
-    
+    mainMenu.draw(window);
+    helpPanel.draw(window);
     window.display();
+}
+
+std::string GameWindow::getWinnerName() const {
+    if (!game) {
+        return "Game not initialized";
+    }
+    
+    const Player& p1 = game->getPlayer(0);
+    const Player& p2 = game->getPlayer(1);
+    
+    if (p1.getRoundsWon() > p2.getRoundsWon()) {
+        return p1.getName();
+    } else if (p2.getRoundsWon() > p1.getRoundsWon()) {
+        return p2.getName();
+    }
+    return "Draw";
+}
+
+void GameWindow::updateUIState() 
+{
+        const Player& currentPlayer = game->getCurrentPlayer();
 }
 
 
@@ -114,9 +330,45 @@ void GameWindow::loadResources() {
     }
 }
 
+void GameWindow::renderTurnGlow() {
+    float glow = sin(pulseClock.getElapsedTime().asSeconds() * 5) * 0.5f + 0.5f;
+    sf::RectangleShape glowBar(sf::Vector2f(WINDOW_WIDTH, 3));
+    glowBar.setPosition(0, game->getCurrentPlayer().getPlayerId() == 0 ? 95 : WINDOW_HEIGHT - 98);
+    glowBar.setFillColor(sf::Color(255, 255, 0, static_cast<sf::Uint8>(glow * 200)));
+    window.draw(glowBar);
+}
+
+void GameWindow::loadZoneAssets() {
+    zoneBackgrounds[0].loadFromFile("../assets/zones/close_combat.png");
+    zoneBackgrounds[1].loadFromFile("../assets/zones/ranged_combat.png");
+    zoneBackgrounds[2].loadFromFile("../assets/zones/siege_combat.png");
+    
+}
+
+void GameWindow::renderZoneScores() {
+    const float centerY = WINDOW_HEIGHT / 2;
+    const float zoneHeight = cardRenderer->getCardSize().y;
+    
+    for (int i = 0; i < 3; i++) {
+        CombatZone zone = static_cast<CombatZone>(i);
+        
+        int p1Power = game->getBoard().getPlayerPower(0, zone);
+        zonePowerTexts[i][0].setString(std::to_string(p1Power));
+        zonePowerTexts[i][0].setPosition(70, centerY - zoneHeight - 15 + i*(zoneHeight+40));
+        
+        int p2Power = game->getBoard().getPlayerPower(1, zone);
+        zonePowerTexts[i][1].setString(std::to_string(p2Power));
+        zonePowerTexts[i][1].setPosition(WINDOW_WIDTH - 70, centerY - zoneHeight - 15 + i*(zoneHeight+40));
+        
+        window.draw(zonePowerTexts[i][0]);
+        window.draw(zonePowerTexts[i][1]);
+    }
+}
+
+
 void GameWindow::renderGameBoard() {
-    renderPlayerInfo(game->getPlayer(0), false);
-    renderPlayerInfo(game->getPlayer(1), true);
+    renderPlayerInfo();
+    renderPlayerInfo();
     
     renderCombatZones();
     
@@ -124,138 +376,252 @@ void GameWindow::renderGameBoard() {
     renderPlayerHand(game->getPlayer(1), true);
 }
 
-void GameWindow::renderPlayerHand(const Player& player, bool isBottomPlayer) {
-    const auto& hand = player.getHand();
-    if (hand.empty()) return;
-    
-    float cardWidth = cardRenderer->getCardSize().x;
-    float cardHeight = cardRenderer->getCardSize().y;
-    float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * CARD_SPACING;
-    float startX = (WINDOW_WIDTH - totalWidth) / 2;
-    float y = isBottomPlayer ? WINDOW_HEIGHT - cardHeight - 20 : 20;
-    
-    for (size_t i = 0; i < hand.size(); ++i) {
-        if (isBottomPlayer) {
-            cardRenderer->renderCard(window, *hand[i], 
-                                  startX + i * (cardWidth + CARD_SPACING), 
-                                  y,
-                                  player.getSelectedCardIndex() == static_cast<int>(i), true);
-        } else {
-            cardRenderer->renderCardBack(window, 
-                                      startX + i * (cardWidth + CARD_SPACING), 
-                                      y);
-        }
-    }
-}
 
-void GameWindow::renderCombatZones() {
-    const float zoneHeight = cardRenderer->getCardSize().y;
-    const float zoneWidth = WINDOW_WIDTH - 100;
-    const float centerY = WINDOW_HEIGHT / 2;
-    
-    sf::RectangleShape closeZone(sf::Vector2f(zoneWidth, zoneHeight));
-    closeZone.setPosition(50, centerY - zoneHeight - 20);
-    closeZone.setFillColor(sf::Color(70, 70, 70, 150));
-    closeZone.setOutlineColor(sf::Color::White);
-    closeZone.setOutlineThickness(1.f);
-    window.draw(closeZone);
-    
-    renderCardsInZone(game->getBoard().getPlayerZone(0, CombatZone::CLOSE), 
-                    60, centerY - zoneHeight - 15);
-    renderCardsInZone(game->getBoard().getPlayerZone(1, CombatZone::CLOSE), 
-                    60, centerY - zoneHeight - 15);
-    
-    sf::RectangleShape rangedZone(sf::Vector2f(zoneWidth, zoneHeight));
-    rangedZone.setPosition(50, centerY);
-    rangedZone.setFillColor(sf::Color(70, 70, 70, 150));
-    rangedZone.setOutlineColor(sf::Color::White);
-    rangedZone.setOutlineThickness(1.f);
-    window.draw(rangedZone);
-    
-    renderCardsInZone(game->getBoard().getPlayerZone(0, CombatZone::RANGED), 60, centerY + 5);
-    renderCardsInZone(game->getBoard().getPlayerZone(1, CombatZone::RANGED), 60, centerY + 5);
-    
-    sf::RectangleShape siegeZone(sf::Vector2f(zoneWidth, zoneHeight));
-    siegeZone.setPosition(50, centerY + zoneHeight + 20);
-    siegeZone.setFillColor(sf::Color(70, 70, 70, 150));
-    siegeZone.setOutlineColor(sf::Color::White);
-    siegeZone.setOutlineThickness(1.f);
-    window.draw(siegeZone);
-    
-    renderCardsInZone(game->getBoard().getPlayerZone(0, CombatZone::SIEGE), 
-                    60, centerY + zoneHeight + 25);
-    renderCardsInZone(game->getBoard().getPlayerZone(1, CombatZone::SIEGE), 
-                    60, centerY + zoneHeight + 25);
-    
-    sf::Text closeLabel("Close Combat", font, 16);
-    closeLabel.setPosition(60, centerY - zoneHeight - 40);
-    window.draw(closeLabel);
-    
-    sf::Text rangedLabel("Ranged Combat", font, 16);
-    rangedLabel.setPosition(60, centerY - 20);
-    window.draw(rangedLabel);
-    
-    sf::Text siegeLabel("Siege Combat", font, 16);
-    siegeLabel.setPosition(60, centerY + zoneHeight);
-    window.draw(siegeLabel);
-}
-
-void GameWindow::renderCardsInZone(const std::vector<std::unique_ptr<Card>>& cards, float x, float y) {
-    const float cardWidth = cardRenderer->getCardSize().x;
-    const float cardHeight = cardRenderer->getCardSize().y;
-    const float spacing = 5.f;
-    
-    for (size_t i = 0; i < cards.size(); ++i) {
-        cardRenderer->renderCard(window, *cards[i], 
-                              x + i * (cardWidth + spacing), 
-                              y, true, true);
-    }
-}
-
-void GameWindow::renderPlayerInfo(const Player& player, bool isBottomPlayer) {
-    sf::Text playerText(player.getName(), font, 20);
-    playerText.setStyle(sf::Text::Bold);
-    
-    sf::Text scoreText("Rounds: " + std::to_string(player.getRoundsWon()) + "/2", font, 16);
-    
-    if (isBottomPlayer) {
-        playerText.setPosition(20, WINDOW_HEIGHT - 60);
-        scoreText.setPosition(20, WINDOW_HEIGHT - 30);
-    } else {
-        playerText.setPosition(20, 20);
-        scoreText.setPosition(20, 50);
-    }
-    
-    window.draw(playerText);
-    window.draw(scoreText);
+void GameWindow::updateHoverState() {
+    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    std::vector<const Card*> visibleCards = getAllVisibleCards();
+    cardRenderer->updateHover(mousePos, visibleCards);
 }
 
 std::vector<const Card*> GameWindow::getAllVisibleCards() const {
-    std::vector<const Card*> visibleCards;
+    std::vector<const Card*> cards;
     
-    const auto& currentHand = game->getCurrentPlayer().getHand();
-    for (const auto& card : currentHand) {
-        visibleCards.push_back(card.get());
+    const auto& hand = game->getCurrentPlayer().getHand();
+    for (const auto& card : hand) {
+        cards.push_back(card.get());
     }
-
-    const std::array<CombatZone, 3> zones = {
-        CombatZone::CLOSE,
-        CombatZone::RANGED,
-        CombatZone::SIEGE
-    };
-
-    for (auto zone : zones) {
-        const auto& playerCards = game->getBoard().getPlayerZone(0, zone);
-        for (const auto& card : playerCards) {
-            visibleCards.push_back(card.get());
+    
+    for (int zone = 0; zone < 3; zone++) {
+        const auto& zoneCards = game->getBoard().getPlayerZone(0, static_cast<CombatZone>(zone));
+        for (const auto& card : zoneCards) {
+            cards.push_back(card.get());
         }
         
-        const auto& opponentCards = game->getBoard().getPlayerZone(1, zone);
-        for (const auto& card : opponentCards) {
-            visibleCards.push_back(card.get());
+        const auto& oppZoneCards = game->getBoard().getPlayerZone(1, static_cast<CombatZone>(zone));
+        for (const auto& card : oppZoneCards) {
+            cards.push_back(card.get());
         }
     }
-
-    return visibleCards;
+    
+    return cards;
 }
 
+void GameWindow::handleEvent(const sf::Event& event) {
+    // if (event.type == sf::Event::MouseButtonPressed) {
+    //     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        
+    //     mainMenu.handleClick(mousePos);
+    //     if (abilityMenu) {
+    //         abilityMenu->handleClick(mousePos);
+    //     }
+    // }
+}
+
+
+void GameWindow::renderCombatZones() {
+    const float zoneHeight = cardRenderer->getCardSize().y + 35.f;
+    const float zoneWidth = window.getSize().x - 100;
+    const float centerY = window.getSize().y / 2.f;
+    
+    for (int i = 0; i < 3; i++) {
+        CombatZone zone = static_cast<CombatZone>(i);
+        float zoneY = centerY - 200 + i * (zoneHeight + 15);
+        
+        sf::RectangleShape zoneRect(sf::Vector2f(zoneWidth, zoneHeight));
+        zoneRect.setPosition(50, zoneY);
+        zoneRect.setFillColor(sf::Color(70, 70, 70, 150));
+        zoneRect.setOutlineColor(sf::Color(150, 150, 150, 200));
+        zoneRect.setOutlineThickness(1.f);
+        window.draw(zoneRect);
+        
+        sf::Text zoneLabel(CardUtils::zoneToString(zone), font, 18);
+        zoneLabel.setPosition(60, zoneY + 5);
+        window.draw(zoneLabel);
+        
+        int p1Score = game->getBoard().getPlayerPower(0, zone);
+        int p2Score = game->getBoard().getPlayerPower(1, zone);
+        
+        sf::Text scoreText(std::to_string(p1Score) + " - " + std::to_string(p2Score), font, 20);
+        scoreText.setPosition(zoneWidth/2 + 25, zoneY + 5);
+        window.draw(scoreText);
+        
+        renderCardsInZone(game->getBoard().getPlayerZone(0, zone), 60, zoneY + 30);
+        renderCardsInZone(game->getBoard().getPlayerZone(1, zone), 
+                        window.getSize().x/2 + 10, zoneY + 30);
+    }
+}
+
+
+
+void GameWindow::renderCardsInZone(const std::vector<std::unique_ptr<Card>>& cards, 
+                                 float startX, float startY) {
+    const float cardWidth = cardRenderer->getCardSize().x;
+    const float spacing = 10.f;
+    
+    for (size_t i = 0; i < cards.size(); ++i) {
+        cardRenderer->renderCard(
+            window,
+            *cards[i],
+            startX + i * (cardWidth + spacing),
+            startY,
+            false,
+            false
+        );
+    }
+}
+
+void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
+    const auto& hand = player.getHand();
+    if (hand.empty()) return;
+
+    // const float cardWidth = cardRenderer->getCardSize().x;
+    // const float cardHeight = cardRenderer->getCardSize().y;
+     const float spacing = 10.f;
+    // const float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+    // const float startX = (window.getSize().x - totalWidth) / 2;
+
+    // if (isCurrentPlayer) {
+    //     const float y = window.getSize().y - cardHeight - 20;
+    //     for (size_t i = 0; i < hand.size(); ++i) {
+    //         const bool highlight = (player.getSelectedCardIndex() == static_cast<int>(i));
+    //         cardRenderer->renderCard(
+    //             window, 
+    //             *hand[i], 
+    //             startX + i * (cardWidth + spacing), 
+    //             y,
+    //             highlight,
+    //             true
+    //         );
+    //     }
+    // } 
+    const float cardWidth = cardRenderer->getCardSize().x;
+    const float cardHeight = cardRenderer->getCardSize().y;
+    if (isCurrentPlayer){
+    for (size_t i = 0; i < hand.size(); ++i) {
+        sf::FloatRect cardPos = getHandCardPosition(player, i);
+        
+        // Render card using consistent position calculation
+        cardRenderer->renderCard(
+            window,
+            *hand[i],
+            cardPos.left,
+            cardPos.top,
+            (player.getSelectedCardIndex() == i),
+            isCurrentPlayer
+        );
+    }
+    }  else {
+        float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+        float startX = (window.getSize().x - totalWidth) / 2;
+        float y = 100;
+        
+        const float verticalOffset = 5.f;
+        
+        for (size_t i = 0; i < hand.size(); ++i) {
+            cardRenderer->renderCardBack(
+                window,
+                startX + i * (cardWidth + spacing),
+                y + (i % 2) * verticalOffset);
+        }
+    }
+}
+
+void GameWindow::renderPlayerInfo() {
+    const float panelWidth = WINDOW_WIDTH * 0.6f;
+    const float panelHeight = 60.f;
+    const sf::Vector2f panelPos(
+        (WINDOW_WIDTH - panelWidth) / 2, 
+        10.f
+    );
+
+    sf::RectangleShape panel(sf::Vector2f(panelWidth, panelHeight));
+    panel.setPosition(panelPos);
+    panel.setFillColor(sf::Color(0, 0, 0, 180));
+    panel.setOutlineColor(sf::Color(100, 100, 100));
+    panel.setOutlineThickness(1.f);
+    window.draw(panel);
+
+    const float columnWidth = panelWidth / 2;
+    const float textStartY = panelPos.y + 10.f;
+    const int currentIdx = game->getCurrentPlayerIndex();
+
+    for (int i = 0; i < 2; ++i) {
+        const Player& p = game->getPlayer(i);
+        const float xOffset = panelPos.x + (i * columnWidth);
+        const bool isCurrent = (i == currentIdx);
+
+        sf::Text name(p.getName(), font, 22);
+        name.setPosition(xOffset + 15.f, textStartY);
+        name.setFillColor(isCurrent ? sf::Color(255, 215, 0) : sf::Color::White);
+        window.draw(name);
+
+        sf::Text rounds("Rounds: " + std::to_string(p.getRoundsWon()) + "/2", font, 16);
+        rounds.setPosition(xOffset + 15.f, textStartY + 30.f);
+        window.draw(rounds);
+
+        sf::Text cards("Cards: " + std::to_string(p.getHandSize()), font, 16);
+        cards.setPosition(xOffset + columnWidth - cards.getLocalBounds().width - 15.f, 
+                        textStartY + 30.f);
+        window.draw(cards);
+
+        if (isCurrent) {
+            sf::ConvexShape arrow(3);
+            arrow.setPoint(0, sf::Vector2f(xOffset + 5.f, textStartY + 15.f));
+            arrow.setPoint(1, sf::Vector2f(xOffset + 20.f, textStartY + 15.f));
+            arrow.setPoint(2, sf::Vector2f(xOffset + 12.5f, textStartY + 25.f));
+            arrow.setFillColor(sf::Color(255, 215, 0));
+            window.draw(arrow);
+        }
+    }
+}
+
+
+void GameWindow::syncPlayerIndex() {
+    if (game) { 
+        currentPlayerIndex = game->getCurrentPlayerIndex();
+    }
+}
+
+void GameWindow::addMessage(const std::string& text, float duration) {
+    GameMessage msg;
+    msg.text = text;
+    msg.duration = duration;
+    msg.elapsed = 0.f;
+    
+    msg.displayText.setFont(font);
+    msg.displayText.setString(text);
+    msg.displayText.setCharacterSize(24);
+    msg.displayText.setFillColor(sf::Color::White);
+    msg.displayText.setOutlineColor(sf::Color::Black);
+    msg.displayText.setOutlineThickness(1.f);
+    
+    float yOffset = 50.f + (activeMessages.size() * 30.f);
+    msg.displayText.setPosition(20.f, yOffset);
+    
+    activeMessages.push_back(msg);
+}
+
+void GameWindow::updateMessages(float deltaTime) {
+    for (auto it = activeMessages.begin(); it != activeMessages.end(); ) {
+        it->elapsed += deltaTime;
+        if (it->elapsed >= it->duration) {
+            it = activeMessages.erase(it);
+        } else {
+            float alpha = 255.f * (1.f - (it->elapsed / it->duration));
+            it->displayText.setFillColor(sf::Color(255, 255, 255, static_cast<sf::Uint8>(alpha)));
+            ++it;
+        }
+    }
+}
+
+void GameWindow::renderMessages() {
+    for (auto& msg : activeMessages) {
+        sf::FloatRect bounds = msg.displayText.getGlobalBounds();
+        sf::RectangleShape bg(sf::Vector2f(bounds.width + 20, bounds.height + 10));
+        bg.setPosition(bounds.left - 10, bounds.top - 5);
+        bg.setFillColor(sf::Color(0, 0, 0, 150));
+        window.draw(bg);
+        
+        window.draw(msg.displayText);
+    }
+}

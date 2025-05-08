@@ -13,17 +13,32 @@ private:
     std::array<Player, 2> players;
     std::array<bool, 2> playerPassed;
     Deck deck;
-    int currentRound;
-    int currentPlayerIndex;
+    int currentRound = 1;
     bool gameOver;
+    mutable bool newRoundFlag = false;
+    std::vector<HeroAbility> currentAbilities;
+    void endRound();
+    void resetHeroAbilities();
+    
+    std::array<bool, 2> passedPlayers{false, false};
+    int currentPlayerIndex = 0;
+    bool abilityUsedThisRound = false;
+    
 
 public:
+
+    Player& getOpponent();
+    void markAbilityUsed(const std::string& heroName);
     Game(const std::string& player1Name, const std::string& player2Name);
     
+    bool isNewRound() const;
+    const std::vector<HeroAbility>& getHeroAbilities() const;
+    void activateHeroAbility(const HeroAbility& ability);
+    void pass(int playerIndex);
+
     std::string getWinnerName() const;
     int getCurrentPlayerIndex() const { return currentPlayerIndex; };
     void update(float deltaTime);
-    void activateHeroAbility(int playerId);
     void loadDeck(const std::string& filename);
     void startGame();
     void nextRound();
@@ -31,7 +46,6 @@ public:
     void endTurn();
     bool isPlayerTurn(int playerIndex) const;
 
-    void pass(int playerIndex);
     void calculateRoundWinner();
     void printGameState() const;
     void resetPassStates();
@@ -39,9 +53,12 @@ public:
     
     bool isGameOver() const;
     const Player& getCurrentPlayer() const;
+    Player& getCurrentPlayer();
     const Player& getPlayer(int index) const;
     Player& getPlayer(int index);
     const Board& getBoard() const;
+    Board& getBoard() { return board; }
+
 };
 
 #endif

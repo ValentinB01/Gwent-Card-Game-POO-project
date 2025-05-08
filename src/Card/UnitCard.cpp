@@ -14,28 +14,11 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
       effectValue(effectValue), isSpy(isSpy) {}
 
       void UnitCard::play(Player& owner, Player& opponent, Board& board) {
-        std::cout << "⚔️ Unit deployed: " << name << " | Power: " << power 
-                  << " | Zone: " << CardUtils::zoneToString(zone) 
-                  << (isHero ? " (Hero)" : "")
-                  << (isSpy ? " (Spy)" : "") << std::endl;
-    
-        if (isSpy) {
-            auto spyCopy = std::make_unique<UnitCard>(*this);
-            spyCopy->isSpy = false;
-            
-            opponent.playCardTBoard(std::move(spyCopy), opponent, board);
-            owner.drawCards(2);
-        } else {
-            auto unitCopy = std::make_unique<UnitCard>(*this);
-            owner.playCardToBoard(std::move(unitCopy), board);
-        }
-        if (deployEffect != DeployEffect::SPY) {
-            applyEffect(owner, opponent, board);
-        }
+        auto unitCopy = std::make_unique<UnitCard>(*this);
+        owner.playCardToBoard(std::move(unitCopy), board);
     }
 
 void UnitCard::applyEffect(Player& owner, Player& opponent, Board& board) {
-    std::cout << name << " enters combat!" << std::endl;
     triggerDeployEffect(owner, opponent, board);
 }
 

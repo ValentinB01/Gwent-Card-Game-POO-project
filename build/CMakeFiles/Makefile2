@@ -81,12 +81,12 @@ clean: CMakeFiles/gwent.dir/clean
 CMakeFiles/gwent.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target gwent"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target gwent"
 .PHONY : CMakeFiles/gwent.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/gwent.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles 19
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles 21
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/gwent.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles 0
 .PHONY : CMakeFiles/gwent.dir/rule

@@ -10,7 +10,6 @@ GameUI::GameUI(Game& game, CardRenderer& renderer, const sf::Font& font)
     
     messageBackground.setFillColor(sf::Color(0, 0, 0, 180));
     
-    createUIElements();
 }
 
 void GameUI::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
@@ -42,6 +41,7 @@ void GameUI::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
             const_cast<Player&>(currentPlayer).deselectCard();
         }
     }
+    
 }
 
 void GameUI::update(const sf::RenderWindow& window) {
@@ -87,58 +87,32 @@ void GameUI::showMessage(const std::string& message, float duration) {
     messageTimer = duration;
 }
 
-void GameUI::createUIElements() {
-    sf::Vector2f buttonSize(150, 40);
-    float margin = 20;
-    float startY = 20;
-    
-    Button passBtn("Pass", font, 
-                  sf::Vector2f(margin, startY), buttonSize);
-    passBtn.setOnClick([this]() { onPassClicked(); });
-    buttons.push_back(std::move(passBtn));
-    
-    Button heroBtn("Hero Ability", font,
-                  sf::Vector2f(margin, startY + buttonSize.y + 10), buttonSize);
-    heroBtn.setOnClick([this]() { onHeroAbilityClicked(); });
-    buttons.push_back(std::move(heroBtn));
-    
-    Button endTurnBtn("End Turn", font,
-                     sf::Vector2f(margin, startY + 2*(buttonSize.y + 10)), buttonSize);
-    endTurnBtn.setOnClick([this]() { onEndTurnClicked(); });
-    buttons.push_back(std::move(endTurnBtn));
-    
-    Button helpBtn("Help", font,
-                  sf::Vector2f(margin, startY + 3*(buttonSize.y + 10)), buttonSize);
-    helpBtn.setOnClick([this]() { onHelpClicked(); });
-    buttons.push_back(std::move(helpBtn));
-}
-
 void GameUI::updateButtonStates(const Player& currentPlayer) {
-    if (!buttons.empty()) {
-        buttons[0].setEnabled(!game.haveBothPlayersPassed());
-    }
+    // if (!buttons.empty()) {
+    //     buttons[0].setEnabled(!game.haveBothPlayersPassed());
+    // }
 
-    bool hasAvailableHero = false;
-    if (buttons.size() > 1) {
-        for (const auto& card : currentPlayer.getHand()) {
-            if (card->getType() == CardType::HERO) {
-                const HeroCard* hero = dynamic_cast<const HeroCard*>(card.get());
-                if (hero && currentPlayer.canUseHeroAbility(hero->getName())) {
-                    hasAvailableHero = true;
-                    break;
-                }
-            }
-        }
-        buttons[1].setEnabled(hasAvailableHero);
-    }
+    // bool hasAvailableHero = false;
+    // if (buttons.size() > 1) {
+    //     for (const auto& card : currentPlayer.getHand()) {
+    //         if (card->getType() == CardType::HERO) {
+    //             const HeroCard* hero = dynamic_cast<const HeroCard*>(card.get());
+    //             if (hero && currentPlayer.canUseHeroAbility(hero->getName())) {
+    //                 hasAvailableHero = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     buttons[1].setEnabled(hasAvailableHero);
+    // }
 
-    if (buttons.size() > 2) {
-        buttons[2].setEnabled(true);
-    }
+    // if (buttons.size() > 2) {
+    //     buttons[2].setEnabled(true);
+    // }
 
-    if (buttons.size() > 3) {
-        buttons[3].setEnabled(true);
-    }
+    // if (buttons.size() > 3) {
+    //     buttons[3].setEnabled(true);
+    // }
 }
 
 void GameUI::onPassClicked() {
@@ -150,13 +124,13 @@ void GameUI::onPassClicked() {
     }
 }
 
-void GameUI::onHeroAbilityClicked() {
-    try {
-        game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
-    } catch (const std::exception& e) {
-        showMessage(e.what());
-    }
-}
+// void GameUI::onHeroAbilityClicked() {
+//     try {
+//         game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
+//     } catch (const std::exception& e) {
+//         showMessage(e.what());
+//     }
+// }
 
 void GameUI::onEndTurnClicked() {
     game.endTurn();

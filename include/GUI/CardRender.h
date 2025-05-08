@@ -45,7 +45,6 @@ private:
     sf::Clock hoverClock;
     const Card* hoveredCard = nullptr;
     sf::Clock pulseClock;
-    // sf::Texture powerCircleTexture;
     sf::Texture cardGlowTexture;
     std::map<Faction, sf::Texture> factionTextures;
 

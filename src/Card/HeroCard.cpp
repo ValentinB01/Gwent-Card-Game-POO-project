@@ -12,21 +12,20 @@ HeroCard::HeroCard(const std::string& name, int power, CombatZone zone,
       ability(ability), abilityValue(abilityValue) {}
 
 void HeroCard::play(Player& owner, Player& opponent, Board& board) {
-    std::cout << "⭐ Hero played: " << name << " | Power: " << power 
-              << " | Zone: " << CardUtils::zoneToString(zone) 
-              << " | Ability: " << CardUtils::heroAbilityToString(ability) << std::endl;
-    
     auto heroCopy = std::make_unique<HeroCard>(*this);
     owner.playCardToBoard(std::move(heroCopy), board);
 }
 
 void HeroCard::activateAbility(Player& owner, Player& opponent, Board& board) {
-    if (owner.canUseHeroAbility(getName())) {
-        applyEffect(owner, opponent, board);
+    if(!owner.canUseHeroAbility(getName())) {
+        throw std::runtime_error("Ability already used this round");
+    }
+    
+    try {
+        triggerHeroAbility(owner, opponent, board);
         owner.markHeroAbilityUsed(getName());
-        std::cout << getName() << "'s ability activated successfully!\n";
-    } else {
-        throw std::runtime_error(getName() + "'s ability already used this round");
+    } catch(const std::exception& e) {
+        throw std::runtime_error("Ability failed: " + std::string(e.what()));
     }
 }
 

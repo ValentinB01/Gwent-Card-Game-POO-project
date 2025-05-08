@@ -49,16 +49,29 @@ void Game::startGame() {
     std::cout << players[currentPlayerIndex].getName() << " goes first.\n";
 }
 
-void Game::activateHeroAbility(int playerId) {
-    if (playerId != currentPlayerIndex) {
-        throw std::runtime_error("Not your turn!");
-    }
-
-    Player& player = (playerId == 0) ? players[0] : players[1];
-    Player& opponent = (playerId == 0) ? players[0] : players[1];
-    
-    player.activateHeroAbility(board, opponent);
+Player& Game::getCurrentPlayer() {
+    return players[currentPlayerIndex];
 }
+
+Player& Game::getOpponent() {
+    return players[1 - currentPlayerIndex];
+}
+
+void Game::markAbilityUsed(const std::string& heroName) {
+    players[currentPlayerIndex].markHeroAbilityUsed(heroName);
+}
+
+bool Game::isNewRound() const {
+    if (haveBothPlayersPassed()) {
+        newRoundFlag = true;
+        return true;
+    }
+    
+    bool result = newRoundFlag;
+    newRoundFlag = false;
+    return result;
+}
+
 
 void Game::nextRound() {
     if (gameOver) return;

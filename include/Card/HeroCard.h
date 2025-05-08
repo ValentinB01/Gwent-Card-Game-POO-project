@@ -11,6 +11,8 @@ private:
     int abilityValue;
 
 public:
+    std::vector<HeroAbility> abilities;
+    bool used = false;
     HeroCard(const std::string& name, int power, CombatZone zone, 
              Faction faction, HeroAbility ability, int abilityValue = 0);
     

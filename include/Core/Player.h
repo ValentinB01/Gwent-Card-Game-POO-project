@@ -9,6 +9,10 @@
 class Board;
 class Deck;
 class GameWindow;
+class Hero {
+    public:
+        std::vector<HeroAbility> abilities;
+    };
 
 class Player {
 private:
@@ -22,12 +26,22 @@ private:
     Deck* deck;
     int selectedCardIndex = -1;
     GameWindow* gameWindow = nullptr;
+    Hero hero;
+
 
 public:
     Player(const std::string& name, int id, int startingLifepoints = 2);
 
     void setGameWindow(GameWindow* window);
     GameWindow* getGameWindow() const;
+    const Hero& getHero() const { return hero; }
+    const std::vector<HeroAbility>& getHeroAbilities() const {
+        return hero.abilities;
+    }
+
+    std::vector<HeroAbility>& getHeroAbilities() {
+        return hero.abilities;
+    }
 
     //Card management
     void drawCard();

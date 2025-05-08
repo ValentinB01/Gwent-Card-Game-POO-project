@@ -12,8 +12,6 @@ WeatherCard::WeatherCard(const std::string& name, WeatherType type,
   weatherType(type), affectedZones(affectedZones), effectValue(effectValue) {}
 
 void WeatherCard::play(Player& owner, Player& opponent, Board& board) {
-    std::cout << CardUtils::weatherTypeToSymbol(weatherType) << " Weather played: " << name 
-              << " | Affected Zones: ";
     for (auto zone : affectedZones) {
         std::cout << CardUtils::zoneToString(zone) << " ";
     }

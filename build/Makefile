@@ -417,6 +417,30 @@ src/GUI/CardRender.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.s
 .PHONY : src/GUI/CardRender.cpp.s
 
+src/GUI/DropdownMenu.o: src/GUI/DropdownMenu.cpp.o
+.PHONY : src/GUI/DropdownMenu.o
+
+# target to build an object file
+src/GUI/DropdownMenu.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o
+.PHONY : src/GUI/DropdownMenu.cpp.o
+
+src/GUI/DropdownMenu.i: src/GUI/DropdownMenu.cpp.i
+.PHONY : src/GUI/DropdownMenu.i
+
+# target to preprocess a source file
+src/GUI/DropdownMenu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.i
+.PHONY : src/GUI/DropdownMenu.cpp.i
+
+src/GUI/DropdownMenu.s: src/GUI/DropdownMenu.cpp.s
+.PHONY : src/GUI/DropdownMenu.s
+
+# target to generate assembly for a file
+src/GUI/DropdownMenu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.s
+.PHONY : src/GUI/DropdownMenu.cpp.s
+
 src/GUI/GameStateManager.o: src/GUI/GameStateManager.cpp.o
 .PHONY : src/GUI/GameStateManager.o
 
@@ -488,6 +512,30 @@ src/GUI/GameWindow.s: src/GUI/GameWindow.cpp.s
 src/GUI/GameWindow.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.s
 .PHONY : src/GUI/GameWindow.cpp.s
+
+src/GUI/HelpPanel.o: src/GUI/HelpPanel.cpp.o
+.PHONY : src/GUI/HelpPanel.o
+
+# target to build an object file
+src/GUI/HelpPanel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o
+.PHONY : src/GUI/HelpPanel.cpp.o
+
+src/GUI/HelpPanel.i: src/GUI/HelpPanel.cpp.i
+.PHONY : src/GUI/HelpPanel.i
+
+# target to preprocess a source file
+src/GUI/HelpPanel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.i
+.PHONY : src/GUI/HelpPanel.cpp.i
+
+src/GUI/HelpPanel.s: src/GUI/HelpPanel.cpp.s
+.PHONY : src/GUI/HelpPanel.s
+
+# target to generate assembly for a file
+src/GUI/HelpPanel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.s
+.PHONY : src/GUI/HelpPanel.cpp.s
 
 src/GUI/Tooltip.o: src/GUI/Tooltip.cpp.o
 .PHONY : src/GUI/Tooltip.o
@@ -606,6 +654,9 @@ help:
 	@echo "... src/GUI/CardRender.o"
 	@echo "... src/GUI/CardRender.i"
 	@echo "... src/GUI/CardRender.s"
+	@echo "... src/GUI/DropdownMenu.o"
+	@echo "... src/GUI/DropdownMenu.i"
+	@echo "... src/GUI/DropdownMenu.s"
 	@echo "... src/GUI/GameStateManager.o"
 	@echo "... src/GUI/GameStateManager.i"
 	@echo "... src/GUI/GameStateManager.s"
@@ -615,6 +666,9 @@ help:
 	@echo "... src/GUI/GameWindow.o"
 	@echo "... src/GUI/GameWindow.i"
 	@echo "... src/GUI/GameWindow.s"
+	@echo "... src/GUI/HelpPanel.o"
+	@echo "... src/GUI/HelpPanel.i"
+	@echo "... src/GUI/HelpPanel.s"
 	@echo "... src/GUI/Tooltip.o"
 	@echo "... src/GUI/Tooltip.i"
 	@echo "... src/GUI/Tooltip.s"

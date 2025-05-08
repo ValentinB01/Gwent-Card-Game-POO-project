@@ -3,7 +3,7 @@
 #include <sstream>
 
 
-const sf::Vector2f CardRenderer::CARD_SIZE(90.0f, 150.0f);
+const sf::Vector2f CardRenderer::CARD_SIZE(80.0f, 135.0f);
 
 sf::Vector2f CardRenderer::getCardSize() const {
     return CARD_SIZE;
@@ -15,11 +15,11 @@ CardRenderer::CardRenderer(sf::Font& font, sf::RenderWindow& window) : tooltip(f
     }
     
     factionColors = {
-        {Faction::NORTH, sf::Color(70, 130, 180)},    // Steel blue
-        {Faction::NILFGARD, sf::Color(47, 79, 79)},     // Dark slate gray
-        {Faction::SCOIATAEL, sf::Color(34, 139, 34)},   // Forest green
-        {Faction::MONSTERS, sf::Color(139, 0, 0)},      // Dark red
-        {Faction::NEUTRAL, sf::Color(169, 169, 169)}    // Dark gray
+        {Faction::NORTH, sf::Color(70, 130, 180)},    
+        {Faction::NILFGARD, sf::Color(47, 79, 79)},     
+        {Faction::SCOIATAEL, sf::Color(34, 139, 34)},   
+        {Faction::MONSTERS, sf::Color(139, 0, 0)},     
+        {Faction::NEUTRAL, sf::Color(169, 169, 169)}    
     };
 
 }
@@ -133,6 +133,13 @@ void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float 
     // target.draw(artArea);
     
     renderCardInfo(target, card, x, y + hoverOffset);
+
+    // if(const auto hero = dynamic_cast<const HeroCard*>(&card)) {
+    //     if(!owner.canUseHeroAbility(hero->getName())) {
+    //         // Grey out used abilities
+    //         cardBase.setColor(sf::Color(150, 150, 150));
+    //     }
+    // }
     
     if (card.getType() != CardType::WEATHER) {
         renderCardPower(target, card, x + CARD_SIZE.x - 25, y + CARD_SIZE.y - 25 + hoverOffset);
@@ -163,40 +170,40 @@ void CardRenderer::renderCardBack(sf::RenderTarget& target, float x, float y) {
 }
 
 void CardRenderer::renderCardInfo(sf::RenderTarget& target, const Card& card, float x, float y) const {
-    std::string typeStr;
-    switch(card.getType()) {
-        case CardType::UNIT:
-            typeStr = "Unit";
-        case CardType::HERO: typeStr = "Hero"; break;
-        case CardType::ABILITY: typeStr = "Ability"; break;
-        case CardType::WEATHER: typeStr = "Weather"; break;
-    }
+    // std::string typeStr;
+    // switch(card.getType()) {
+    //     case CardType::UNIT:
+    //         typeStr = "Unit";
+    //     case CardType::HERO: typeStr = "Hero"; break;
+    //     case CardType::ABILITY: typeStr = "Ability"; break;
+    //     case CardType::WEATHER: typeStr = "Weather"; break;
+    // }
     
-    sf::Text typeText;
-    setupCardText(typeText, typeStr, 14, x + 15, y + CARD_SIZE.y - 60);
-    target.draw(typeText);
+    // sf::Text typeText;
+    // setupCardText(typeText, typeStr, 14, x + 15, y + CARD_SIZE.y - 60);
+    // target.draw(typeText);
     
-    std::string zoneStr;
-    switch(card.getZone()) {
-        case CombatZone::CLOSE: zoneStr = "Close Combat"; break;
-        case CombatZone::RANGED: zoneStr = "Ranged Combat"; break;
-        case CombatZone::SIEGE: zoneStr = "Siege Combat"; break;
-        case CombatZone::ANY: zoneStr = "Any Zone"; break;
-    }
+    // std::string zoneStr;
+    // switch(card.getZone()) {
+    //     case CombatZone::CLOSE: zoneStr = "Close Combat"; break;
+    //     case CombatZone::RANGED: zoneStr = "Ranged Combat"; break;
+    //     case CombatZone::SIEGE: zoneStr = "Siege Combat"; break;
+    //     case CombatZone::ANY: zoneStr = "Any Zone"; break;
+    // }
     
-    sf::Text zoneText;
-    setupCardText(zoneText, zoneStr, 14, x + 15, y + CARD_SIZE.y - 40);
-    target.draw(zoneText);
+    // sf::Text zoneText;
+    // setupCardText(zoneText, zoneStr, 14, x + 15, y + CARD_SIZE.y - 40);
+    // target.draw(zoneText);
     
-    if (card.getType() == CardType::WEATHER) {
-        // const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
-        // if (weather && weatherIconTextures.count(weather->getWeatherType())) {
-        //     sf::Sprite weatherIcon(weatherIconTextures.at(weather->getWeatherType()));
-        //     weatherIcon.setPosition(x + CARD_SIZE.x - 40, y + 15);
-        //     weatherIcon.setScale(0.5f, 0.5f);
-        //     target.draw(weatherIcon);
-        // }
-    }
+    // if (card.getType() == CardType::WEATHER) {
+    //     // const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
+    //     // if (weather && weatherIconTextures.count(weather->getWeatherType())) {
+    //     //     sf::Sprite weatherIcon(weatherIconTextures.at(weather->getWeatherType()));
+    //     //     weatherIcon.setPosition(x + CARD_SIZE.x - 40, y + 15);
+    //     //     weatherIcon.setScale(0.5f, 0.5f);
+    //     //     target.draw(weatherIcon);
+    //     // }
+    // }
 }
 
 
@@ -272,12 +279,10 @@ void CardRenderer::renderCardPower(sf::RenderTarget& target, const Card& card, f
 std::string CardRenderer::generateTooltipText(const Card& card) const {
     std::stringstream tooltip;
     
-    // Basic card info
     tooltip << "Name: " << card.getName() << "\n";
     tooltip << "Faction: " << CardUtils::factionToString(card.getFaction()) << "\n";
     tooltip << "Zone: " << CardUtils::zoneToString(card.getZone()) << "\n";
 
-    // Type-specific information
     try {
         switch(card.getType()) {
             case CardType::UNIT: {
@@ -343,7 +348,7 @@ void CardRenderer::drawTooltip(sf::RenderTarget& target) const {
     sf::View originalView = target.getView();
     target.setView(target.getDefaultView());
         
-    tooltip.draw(target); //original era doar asta
+    tooltip.draw(target);
         
     target.setView(originalView);
 }
