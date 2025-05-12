@@ -11,9 +11,9 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
     : Card(name, power, CardType::UNIT, zone, faction, 
            "Deploys a unit card with the deploy effect: " + CardUtils::deployEffectToString(effect)),
       isHero(isHero), deployEffect(effect), 
-      effectValue(effectValue), isSpy(isSpy) {}
+      effectValue(effectValue) {}
 
-      void UnitCard::play(Player& owner, Player& opponent, Board& board) {
+void UnitCard::play(Player& owner, Player& opponent, Board& board) {
         auto unitCopy = std::make_unique<UnitCard>(*this);
         owner.playCardToBoard(std::move(unitCopy), board);
     }

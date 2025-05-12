@@ -8,6 +8,7 @@
 
 class Board;
 class Deck;
+class Game;
 class GameWindow;
 class Hero {
     public:
@@ -27,11 +28,17 @@ private:
     int selectedCardIndex = -1;
     GameWindow* gameWindow = nullptr;
     Hero hero;
+    Player* opponent = nullptr;
+    Game* game = nullptr;
 
 
 public:
     Player(const std::string& name, int id, int startingLifepoints = 2);
 
+    void setOpponent(Player* opp) { opponent = opp; }
+    void setGameReference(Game* gameRef) { game = gameRef; }
+    Player& getOpponent() const { return *opponent; }
+    
     void setGameWindow(GameWindow* window);
     GameWindow* getGameWindow() const;
     const Hero& getHero() const { return hero; }

@@ -160,17 +160,29 @@ void Player::clearHand() {
     hand.clear();
 }
 
-void Player::playCardTBoard(std::unique_ptr<Card> card, Player& opponent, Board& board) {
-    if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
-        if (unit->getIsSpy()) {
-            board.addCard(opponent.getPlayerId(), std::move(card));
-        }
-    }
-    return;
-}
+// void Player::playCardTBoard(std::unique_ptr<Card> card, Player& opponent, Board& board) {
+//     if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
+//         if (unit->getIsSpy()) {
+//             board.addCard(opponent.getPlayerId(), std::move(card));
+//         }
+//     }
+//     return;
+// }
 
 void Player::playCardToBoard(std::unique_ptr<Card> card, Board& board) {
+    CardType type = card->getType();
+    CombatZone zone = card->getZone();
+    
     board.addCard(playerId, std::move(card));
+    
+    if (type == CardType::UNIT) {
+        auto& zoneCards = board.getPlayerZone(playerId, zone);
+        if (!zoneCards.empty()) {
+            if (auto unit = dynamic_cast<UnitCard*>(zoneCards.back().get())) {
+                unit->applyEffect(*this, this->getOpponent(), board);
+            }
+        }
+    }
 }
 
 std::vector<std::unique_ptr<Card>>& Player::getGraveyard(Board& board) {

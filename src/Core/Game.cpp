@@ -7,8 +7,17 @@
 Game::Game(const std::string& player1Name, const std::string& player2Name) 
     : players{Player(player1Name, 0), Player(player2Name, 1)},
       currentRound(0), currentPlayerIndex(0), gameOver(false) {
-        resetPassStates();
-      }
+        
+    resetPassStates();
+
+    players[0].setOpponent(&players[1]);
+    players[1].setOpponent(&players[0]);
+    
+    players[0].setGameReference(this);
+    players[1].setGameReference(this);
+
+
+}
 void Game::loadDeck(const std::string& filename) {
     try {
         deck.loadFromJson(filename);
