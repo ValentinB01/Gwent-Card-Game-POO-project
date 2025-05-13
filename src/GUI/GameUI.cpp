@@ -58,7 +58,6 @@ void GameUI::update(const sf::RenderWindow& window) {
         button.update(mousePos);
     }
     
-    updateButtonStates(game.getCurrentPlayer());
 }
 
 void GameUI::render(sf::RenderWindow& window) {
@@ -87,34 +86,6 @@ void GameUI::showMessage(const std::string& message, float duration) {
     messageTimer = duration;
 }
 
-void GameUI::updateButtonStates(const Player& currentPlayer) {
-    // if (!buttons.empty()) {
-    //     buttons[0].setEnabled(!game.haveBothPlayersPassed());
-    // }
-
-    // bool hasAvailableHero = false;
-    // if (buttons.size() > 1) {
-    //     for (const auto& card : currentPlayer.getHand()) {
-    //         if (card->getType() == CardType::HERO) {
-    //             const HeroCard* hero = dynamic_cast<const HeroCard*>(card.get());
-    //             if (hero && currentPlayer.canUseHeroAbility(hero->getName())) {
-    //                 hasAvailableHero = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     buttons[1].setEnabled(hasAvailableHero);
-    // }
-
-    // if (buttons.size() > 2) {
-    //     buttons[2].setEnabled(true);
-    // }
-
-    // if (buttons.size() > 3) {
-    //     buttons[3].setEnabled(true);
-    // }
-}
-
 void GameUI::onPassClicked() {
     try {
         game.pass(game.getCurrentPlayer().getPlayerId());
@@ -123,14 +94,6 @@ void GameUI::onPassClicked() {
         showMessage(e.what());
     }
 }
-
-// void GameUI::onHeroAbilityClicked() {
-//     try {
-//         game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
-//     } catch (const std::exception& e) {
-//         showMessage(e.what());
-//     }
-// }
 
 void GameUI::onEndTurnClicked() {
     game.endTurn();

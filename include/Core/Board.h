@@ -47,7 +47,7 @@ public:
     std::vector<Card*> getPlayerUnits(int playerIndex) const;
     std::vector<Card*> getPlayerUnits(int playerIndex, CombatZone zone) const;
     
-    void boostRow(int playerIndex, CombatZone zone, int boostValue);
+    void boostRow(int playerIndex, CombatZone zone, int boostValue, const Card* exclude = nullptr);
     void doubleRowPower(int playerIndex, CombatZone zone);
     void damageRow(int playerIndex, CombatZone zone, int damage);
     std::string destroyWeakestUnit(int playerIndex);

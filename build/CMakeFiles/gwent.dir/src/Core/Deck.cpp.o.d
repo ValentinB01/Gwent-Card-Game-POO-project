@@ -290,7 +290,7 @@ CMakeFiles/gwent.dir/src/Core/Deck.cpp.o: \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
  /usr/include/c++/13/iostream \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../json.hpp \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../assets/json.hpp \
  /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/unordered_map \
  /usr/include/c++/13/bits/unordered_map.h \

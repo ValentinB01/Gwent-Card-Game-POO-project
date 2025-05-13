@@ -89,7 +89,7 @@ void AbilityCard::handleClearSkies(Player& owner, Board& board) {
 void AbilityCard::handleFogletSpawn(Player& owner,CombatZone zone, Board& board) {
     if (board.hasWeather(WeatherType::IMPENETRABLE_FOG)) {
         owner.playCardToBoard(
-            std::make_unique<UnitCard>("Foglet", 2, zone, Faction::MONSTERS),
+            std::make_unique<UnitCard>("Foglet", 5, zone, Faction::MONSTERS),
             board
         );
         std::cout << "👻 Summoned a Foglet!\n";

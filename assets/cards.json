@@ -5,8 +5,7 @@
         "type": "UNIT",
         "power": 3,
         "zone": "CLOSE",
-        "faction": "NEUTRAL",
-        "effect": "SPY"
+        "faction": "NEUTRAL"
     },
     {
         "name": "Fiend",
@@ -30,7 +29,8 @@
         "power": 5,
         "zone": "CLOSE",
         "faction": "MONSTERS",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 3
     },
     {
         "name": "Olaf",
@@ -62,7 +62,7 @@
         "type": "UNIT",
         "power": 6,
         "zone": "CLOSE",
-        "faction": "SCOIATEL",
+        "faction": "SCOIATAEL",
         "effect": "DRAW_CARD",
         "effectValue": 1
     },
@@ -113,8 +113,7 @@
         "type": "UNIT",
         "power": 5,
         "zone": "CLOSE",
-        "faction": "NORTH",
-        "effect": "SPY"
+        "faction": "NORTH"
     },
     {
         "name": "Vesemir",
@@ -155,7 +154,8 @@
         "power": 4,
         "zone": "RANGED",
         "faction": "NILFGARD",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 3
     },
     {
         "name": "Gargoyle",
@@ -196,16 +196,15 @@
         "power": 8,
         "zone": "RANGED",
         "faction": "SCOIATEL",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 3
     },
     {
         "name": "Puttkammer",
         "type": "UNIT",
         "power": 3,
         "zone": "RANGED",
-        "faction": "NILFGARD",
-        "effect": "SPY",
-        "isSpy": "true"
+        "faction": "NILFGARD"
     },
     {
         "name": "Riordain",
@@ -239,7 +238,8 @@
         "power": 4,
         "zone": "RANGED",
         "faction": "SCOIATEL",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 3
     },
 
     {
@@ -254,7 +254,7 @@
     {
         "name": "Siege Technician",
         "type": "UNIT",
-        "power": 0,
+        "power": 3,
         "zone": "SIEGE",
         "faction": "NILFGARD",
         "effect": "MEDIC"
@@ -289,7 +289,8 @@
         "power": 1,
         "zone": "SIEGE",
         "faction": "NORTH",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 4
     },
     {
         "name": "Rotten Mangonel",
@@ -297,7 +298,8 @@
         "power": 3,
         "zone": "SIEGE",
         "faction": "NILFGARD",
-        "effect": "MORALE_BOOST"
+        "effect": "MORALE_BOOST",
+        "effectValue": 3
     },
     {
         "name": "Fire Elemental",
@@ -356,7 +358,8 @@
         "power": 15,
         "zone": "CLOSE",
         "faction": "NORTH",
-        "ability": "SCORCH"
+        "ability": "SCORCH",
+        "abilityValue": 0
     },
     {
         "name": "Draug",
@@ -399,7 +402,8 @@
         "power": 10,
         "zone": "RANGED",
         "faction": "SCOIATEL",
-        "ability": "SCORCH"
+        "ability": "SCORCH",
+        "abilityValue": 0
     },
     {
         "name": "Kayran",
@@ -424,7 +428,8 @@
         "power": 11,
         "zone": "RANGED",
         "faction": "MONSTERS",
-        "ability": "SCORCH"
+        "ability": "SCORCH",
+        "abilityValue": 0
     },
     {
         "name": "Iorveth",
@@ -450,7 +455,8 @@
         "power": 8,
         "zone": "SIEGE",
         "faction": "SCOIATEL",
-        "ability": "SCORCH"
+        "ability": "SCORCH",
+        "abilityValue": 0
     },
     {
         "name": "Trebuchet",
@@ -491,7 +497,8 @@
         "type": "ABILITY",
         "zone": "CLOSE",
         "faction": "NEUTRAL",
-        "effect": "FOGLET_SPAWN"
+        "effect": "FOGLET_SPAWN",
+        "effectValue": 0
     },
     {
         "name": "Manticore Venom",
@@ -526,83 +533,61 @@
         "effectValue": 2
     },
     {
-        "name": "Spring Approach",
+        "name": "Summer's Approach",
         "type": "ABILITY",
-        "zone": "CLOSE",
+        "zone": "ANY",
         "faction": "NEUTRAL",
         "effect": "CLEAR_SKIES",
         "effectValue": 2
     },
     {
-        "name": "Summer Approach",
+        "name": "Four Leaf Clover",
         "type": "ABILITY",
-        "zone": "RANGED",
+        "zone": "ANY",
         "faction": "NEUTRAL",
         "effect": "CLEAR_SKIES",
         "effectValue": 2
     },
-    {
-        "name": "Autumn Approach",
-        "type": "ABILITY",
-        "zone": "SIEGE",
-        "faction": "NEUTRAL",
-        "effect": "CLEAR_SKIES",
-        "effectValue": 2
-    },
-
     {
         "name": "Biting Frost",
         "type": "WEATHER",
-        "zone": "CLOSE",
+        "affectedZones": ["CLOSE"],
         "faction": "NEUTRAL",
         "weatherType": "BITING_FROST",
+        "effectValue": 1,
         "description": "Sets all non-hero units from close combat zone to 1 power."
     },
     {
         "name": "Impenetrable Fog",
         "type": "WEATHER",
-        "zone": "RANGED",
+        "affectedZones": ["RANGED"],
         "faction": "NEUTRAL",
         "weatherType": "IMPENETRABLE_FOG",
+        "effectValue": 1,
         "description": "Sets all non-hero units from the ranged combat zone to 1 power."
     },
     {
         "name": "Torrential Rain",
         "type": "WEATHER",
-        "zone": "SIEGE",
+        "affectedZones": ["SIEGE"],
         "faction": "NEUTRAL",
         "weatherType": "TORRENTIAL_RAIN",
+        "effectValue": 1,
         "description": "Sets all non-hero units from the siege combat zone to 1 power."
-    },
-    {
-        "name": "Skellige Storm",
-        "type": "WEATHER",
-        "zone": "ANY",
-        "faction": "NEUTRAL",
-        "weatherType": "SKELIGE_STORM",
-        "description": "Demages random units."
-    },
-    {
-        "name": "Dragon Dream",
-        "type": "WEATHER",
-        "zone": "ANY",
-        "faction": "NEUTRAL",
-        "weatherType": "DRAGON_DREAM",
-        "description": "Damages the strongest units."
     },
     {
         "name": "Calming Breeze",
         "type": "WEATHER",
-        "zone": "ANY",
-        "faction": "NEUTRAL",
-        "weatherType": "CLEAR_WEATHER"
+        "weatherType": "CLEAR_WEATHER",
+        "affectedZones": ["ANY"],
+        "faction": "NEUTRAL"
     },
     {
         "name": "Clear Sky",
         "type": "WEATHER",
-        "zone": "ANY",
-        "faction": "NEUTRAL",
-        "weatherType": "CLEAR_WEATHER"
-    }
+        "weatherType": "CLEAR_WEATHER",
+        "affectedZones": ["ANY"],
+        "faction": "NEUTRAL"
+        }
     ]
   }

@@ -160,15 +160,6 @@ void Player::clearHand() {
     hand.clear();
 }
 
-// void Player::playCardTBoard(std::unique_ptr<Card> card, Player& opponent, Board& board) {
-//     if (auto unit = dynamic_cast<UnitCard*>(card.get())) {
-//         if (unit->getIsSpy()) {
-//             board.addCard(opponent.getPlayerId(), std::move(card));
-//         }
-//     }
-//     return;
-// }
-
 void Player::playCardToBoard(std::unique_ptr<Card> card, Board& board) {
     CardType type = card->getType();
     CombatZone zone = card->getZone();

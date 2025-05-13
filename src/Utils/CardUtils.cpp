@@ -26,8 +26,6 @@ std::string CardUtils::weatherTypeToSymbol(WeatherType type) {
         case WeatherType::IMPENETRABLE_FOG: return "🌫️";
         case WeatherType::TORRENTIAL_RAIN: return "🌧️";
         case WeatherType::CLEAR_WEATHER: return "☀️";
-        case WeatherType::SKELIGE_STORM: return "⚡";
-        case WeatherType::DRAGON_DREAM: return "🔥";
         default: return "�";
     }
 }
@@ -59,8 +57,6 @@ std::string CardUtils::weatherEffectDescription(WeatherType type) {
         case WeatherType::BITING_FROST: return "Freezing cold reduces Close combat units to 1 power";
         case WeatherType::IMPENETRABLE_FOG: return "Thick fog reduces Ranged combat units to 1 power";
         case WeatherType::TORRENTIAL_RAIN: return "Heavy rain reduces Siege combat units to 1 power";
-        case WeatherType::SKELIGE_STORM: return "Storm damages random units";
-        case WeatherType::DRAGON_DREAM: return "Dragon fire damages strongest units";
         default: return "Unknown weather effect";
     }
 }

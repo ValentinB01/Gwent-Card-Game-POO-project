@@ -17,8 +17,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/gwent.dir/src/Core/Game.cpp.o.d"
   "CMakeFiles/gwent.dir/src/Core/Player.cpp.o"
   "CMakeFiles/gwent.dir/src/Core/Player.cpp.o.d"
-  "CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o"
-  "CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o.d"
   "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o"
   "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o.d"
   "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o"

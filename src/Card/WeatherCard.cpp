@@ -28,7 +28,6 @@ void WeatherCard::applyEffect(Player& owner, Player& opponent, Board& board) {
     }
 
     board.applyWeather(weatherType, affectedZones, effectValue);
-    std::cout << CardUtils::weatherEffectDescription(weatherType) << std::endl;
 }
 
 bool WeatherCard::affectsZone(CombatZone zone) const {

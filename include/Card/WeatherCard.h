@@ -12,7 +12,7 @@ private:
     std::vector<CombatZone> affectedZones;
     int effectValue;
 
-    public:
+public:
     WeatherCard(const std::string& name, WeatherType type, 
         const std::vector<CombatZone>& affectedZones, int effectValue);
     bool affectsZone(CombatZone zone) const;

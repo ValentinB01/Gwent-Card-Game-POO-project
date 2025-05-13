@@ -3,6 +3,7 @@
 #include "../include/Core/Board.h"
 #include "../include/Utils/CardUtils.h"
 #include <iostream>
+#include <limits>
 #include <algorithm>
 
 UnitCard::UnitCard(const std::string& name, int power, CombatZone zone, 
@@ -11,9 +12,9 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
     : Card(name, power, CardType::UNIT, zone, faction, 
            "Deploys a unit card with the deploy effect: " + CardUtils::deployEffectToString(effect)),
       isHero(isHero), deployEffect(effect), 
-      effectValue(effectValue) {}
+      effectValue(effectValue), isSpy(isSpy) {}
 
-void UnitCard::play(Player& owner, Player& opponent, Board& board) {
+      void UnitCard::play(Player& owner, Player& opponent, Board& board) {
         auto unitCopy = std::make_unique<UnitCard>(*this);
         owner.playCardToBoard(std::move(unitCopy), board);
     }
@@ -52,23 +53,60 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
             std::cout << "Drew " << effectValue << " card(s)." << std::endl;
             break;
             
-            case DeployEffect::DESTROY_WEAKEST: {
-                std::string destroyedName = board.destroyWeakestUnit(opponent.getPlayerId());
-                if (!destroyedName.empty()) {
-                    std::cout << "Destroyed opponent's weakest unit: " << destroyedName <<".";
-                } else {
-                    std::cout << "No units to destroy!\n";
+        case DeployEffect::DESTROY_WEAKEST: {
+            std::string destroyedName = board.destroyWeakestUnit(opponent.getPlayerId());
+            if (!destroyedName.empty()) {
+                std::cout << "Destroyed opponent's weakest unit: " << destroyedName <<".";
+            } else {
+                std::cout << "No units to destroy!\n";
+            }
+            break;
+        }
+        case DeployEffect::MORALE_BOOST: {
+            std::cout << "DEBUG - Applying Morale Boost with value: " << this->effectValue << "\n";
+            
+            // Get actual card references from the board
+            std::vector<UnitCard*> boostTargets;
+            int minPower = 100000;
+        
+            // 1. Find minimum power
+            for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
+                auto& zoneCards = board.getPlayerZone(owner.getPlayerId(), zone);
+                for (auto& card : zoneCards) {
+                    if (auto* unit = dynamic_cast<UnitCard*>(card.get())) {
+                        if (!unit->isHeroCard()) {
+                            std::cout << "DEBUG - Checking unit: " << unit->getName() 
+                                     << " with power " << unit->getPower() << "\n";
+                            minPower = std::min(minPower, unit->getPower());
+                        }
+                    }
                 }
-                break;
+            }
+        
+            // 2. Collect targets
+            for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
+                auto& zoneCards = board.getPlayerZone(owner.getPlayerId(), zone);
+                for (auto& card : zoneCards) {
+                    if (auto* unit = dynamic_cast<UnitCard*>(card.get())) {
+                        if (!unit->isHeroCard() && unit->getPower() == minPower) {
+                            boostTargets.push_back(unit);
+                        }
+                    }
+                }
+            }
+        
+            // 3. Apply boost DIRECTLY to board units
+            for (auto* unit : boostTargets) {
+                int original = unit->getPower();
+                unit->setPower(original + this->effectValue);
+                std::cout << "🎖️ Morale Boost: " << unit->getName()
+                         << " " << original << " → " << unit->getPower() << "\n";
             }
             
-        case DeployEffect::CLEAR_WEATHER:
-            board.clearWeather();
-            std::cout << "Weather effects cleared!" << std::endl;
+            std::cout << "Boosted " << boostTargets.size() 
+                     << " units with value " << this->effectValue << "\n";
             break;
-            
-        case DeployEffect::SPY:
-            break;
+        }
             
         case DeployEffect::MEDIC: {
             auto& graveyard = board.getPlayerGraveyard(owner.getPlayerId());
@@ -80,11 +118,6 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
             }
             break;
         }
-            
-        case DeployEffect::MORALE_BOOST:
-            board.boostRow(owner.getPlayerId(), zone, effectValue);
-            std::cout << "Morale boost applied to the "<<CardUtils::zoneToString(zone) <<" battle zone!" << std::endl;
-            break;
             
         case DeployEffect::NONE:
         default:

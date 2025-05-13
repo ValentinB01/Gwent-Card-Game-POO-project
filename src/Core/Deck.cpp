@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include "../json.hpp"
+#include "../assets/json.hpp"
 
 using json = nlohmann::json;
 
@@ -57,9 +57,7 @@ WeatherType Deck::stringToWeatherType(const std::string& str) {
         {"BITING_FROST", WeatherType::BITING_FROST},
         {"IMPENETRABLE_FOG", WeatherType::IMPENETRABLE_FOG},
         {"TORRENTIAL_RAIN", WeatherType::TORRENTIAL_RAIN},
-        {"CLEAR_WEATHER", WeatherType::CLEAR_WEATHER},
-        {"SKELIGE_STORM", WeatherType::SKELIGE_STORM},
-        {"DRAGON_DREAM", WeatherType::DRAGON_DREAM}
+        {"CLEAR_WEATHER", WeatherType::CLEAR_WEATHER}
     };
     auto it = types.find(str);
     return it != types.end() ? it->second : WeatherType::CLEAR_WEATHER;
@@ -107,57 +105,56 @@ void Deck::loadFromJson(const std::string& filename) {
 
     for (const auto& cardData : j["cards"]) {
         try {
-            std::string cardType = cardData["type"];
-            std::string name = cardData["name"];
-            Faction faction = stringToFaction(cardData["faction"]);
-            CombatZone zone = stringToCombatZone(cardData["zone"]);
-
+            std::string cardType = cardData.value("type", "");
+            std::string name = cardData.value("name", "");
+            Faction faction = stringToFaction(cardData.value("faction", ""));
+            CombatZone zone = stringToCombatZone(cardData.value("zone", ""));
+        
             if (cardType == "UNIT") {
-                int power = cardData["power"];
+                int power = cardData.value("power", 0);
                 bool isHero = cardData.value("isHero", false);
                 bool isSpy = cardData.value("isSpy", false);
                 DeployEffect effect = stringToDeployEffect(cardData.value("effect", "NONE"));
                 int effectValue = cardData.value("effectValue", 0);
-
+        
                 cards.push_back(std::make_unique<UnitCard>(
                     name, power, zone, faction, isHero, effect, effectValue, isSpy
                 ));
             }
             else if (cardType == "HERO") {
-                int power = cardData["power"];
-                HeroAbility ability = stringToHeroAbility(cardData["ability"]);
+                int power = cardData.value("power", 0);
+                HeroAbility ability = stringToHeroAbility(cardData.value("ability", ""));
                 int abilityValue = cardData.value("abilityValue", 0);
-
+        
                 cards.push_back(std::make_unique<HeroCard>(
                     name, power, zone, faction, ability, abilityValue
                 ));
             }
             else if (cardType == "ABILITY") {
-                AbilityEffect effect = stringToAbilityEffect(cardData["effect"]);
+                AbilityEffect effect = stringToAbilityEffect(cardData.value("effect", ""));
                 int effectValue = cardData.value("effectValue", 0);
                 bool targetsEnemy = cardData.value("targetsEnemy", true);
-
+        
                 cards.push_back(std::make_unique<AbilityCard>(
                     name, zone, faction, effect, effectValue, targetsEnemy
                 ));
             }
             else if (cardType == "WEATHER") {
-                WeatherType weatherType = stringToWeatherType(cardData["weatherType"]);
+                WeatherType weatherType = stringToWeatherType(cardData.value("weatherType", ""));
                 int effectValue = cardData.value("effectValue", 0);
-                
+        
                 std::vector<CombatZone> affectedZones;
-                
-                if (cardData.contains("affectedZones")) {
+                if (cardData.contains("affectedZones") && cardData["affectedZones"].is_array()) {
                     for (const auto& zoneStr : cardData["affectedZones"]) {
                         affectedZones.push_back(stringToCombatZone(zoneStr));
                     }
                 } else {
                     affectedZones = {getDefaultZoneForWeather(weatherType)};
                 }
-                
+        
                 cards.push_back(std::make_unique<WeatherCard>(
-                    name, 
-                    weatherType, 
+                    name,
+                    weatherType,
                     affectedZones,
                     effectValue
                 ));
@@ -167,9 +164,9 @@ void Deck::loadFromJson(const std::string& filename) {
             continue;
         }
     }
-
-    std::cout << "Loaded " << cards.size() << " cards from " << filename << std::endl;
 }
+
+
 CombatZone Deck::getDefaultZoneForWeather(WeatherType type) const {
     switch(type) {
         case WeatherType::BITING_FROST:
@@ -178,10 +175,6 @@ CombatZone Deck::getDefaultZoneForWeather(WeatherType type) const {
             return CombatZone::RANGED;
         case WeatherType::TORRENTIAL_RAIN:
             return CombatZone::SIEGE;
-        case WeatherType::SKELIGE_STORM:
-            return CombatZone::ANY;
-        case WeatherType::DRAGON_DREAM:
-            return CombatZone::ANY;   
         case WeatherType::CLEAR_WEATHER:
             return CombatZone::ANY;     
         default:

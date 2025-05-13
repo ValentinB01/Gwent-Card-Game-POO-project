@@ -1,13 +1,13 @@
 #ifndef GWENT_ENUMS_H
 #define GWENT_ENUMS_H
 
-enum class CardType { UNIT, HERO, ABILITY, WEATHER };
+enum class CardType { UNIT, HERO,SIEGE_MACHINE, ABILITY, WEATHER };
 enum class CombatZone { CLOSE, RANGED, SIEGE, ANY };
 enum class Faction { NORTH, SCOIATAEL, NILFGARD, MONSTERS, NEUTRAL };
 
 enum class WeatherType {
     BITING_FROST, IMPENETRABLE_FOG, TORRENTIAL_RAIN,
-    CLEAR_WEATHER, SKELIGE_STORM, DRAGON_DREAM
+    CLEAR_WEATHER, NONE
 };
 
 enum class DeployEffect {
@@ -23,5 +23,14 @@ enum class AbilityEffect {
     DAMAGE_ROW, CLEAR_SKIES, FOGLET_SPAWN, 
     COMMANDO_TRAINING, VENOM_EXTRACT
 };
+
+enum class Zone {
+    Close,
+    Ranged,
+    Siege,
+    Weather,  
+    Ability    
+};
+
 
 #endif

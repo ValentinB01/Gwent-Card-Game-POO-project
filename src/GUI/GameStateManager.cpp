@@ -13,7 +13,6 @@ GameStateManager::GameStateManager(Game& game, CardRenderer& renderer)
     if (!font.loadFromFile("../assets/fonts/times.ttf")) { 
         throw std::runtime_error("Failed to load font");
     }
-    createUIElements();
 }
 
 void GameStateManager::changeState(State newState) {
@@ -80,21 +79,9 @@ void GameStateManager::update(float deltaTime, sf::RenderWindow& window) {
     for (auto& button : buttons) {
         button.update(mousePos);
     }
-    
-    // State-specific updates
-    switch(currentState) {
-        case State::InGame:
-            // Update game logic
-            break;
-        case State::Paused:
-            // Paused state updates
-            break;
-        // Other states...
-    }
 }
 
 void GameStateManager::render(sf::RenderWindow& window) {
-    // Render game elements based on visibility
     if (boardVisible) {
         renderBoard(window);
         renderPlayerInfo(window);
@@ -104,7 +91,6 @@ void GameStateManager::render(sf::RenderWindow& window) {
         renderHand(window);
     }
     
-    // Render UI elements
     for (const auto& button : buttons) {
         button.draw(window);
     }
@@ -124,27 +110,12 @@ void GameStateManager::setBoardVisible(bool visible) {
     updateUIElements();
 }
 
-// Private implementation methods
-void GameStateManager::createUIElements() {
-    // Create common buttons
-    buttons.emplace_back("Pass", font, sf::Vector2f(20, 20), sf::Vector2f(100, 40));
-    buttons.back().setOnClick([this]() { onPassClicked(); });
-    
-    buttons.emplace_back("Hero Ability", font, sf::Vector2f(130, 20), sf::Vector2f(150, 40));
-    buttons.back().setOnClick([this]() { onHeroAbilityClicked(); });
-    
-    // Initialize info texts
-    infoTexts.emplace_back("", font, 20);
-    infoTexts.back().setPosition(300, 20);
-}
 
 void GameStateManager::updateUIElements() {
-    // Update button visibility based on state
     buttons[0].setEnabled(currentState == State::InGame); // Pass button
     buttons[1].setEnabled(currentState == State::InGame && 
                          game.getCurrentPlayer().canUseHeroAbility()); // Hero button
     
-    // Update info text
     if (currentState == State::InGame) {
         infoTexts[0].setString(game.getCurrentPlayer().getName() + "'s Turn");
     }
@@ -166,18 +137,15 @@ void GameStateManager::renderHand(sf::RenderWindow& window) {
 }
 
 void GameStateManager::renderBoard(sf::RenderWindow& window) {
-    // Render combat zones
     const float zoneHeight = cardRenderer.getCardSize().y;
     const float zoneWidth = window.getSize().x - 100;
     const float centerY = window.getSize().y / 2;
     
-    // Close combat zone
     sf::RectangleShape closeZone(sf::Vector2f(zoneWidth, zoneHeight));
     closeZone.setPosition(50, centerY - zoneHeight - 20);
     closeZone.setFillColor(sf::Color(70, 70, 70, 150));
     window.draw(closeZone);
     
-    // Render cards in zones...
 }
 
 
@@ -195,18 +163,10 @@ void GameStateManager::onCardSelected(int index) {
     selectedCardIndex = index;
     try {
         game.playCard(game.getCurrentPlayer().getPlayerId(), index);
-        selectedCardIndex = -1; // Reset after successful play
+        selectedCardIndex = -1;
     } catch (const std::exception& e) {
         infoTexts[0].setString("Can't play that card: " + std::string(e.what()));
     }
-}
-
-void GameStateManager::onHeroAbilityClicked() {
-    // try {
-    //     game.activateHeroAbility(game.getCurrentPlayer().getPlayerId());
-    // } catch (const std::exception& e) {
-    //     infoTexts[0].setString("Hero ability failed: " + std::string(e.what()));
-    // }
 }
 
 void GameStateManager::renderPlayerInfo(sf::RenderWindow& window) {

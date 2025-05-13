@@ -55,18 +55,6 @@ void DropdownMenu::setPosition(const sf::Vector2f& position) {
     }
 }
 
-// void DropdownMenu::update(const sf::Vector2f& mousePos) {
-//     if (!expanded) return;
-
-//     for (auto& option : options) {
-//         if (option.rect.getGlobalBounds().contains(mousePos)) {
-//             option.rect.setFillColor(sf::Color(120, 120, 120));
-//         } else {
-//             option.rect.setFillColor(sf::Color(90, 90, 90));
-//         }
-//     }
-// }
-
 void DropdownMenu::draw(sf::RenderWindow& window) {
     window.draw(mainButton);
     window.draw(mainButtonText);
@@ -118,32 +106,18 @@ void DropdownMenu::update(const sf::Vector2f& mousePos) {
         }
 
 }
-// void DropdownMenu::handleClick(const sf::Vector2f& clickPos) {
-//     if (mainButton.getGlobalBounds().contains(clickPos)) {
-//         expanded = !expanded;
-//     } else if (expanded) {
-//         for (auto& option : options) {
-//             if (option.rect.getGlobalBounds().contains(clickPos)) {
-//                 option.action();
-//                 expanded = false;
-//                 break;
-//             }
-//         }
-//     }
-// }
+
 void DropdownMenu::clearOptions() {
     options.clear();
 }
 
 void DropdownMenu::updateLayout() {
-    // Update main button
     mainButton.setSize(mainButtonSize);
     mainButtonText.setPosition(
         mainButton.getPosition().x + 10,
         mainButton.getPosition().y + (mainButtonSize.y - mainButtonText.getLocalBounds().height)/2
     );
 
-    // Update options
     for(size_t i = 0; i < options.size(); ++i) {
         options[i].rect.setSize({mainButtonSize.x, optionHeight});
         options[i].rect.setPosition(

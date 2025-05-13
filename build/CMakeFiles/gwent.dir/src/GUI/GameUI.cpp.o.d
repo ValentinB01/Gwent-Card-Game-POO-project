@@ -288,7 +288,8 @@ CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: \
  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
- /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /usr/include/c++/13/tr1/riemann_zeta.tcc /usr/include/c++/13/iostream \
+ /usr/include/c++/13/istream /usr/include/c++/13/bits/istream.tcc \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/Card.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/UnitCard.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/../Card/Card.h \
@@ -299,6 +300,4 @@ CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/WeatherCard.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/CardUtils.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/enums.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
- /usr/include/c++/13/iostream /usr/include/c++/13/istream \
- /usr/include/c++/13/bits/istream.tcc
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h

@@ -24,62 +24,100 @@ CardRenderer::CardRenderer(sf::Font& font, sf::RenderWindow& window) : tooltip(f
 
 }
 
+
 bool CardRenderer::loadResources() {
-    auto loadSafe = [](sf::Texture& tex, const std::string& path) -> bool {
+    auto load = [&](TripleKey key, std::string const& path) {
+        sf::Texture tex;
         if (!tex.loadFromFile(path)) {
-            std::cerr << "ERROR: Failed to load texture: " << path << "\n";
+            std::cerr << "ERROR: cannot load " << path << "\n";
             return false;
         }
         tex.setSmooth(true);
+        textures.emplace(key, std::move(tex));
         return true;
     };
 
-    bool success = true;
+    if (!cardBackTexture.loadFromFile("assets/cards/card_back.png")) {
+        std::cerr << "Failed to load card back texture\n";
+        return false;
+    }
 
-    if (!loadSafe(cardBackTexture, "assets/cards/card_back.png")) success = false;
-    if (!loadSafe(cardBaseTexture, "assets/cards/card_base.png")) success = false;
-    if (!loadSafe(cardGlowTexture, "assets/cards/card_glow.png")) success = false;
-  
-    cardBaseTexture.setSmooth(true);
-    cardBaseTexture.setRepeated(false);
+    bool ok = true;
 
-    std::vector<std::pair<Faction, std::string>> factionFiles = {
-        {Faction::NORTH, "northern"},
-        {Faction::NILFGARD, "nilfgaard"},
-        {Faction::SCOIATAEL, "scoiatael"},
-        {Faction::MONSTERS, "monsters"},
-        {Faction::NEUTRAL, "neutral"}
+    std::vector<Faction> factions = {
+        Faction::NORTH, Faction::NILFGARD,
+        Faction::SCOIATAEL, Faction::MONSTERS, Faction::NEUTRAL
     };
-    
-    for (const auto& [faction, name] : factionFiles) {
-        sf::Texture texture;
-        if (texture.loadFromFile("../assets/cards/" + name + "_faction.png")) {
-            factionTextures[faction] = texture;
-        } else {
-            std::cerr << "Failed to load texture for faction: " << name << "\n";
+
+    for (auto z : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
+        for (auto t : {CardType::UNIT, CardType::HERO}) {
+            for (auto f : factions) {
+                std::string fn =
+                    "assets/cards/" +
+                    zoneName(z) +
+                    typeName(t) + "_" +
+                    factionName(f) +
+                    ".png";
+                ok &= load({z, t, f}, fn);
+            }
         }
     }
 
-    // std::vector<std::pair<WeatherType, std::string>> weatherFiles = {
-    //     {WeatherType::BITING_FROST, "frost"},
-    //     {WeatherType::IMPENETRABLE_FOG, "fog"},
-    //     {WeatherType::TORRENTIAL_RAIN, "rain"},
-    //     {WeatherType::CLEAR_WEATHER, "clear"},
-    //     {WeatherType::SKELIGE_STORM, "storm"},
-    //     {WeatherType::DRAGON_DREAM, "dragon"}
-    // };
-    
-    // for (const auto& [weather, name] : weatherFiles) {
-    //     sf::Texture texture;
-    //     if (texture.loadFromFile("../assets/weather/" + name + ".png")) {
-    //         weatherIconTextures[weather] = texture;
-    //     } else {
-    //         std::cerr << "Failed to load texture for weather: " << name << "\n";
-    //     }
-    // }           Asta se face *****
+    std::vector<CombatZone> abilityZones = {
+        CombatZone::CLOSE, CombatZone::RANGED, 
+        CombatZone::SIEGE, CombatZone::ANY
+    };
+    for (auto z : abilityZones) {
+        std::string fn = "assets/cards/ability_" + zoneName(z) + ".png";
+        ok &= load({z, CardType::ABILITY, Faction::NEUTRAL}, fn);
+    }
 
-    return success;
+    static const std::vector<std::pair<WeatherType, std::string>> weathers = {
+        {WeatherType::BITING_FROST, "freeze"},
+        {WeatherType::IMPENETRABLE_FOG, "fog"},
+        {WeatherType::TORRENTIAL_RAIN, "rain"},
+        {WeatherType::CLEAR_WEATHER, "clear"}
+    };
+    for (auto& w : weathers) {
+        std::string fn = "assets/cards/weather_" + w.second + ".png";
+        ok &= load({CombatZone::ANY, CardType::WEATHER, Faction::NEUTRAL, w.first}, fn);
+    }
+
+    return ok;
 }
+
+void CardRenderer::setupCardBase(sf::RectangleShape& base, Card const& card) const {
+    TripleKey key;
+
+    key.zone = card.getZone();
+    key.type = card.getType();
+    key.faction = card.getFaction();
+
+    if (card.getType() == CardType::WEATHER) {
+        key.weather = card.getWeatherType();
+    } else {
+        key.weather = WeatherType::NONE;
+    }
+
+    auto it = textures.find(key);
+    if (it != textures.end()) {
+        base.setTexture(&it->second);
+        base.setFillColor(sf::Color::White);
+    } else {
+        base.setTexture(nullptr);
+        base.setFillColor(sf::Color(200, 200, 200, 180));
+    }
+
+    auto colIt = factionColors.find(card.getFaction());
+    if (colIt != factionColors.end()) {
+        base.setOutlineColor(colIt->second);
+        base.setOutlineThickness(3.f);
+    } else {
+        base.setOutlineColor(sf::Color(255, 255, 255, 100));
+        base.setOutlineThickness(2.f);
+    }
+}
+
 
 void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float x, float y,
                               bool highlight, bool isCurrentPlayer)
@@ -88,13 +126,17 @@ void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float 
     float hoverScale = 1.f;
     
     if (highlight) {
-        // hoverOffset = -20.f;
-        // hoverScale = 1.05f;
-        
+        renderRoundedRectangle(target, 
+            sf::FloatRect(x + 3, y + 3, CARD_SIZE.x, CARD_SIZE.y), // Offset shadow
+            CARD_CORNER_RADIUS, 
+            sf::Color(0, 0, 0, 50)
+        );
+    }
+
+
+    if (highlight) {        
         float pulse = sin(hoverClock.getElapsedTime().asSeconds() * 5.f) * 0.05f;
         hoverScale += pulse;
-        
-        // renderCardHoverEffect(target, x, y);
     }
 
     const_cast<Card&>(card).position = sf::Vector2f(x, y);
@@ -122,33 +164,19 @@ void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float 
     titleBg.setFillColor(factionColors.at(card.getFaction()));
     titleBg.setOutlineColor(sf::Color::Black);
     titleBg.setOutlineThickness(1.f);
-    // target.draw(titleBg);
-    // target.draw(titleText);
+
     
     sf::RectangleShape artArea(sf::Vector2f(CARD_SIZE.x - 20, CARD_SIZE.y * 0.5f));
     artArea.setPosition(x + 10, y + 40 + hoverOffset);
     artArea.setFillColor(sf::Color(50, 50, 50));
     artArea.setOutlineColor(sf::Color::Black);
     artArea.setOutlineThickness(1.f);
-    // target.draw(artArea);
-    
-    renderCardInfo(target, card, x, y + hoverOffset);
-
-    // if(const auto hero = dynamic_cast<const HeroCard*>(&card)) {
-    //     if(!owner.canUseHeroAbility(hero->getName())) {
-    //         // Grey out used abilities
-    //         cardBase.setColor(sf::Color(150, 150, 150));
-    //     }
-    // }
-    
-    if (card.getType() != CardType::WEATHER) {
-        renderCardPower(target, card, x + CARD_SIZE.x - 25, y + CARD_SIZE.y - 25 + hoverOffset);
     
     if (highlight) {
         renderCardGlow(target, x, y + hoverOffset, sf::Color(255, 255, 100, 150));
     }
 }
-}
+
 
 void CardRenderer::renderCardBack(sf::RenderTarget& target, float x, float y) {
     sf::Sprite cardBack(cardBackTexture);
@@ -158,83 +186,7 @@ void CardRenderer::renderCardBack(sf::RenderTarget& target, float x, float y) {
         CARD_SIZE.y / cardBack.getLocalBounds().height
     );
     
-    static std::map<int, float> offsets = {{0, 0}, {1, 2}, {2, 4}, {3, 6}};
-    static int counter = 0;
-    
-    float offset = offsets[counter % 4];
-    cardBack.setRotation(offset * 0.5f);
-    cardBack.move(offset * 0.3f, -offset * 0.2f);
-    
     target.draw(cardBack);
-    counter++;
-}
-
-void CardRenderer::renderCardInfo(sf::RenderTarget& target, const Card& card, float x, float y) const {
-    // std::string typeStr;
-    // switch(card.getType()) {
-    //     case CardType::UNIT:
-    //         typeStr = "Unit";
-    //     case CardType::HERO: typeStr = "Hero"; break;
-    //     case CardType::ABILITY: typeStr = "Ability"; break;
-    //     case CardType::WEATHER: typeStr = "Weather"; break;
-    // }
-    
-    // sf::Text typeText;
-    // setupCardText(typeText, typeStr, 14, x + 15, y + CARD_SIZE.y - 60);
-    // target.draw(typeText);
-    
-    // std::string zoneStr;
-    // switch(card.getZone()) {
-    //     case CombatZone::CLOSE: zoneStr = "Close Combat"; break;
-    //     case CombatZone::RANGED: zoneStr = "Ranged Combat"; break;
-    //     case CombatZone::SIEGE: zoneStr = "Siege Combat"; break;
-    //     case CombatZone::ANY: zoneStr = "Any Zone"; break;
-    // }
-    
-    // sf::Text zoneText;
-    // setupCardText(zoneText, zoneStr, 14, x + 15, y + CARD_SIZE.y - 40);
-    // target.draw(zoneText);
-    
-    // if (card.getType() == CardType::WEATHER) {
-    //     // const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
-    //     // if (weather && weatherIconTextures.count(weather->getWeatherType())) {
-    //     //     sf::Sprite weatherIcon(weatherIconTextures.at(weather->getWeatherType()));
-    //     //     weatherIcon.setPosition(x + CARD_SIZE.x - 40, y + 15);
-    //     //     weatherIcon.setScale(0.5f, 0.5f);
-    //     //     target.draw(weatherIcon);
-    //     // }
-    // }
-}
-
-
-void CardRenderer::setupCardBase(sf::RectangleShape& cardBase, const Card& card) const {
-    // 1. First try to get faction-specific texture
-    const Faction faction = card.getFaction();
-    auto factionIt = factionTextures.find(faction);
-    
-    if (factionIt != factionTextures.end()) {
-        // Use faction-specific texture
-        cardBase.setTexture(&factionIt->second);
-        cardBase.setFillColor(sf::Color::White); // Neutral color for proper texture display
-    } else {
-        // Fallback to default texture
-        cardBase.setTexture(&cardBaseTexture);
-        cardBase.setFillColor(sf::Color(255, 255, 255, 150)); // Semi-transparent white
-    }
-
-    // 2. Add faction-colored accent
-    auto colorIt = factionColors.find(faction);
-    if (colorIt != factionColors.end()) {
-        // Apply colored outline/border
-        cardBase.setOutlineColor(colorIt->second);
-        cardBase.setOutlineThickness(3.f);
-    } else {
-        // Default outline
-        cardBase.setOutlineColor(sf::Color(255, 255, 255, 100));
-        cardBase.setOutlineThickness(2.f);
-    }
-
-    
 }
 
 void CardRenderer::setupCardsText(sf::Text& text, const std::string& str, unsigned size, float x, float y) const {
@@ -243,37 +195,6 @@ void CardRenderer::setupCardsText(sf::Text& text, const std::string& str, unsign
     text.setCharacterSize(size);
     text.setFillColor(sf::Color::White);
     text.setPosition(x, y);
-}
-
-
-void CardRenderer::renderCardPower(sf::RenderTarget& target, const Card& card, float x, float y) const {
-    // const float radius = 15.f;
-    
-    // // 1. Draw power circle
-    // sf::CircleShape powerCircle(radius);
-    // powerCircle.setPosition(x, y);
-    // powerCircle.setFillColor(sf::Color::Transparent);
-    // powerCircle.setOutlineColor(sf::Color::Red);
-    // powerCircle.setOutlineThickness(2.f);
-    // target.draw(powerCircle);
-
-    // // 2. Create power text
-    // sf::Text powerText;
-    // powerText.setString("TEST");  // Force known text
-    // powerText.setCharacterSize(20);
-    // powerText.setFillColor(sf::Color::Magenta);
-    // powerText.setFont(font);  // Direct font set
-    
-    // // 3. Simple positioning
-    // sf::FloatRect textBounds = powerText.getLocalBounds();
-    // powerText.setOrigin(textBounds.width/2, textBounds.height/2);
-    // powerText.setPosition(x + radius, y + radius);
-
-    // // 4. Draw order verification
-    // target.draw(powerText);
-    
-    // std::cout << "Text position: (" << powerText.getPosition().x 
-    //           << ", " << powerText.getPosition().y << ")\n";
 }
 
 std::string CardRenderer::generateTooltipText(const Card& card) const {

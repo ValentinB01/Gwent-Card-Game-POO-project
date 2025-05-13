@@ -195,24 +195,10 @@ CMakeFiles/gwent.dir/src/Core/Player.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/gwent.dir/src/Core/Player.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/Core/Player.cpp -o CMakeFiles/gwent.dir/src/Core/Player.cpp.s
 
-CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o: CMakeFiles/gwent.dir/flags.make
-CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/AnimationSystem.cpp
-CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/AnimationSystem.cpp
-
-CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/AnimationSystem.cpp > CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.i
-
-CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/AnimationSystem.cpp -o CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.s
-
 CMakeFiles/gwent.dir/src/GUI/Button.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/Button.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/Button.cpp
 CMakeFiles/gwent.dir/src/GUI/Button.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/gwent.dir/src/GUI/Button.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/gwent.dir/src/GUI/Button.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/Button.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/Button.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/Button.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/Button.cpp
 
 CMakeFiles/gwent.dir/src/GUI/Button.cpp.i: cmake_force
@@ -226,7 +212,7 @@ CMakeFiles/gwent.dir/src/GUI/Button.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/CardRender.cpp
 CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/CardRender.cpp
 
 CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.i: cmake_force
@@ -240,7 +226,7 @@ CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/DropdownMenu.cpp
 CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/DropdownMenu.cpp
 
 CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.i: cmake_force
@@ -254,7 +240,7 @@ CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameStateManager.cpp
 CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameStateManager.cpp
 
 CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.i: cmake_force
@@ -268,7 +254,7 @@ CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameUI.cpp
 CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameUI.cpp
 
 CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.i: cmake_force
@@ -282,7 +268,7 @@ CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameWindow.cpp
 CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameWindow.cpp
 
 CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.i: cmake_force
@@ -296,7 +282,7 @@ CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/HelpPanel.cpp
 CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/HelpPanel.cpp
 
 CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.i: cmake_force
@@ -310,7 +296,7 @@ CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/Tooltip.cpp
 CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o -MF CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o.d -o CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/Tooltip.cpp
 
 CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.i: cmake_force
@@ -324,7 +310,7 @@ CMakeFiles/gwent.dir/src/GUI/Tooltip.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/Utils/CardUtils.cpp
 CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o -MF CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o.d -o CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/Utils/CardUtils.cpp
 
 CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.i: cmake_force
@@ -338,7 +324,7 @@ CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.s: cmake_force
 CMakeFiles/gwent.dir/src/main.cpp.o: CMakeFiles/gwent.dir/flags.make
 CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/main.cpp
 CMakeFiles/gwent.dir/src/main.cpp.o: CMakeFiles/gwent.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/gwent.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/gwent.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gwent.dir/src/main.cpp.o -MF CMakeFiles/gwent.dir/src/main.cpp.o.d -o CMakeFiles/gwent.dir/src/main.cpp.o -c /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/main.cpp
 
 CMakeFiles/gwent.dir/src/main.cpp.i: cmake_force
@@ -360,7 +346,6 @@ gwent_OBJECTS = \
 "CMakeFiles/gwent.dir/src/Core/Deck.cpp.o" \
 "CMakeFiles/gwent.dir/src/Core/Game.cpp.o" \
 "CMakeFiles/gwent.dir/src/Core/Player.cpp.o" \
-"CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o" \
 "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o" \
 "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o" \
 "CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o" \
@@ -384,7 +369,6 @@ gwent: CMakeFiles/gwent.dir/src/Core/Board.cpp.o
 gwent: CMakeFiles/gwent.dir/src/Core/Deck.cpp.o
 gwent: CMakeFiles/gwent.dir/src/Core/Game.cpp.o
 gwent: CMakeFiles/gwent.dir/src/Core/Player.cpp.o
-gwent: CMakeFiles/gwent.dir/src/GUI/AnimationSystem.cpp.o
 gwent: CMakeFiles/gwent.dir/src/GUI/Button.cpp.o
 gwent: CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o
 gwent: CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o
@@ -400,7 +384,7 @@ gwent: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1
 gwent: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
 gwent: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 gwent: CMakeFiles/gwent.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable gwent"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX executable gwent"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gwent.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

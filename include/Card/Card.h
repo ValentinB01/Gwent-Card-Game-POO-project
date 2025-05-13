@@ -9,6 +9,13 @@
 class Player;
 class Board;
 
+enum class CardKind {
+    Unit,
+    Hero,
+    SiegeMachine,
+    WeatherEffect,
+    Ability
+  };
 class Card {
 protected:
     std::string name;
@@ -17,7 +24,6 @@ protected:
     CombatZone zone;
     Faction faction;
     std::string description;
-    
 
 public:
     sf::Vector2f position;
@@ -40,8 +46,9 @@ public:
     virtual void takeDamage(int amount);
 
     virtual WeatherType getWeatherType() const { 
-        return WeatherType::CLEAR_WEATHER;
+        return WeatherType::NONE;
     }
+    
 };
 
 #endif

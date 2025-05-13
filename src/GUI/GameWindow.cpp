@@ -33,7 +33,7 @@ GameWindow::GameWindow(const std::string& p1, const std::string& p2)
         std::cout << "7. GameUI initialized\n";
 
         std::cout << "8. Loading deck...\n";
-        game->loadDeck("assets/cards.json");
+        game->loadDeck("../assets/cards.json");
         std::cout << "9. Deck loaded\n";
 
         std::cout << "10. Starting game...\n";
@@ -59,19 +59,6 @@ GameWindow::GameWindow(const std::string& p1, const std::string& p2)
         window.close();
     });
     mainMenu.setSize({120, 30});
-
-
-    turnText.setFont(font);
-    turnText.setCharacterSize(24);
-    messageText.setFont(font);
-    messageText.setCharacterSize(24);
-    messageText.setFillColor(sf::Color::White);
-    
-    messageBackground.setFillColor(sf::Color(0, 0, 0, 180));
-    messageBackground.setOutlineColor(sf::Color::White);
-    messageBackground.setOutlineThickness(1.f);
-    
-    messageTimer = 0.f;
 }
 
 void GameWindow::run() {
@@ -111,27 +98,6 @@ sf::FloatRect GameWindow::getHandCardPosition(const Player& player, int index) c
     };
 }
 
-void GameWindow::showMessage(const std::string& message, float duration) {
-    messageText.setString(message);
-    
-    sf::FloatRect textRect = messageText.getLocalBounds();
-    messageText.setOrigin(textRect.left + textRect.width/2.0f,
-                        textRect.top + textRect.height/2.0f);
-    messageText.setPosition(window.getSize().x/2.0f, 50.f);
-    
-    messageBackground.setSize(sf::Vector2f(
-        textRect.width + 40.f,
-        textRect.height + 20.f
-    ));
-    messageBackground.setOrigin(
-        messageBackground.getSize().x/2.0f,
-        messageBackground.getSize().y/2.0f
-    );
-    messageBackground.setPosition(window.getSize().x/2.0f, 50.f);
-    
-    messageTimer = duration;
-}
-
 void GameWindow::processEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -160,10 +126,8 @@ void GameWindow::processEvents() {
                 window.getDefaultView()
             );
 
-            // First handle hand cards
             handleCardSelection(mousePos);
 
-            // Then handle hero abilities
             Player& currentPlayer = game->getCurrentPlayer();
             const int playerId = currentPlayer.getPlayerId();
             
@@ -173,7 +137,6 @@ void GameWindow::processEvents() {
             const float centerY = window.getSize().y / 2.f;
             const float zoneHeight = cardHeight + 35.f;
 
-            // Check all combat zones
             for (int zoneIdx = 0; zoneIdx < 3; zoneIdx++) {
                 CombatZone zone = static_cast<CombatZone>(zoneIdx);
                 auto& cards = game->getBoard().getPlayerZone(playerId, zone);
@@ -198,12 +161,9 @@ void GameWindow::processEvents() {
                                                         game->getOpponent(), 
                                                         game->getBoard());
                                     currentPlayer.markHeroAbilityUsed(hero->getName());
-                                    showMessage("Activated " + hero->getName() + "'s ability");
                                 } catch (const std::exception& e) {
-                                    showMessage(e.what());
                                 }
                             } else {
-                                showMessage(hero->getName() + "'s ability already used");
                             }
                         }
                     }
@@ -238,22 +198,18 @@ void GameWindow::handleCardSelection(const sf::Vector2f& mousePos) {
             const int selectedIndex = currentPlayer.getSelectedCardIndex();
             
             if (selectedIndex == static_cast<int>(i)) {
-                // Play card on second click
                 try {
                     game->playCard(currentPlayer.getPlayerId(), i);
                     currentPlayer.deselectCard();
                 } catch (const std::exception& e) {
-                    showMessage(e.what());
                 }
             } else {
-                // Select card on first click
                 currentPlayer.selectCard(i);
             }
-            return; // Stop after finding clicked card
+            return;
         }
     }
     
-    // Deselect if clicking outside cards
     currentPlayer.deselectCard();
 }
 
@@ -406,18 +362,6 @@ std::vector<const Card*> GameWindow::getAllVisibleCards() const {
     return cards;
 }
 
-void GameWindow::handleEvent(const sf::Event& event) {
-    // if (event.type == sf::Event::MouseButtonPressed) {
-    //     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        
-    //     mainMenu.handleClick(mousePos);
-    //     if (abilityMenu) {
-    //         abilityMenu->handleClick(mousePos);
-    //     }
-    // }
-}
-
-
 void GameWindow::renderCombatZones() {
     const float zoneHeight = cardRenderer->getCardSize().y + 35.f;
     const float zoneWidth = window.getSize().x - 100;
@@ -474,33 +418,13 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
     const auto& hand = player.getHand();
     if (hand.empty()) return;
 
-    // const float cardWidth = cardRenderer->getCardSize().x;
-    // const float cardHeight = cardRenderer->getCardSize().y;
-     const float spacing = 10.f;
-    // const float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
-    // const float startX = (window.getSize().x - totalWidth) / 2;
-
-    // if (isCurrentPlayer) {
-    //     const float y = window.getSize().y - cardHeight - 20;
-    //     for (size_t i = 0; i < hand.size(); ++i) {
-    //         const bool highlight = (player.getSelectedCardIndex() == static_cast<int>(i));
-    //         cardRenderer->renderCard(
-    //             window, 
-    //             *hand[i], 
-    //             startX + i * (cardWidth + spacing), 
-    //             y,
-    //             highlight,
-    //             true
-    //         );
-    //     }
-    // } 
+    const float spacing = 10.f;
     const float cardWidth = cardRenderer->getCardSize().x;
     const float cardHeight = cardRenderer->getCardSize().y;
     if (isCurrentPlayer){
     for (size_t i = 0; i < hand.size(); ++i) {
         sf::FloatRect cardPos = getHandCardPosition(player, i);
         
-        // Render card using consistent position calculation
         cardRenderer->renderCard(
             window,
             *hand[i],
@@ -511,17 +435,13 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
         );
     }
     }  else {
-        float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
-        float startX = (window.getSize().x - totalWidth) / 2;
-        float y = 100;
-        
-        const float verticalOffset = 5.f;
-        
+         float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+         float startX = (window.getSize().x - totalWidth) / 2;
+         float y = 100;    
         for (size_t i = 0; i < hand.size(); ++i) {
-            cardRenderer->renderCardBack(
-                window,
-                startX + i * (cardWidth + spacing),
-                y + (i % 2) * verticalOffset);
+            float posX = startX + i * (cardWidth + spacing);
+            float posY = y + (i % 2) * 5;
+            cardRenderer->renderCardBack(window, posX, posY);
         }
     }
 }
@@ -579,49 +499,5 @@ void GameWindow::renderPlayerInfo() {
 void GameWindow::syncPlayerIndex() {
     if (game) { 
         currentPlayerIndex = game->getCurrentPlayerIndex();
-    }
-}
-
-void GameWindow::addMessage(const std::string& text, float duration) {
-    GameMessage msg;
-    msg.text = text;
-    msg.duration = duration;
-    msg.elapsed = 0.f;
-    
-    msg.displayText.setFont(font);
-    msg.displayText.setString(text);
-    msg.displayText.setCharacterSize(24);
-    msg.displayText.setFillColor(sf::Color::White);
-    msg.displayText.setOutlineColor(sf::Color::Black);
-    msg.displayText.setOutlineThickness(1.f);
-    
-    float yOffset = 50.f + (activeMessages.size() * 30.f);
-    msg.displayText.setPosition(20.f, yOffset);
-    
-    activeMessages.push_back(msg);
-}
-
-void GameWindow::updateMessages(float deltaTime) {
-    for (auto it = activeMessages.begin(); it != activeMessages.end(); ) {
-        it->elapsed += deltaTime;
-        if (it->elapsed >= it->duration) {
-            it = activeMessages.erase(it);
-        } else {
-            float alpha = 255.f * (1.f - (it->elapsed / it->duration));
-            it->displayText.setFillColor(sf::Color(255, 255, 255, static_cast<sf::Uint8>(alpha)));
-            ++it;
-        }
-    }
-}
-
-void GameWindow::renderMessages() {
-    for (auto& msg : activeMessages) {
-        sf::FloatRect bounds = msg.displayText.getGlobalBounds();
-        sf::RectangleShape bg(sf::Vector2f(bounds.width + 20, bounds.height + 10));
-        bg.setPosition(bounds.left - 10, bounds.top - 5);
-        bg.setFillColor(sf::Color(0, 0, 0, 150));
-        window.draw(bg);
-        
-        window.draw(msg.displayText);
     }
 }
