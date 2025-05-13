@@ -28,6 +28,13 @@ protected:
 public:
     sf::Vector2f position;
     sf::Vector2f size;
+
+    bool positionSet = false;
+    
+    void setPosition(float x, float y) {
+        position = sf::Vector2f(x, y);
+        positionSet = true;
+    }
     
     Card(const std::string& name, int power, CardType type, CombatZone zone, 
          Faction faction, const std::string& description);

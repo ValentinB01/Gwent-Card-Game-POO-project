@@ -14,7 +14,7 @@ private:
     std::array<bool, 2> playerPassed;
     Deck deck;
     int currentRound = 1;
-    bool gameOver;
+    bool gameOver = false;
     mutable bool newRoundFlag = false;
     std::vector<HeroAbility> currentAbilities;
     void endRound();

@@ -122,6 +122,9 @@ void Game::playCard(int playerIndex, int cardIndex) {
 void Game::endTurn() {
     currentPlayerIndex = 1 - currentPlayerIndex;
     
+    for (auto& card : players[0].getHand()) card->positionSet = false;
+    for (auto& card : players[1].getHand()) card->positionSet = false;
+    
     if (playerPassed[0] && playerPassed[1]) {
         calculateRoundWinner();
         if (!gameOver) {

@@ -210,6 +210,7 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
             case CardType::UNIT: {
                 const UnitCard* unit = dynamic_cast<const UnitCard*>(&card);
                 if (unit) {
+                    tooltip << "Type: Unit Card\n";
                     tooltip << "Power: " << unit->getPower() << "\n";
                     if (unit->getDeployEffect() != DeployEffect::NONE) {
                         tooltip << "Deploy: " 
@@ -225,6 +226,7 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
             case CardType::HERO: {
                 const HeroCard* hero = dynamic_cast<const HeroCard*>(&card);
                 if (hero) {
+                    tooltip << "Type: Hero Card\n";
                     tooltip << "Power: " << hero->getPower() << "\n";
                     tooltip << "Ability: " 
                     << CardUtils::getHeroAbilityDescription(
@@ -238,6 +240,7 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
             case CardType::ABILITY: {
                 const AbilityCard* ability = dynamic_cast<const AbilityCard*>(&card);
                 if (ability) {
+                    tooltip << "Type: Ability Card\n";
                     tooltip << "Effect: " 
                           << CardUtils::getAbilityEffectDescription(
                               ability->getEffect(),
@@ -250,6 +253,7 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
             case CardType::WEATHER: {
                 const WeatherCard* weather = dynamic_cast<const WeatherCard*>(&card);
                 if (weather) {
+                    tooltip << "Type: Weather Card\n";
                     tooltip << "Weather Effect: " 
                           << CardUtils::weatherEffectDescription(weather->getWeatherType()) << "\n";
                 }

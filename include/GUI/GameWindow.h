@@ -26,6 +26,9 @@ private:
     sf::FloatRect getHandCardPosition(const Player& player, int index) const;
 
     void showHeroAbilities();
+    void renderGameOverMessage();
+    sf::Clock gameOverClock;
+    bool gameOverTriggered = false;
     
     int currentPlayerIndex;
     void processEvents();

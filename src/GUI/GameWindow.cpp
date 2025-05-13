@@ -68,15 +68,52 @@ void GameWindow::run() {
     while (window.isOpen()) {
         sf::Time deltaTime = frameClock.restart();
         float deltaSeconds = deltaTime.asSeconds();
-        
-        if (deltaSeconds > 0.1f) {
-            deltaSeconds = 0.1f;
-        }
-        
+        deltaSeconds = std::min(deltaSeconds, 0.1f);  // Cap delta time
+
         processEvents();
-        update(deltaSeconds);
+
+        if (!gameOverTriggered) {
+            update(deltaSeconds);
+            
+            if (game->isGameOver()) {
+                gameOverTriggered = true;
+                gameOverClock.restart();
+            }
+        }
+
+        window.clear();
+
         render();
+
+        if (gameOverTriggered) {
+            renderGameOverMessage();
+            
+            if (gameOverClock.getElapsedTime().asSeconds() >= 3.0f) {
+                window.close();
+            }
+        }
     }
+    window.display();
+
+}
+
+void GameWindow::renderGameOverMessage() {
+    sf::RectangleShape overlay(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    overlay.setFillColor(sf::Color(0, 0, 0, 200));
+    window.draw(overlay);
+
+    sf::Text victoryText;
+    victoryText.setFont(font);
+    victoryText.setCharacterSize(40);
+    victoryText.setFillColor(sf::Color::Yellow);
+    victoryText.setStyle(sf::Text::Bold);
+    victoryText.setString(game->getWinnerName() + " Wins!\nClosing in 3 seconds...");
+    
+    sf::FloatRect textBounds = victoryText.getLocalBounds();
+    victoryText.setOrigin(textBounds.width/2, textBounds.height/2);
+    victoryText.setPosition(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+
+    window.draw(victoryText);
 }
 
 sf::FloatRect GameWindow::getHandCardPosition(const Player& player, int index) const {
@@ -421,9 +458,20 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
     const float spacing = 10.f;
     const float cardWidth = cardRenderer->getCardSize().x;
     const float cardHeight = cardRenderer->getCardSize().y;
+
+    float totalWidth = (hand.size() * cardWidth) + ((hand.size() - 1) * spacing);
+    float startX = (window.getSize().x - totalWidth) / 2;
+    float baseY = isCurrentPlayer ? window.getSize().y - 150.f : 50.f;
     if (isCurrentPlayer){
     for (size_t i = 0; i < hand.size(); ++i) {
+        float xPos = startX + i * (cardWidth + spacing);
+        float yPos = baseY;
+
         sf::FloatRect cardPos = getHandCardPosition(player, i);
+
+        const_cast<Card*>(hand[i].get())->position = sf::Vector2f(xPos, yPos);
+        
+        //cardRenderer->renderCard(window, *hand[i], xPos, yPos);
         
         cardRenderer->renderCard(
             window,
@@ -435,14 +483,31 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
         );
     }
     }  else {
-         float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
-         float startX = (window.getSize().x - totalWidth) / 2;
-         float y = 100;    
+        //  float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
+        //  float startX = (window.getSize().x - totalWidth) / 2;
+        //  float y = 100;    
+        // for (size_t i = 0; i < hand.size(); ++i) {
+        //     float posX = startX + i * (cardWidth + spacing);
+        //     float posY = y + (i % 2) * 5;
+        //     cardRenderer->renderCardBack(window, posX, posY);
+        // }
+
+        const float CARD_WIDTH = 80.f;
+        const float SPACING = 15.f;
+        auto& hand = game->getOpponent().getHand();
+        
+        float totalWidth = (hand.size() * CARD_WIDTH) + ((hand.size() - 1) * SPACING);
+        float startX = (window.getSize().x - totalWidth) / 2;
+        float baseY = 70.f;  
+    
         for (size_t i = 0; i < hand.size(); ++i) {
-            float posX = startX + i * (cardWidth + spacing);
-            float posY = y + (i % 2) * 5;
-            cardRenderer->renderCardBack(window, posX, posY);
+            float x = startX + i * (CARD_WIDTH + SPACING);
+            float y = baseY + (i % 2) * 20.f;
+            
+            hand[i]->setPosition(x, y);
+            cardRenderer->renderCardBack(window,x, y);
         }
+        
     }
 }
 
