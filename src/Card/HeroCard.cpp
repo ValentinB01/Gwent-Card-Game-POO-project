@@ -8,7 +8,7 @@
 HeroCard::HeroCard(const std::string& name, int power, CombatZone zone, 
                    Faction faction, HeroAbility ability, int abilityValue)
     : Card(name, power, CardType::HERO, zone, faction, 
-           "Deploys a hero to the battlefield with the ability: "+ CardUtils::heroAbilityToString(ability)),
+           ""),
       ability(ability), abilityValue(abilityValue) {}
 
 void HeroCard::play(Player& owner, Player& opponent, Board& board) {
@@ -117,3 +117,7 @@ HeroAbility HeroCard::getAbility() const {
 sf::FloatRect HeroCard::getGlobalBounds() const {
     return sf::FloatRect(position.x, position.y, size.x, size.y);
 }
+
+int HeroCard::getAbilityValue() const{
+    return abilityValue;
+};

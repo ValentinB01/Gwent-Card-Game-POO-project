@@ -8,7 +8,7 @@
 
 AbilityCard::AbilityCard(const std::string& name, CombatZone zone, Faction faction,
                        AbilityEffect effect, int effectValue, bool targetsEnemy)
-    : Card(name, 0, CardType::ABILITY, zone, faction, "Special ability card"),
+    : Card(name, 0, CardType::ABILITY, zone, faction, ""),
       effect(effect), effectValue(effectValue), _targetsEnemy(targetsEnemy) {}
 
 void AbilityCard::play(Player& owner, Player& opponent, Board& board) {

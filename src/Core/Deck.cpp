@@ -103,6 +103,10 @@ void Deck::loadFromJson(const std::string& filename) {
         throw std::runtime_error("Invalid JSON format: missing 'cards' array");
     }
 
+    if (j["cards"].is_array()) {
+        cards.reserve(j["cards"].size());
+    }
+
     for (const auto& cardData : j["cards"]) {
         try {
             std::string cardType = cardData.value("type", "");

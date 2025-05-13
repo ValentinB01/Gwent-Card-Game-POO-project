@@ -1,4 +1,5 @@
 #include "GUI/CardRender.h"
+#include "../include/Utils/CardUtils.h"
 #include <iostream>
 #include <sstream>
 
@@ -211,11 +212,11 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
                 if (unit) {
                     tooltip << "Power: " << unit->getPower() << "\n";
                     if (unit->getDeployEffect() != DeployEffect::NONE) {
-                        tooltip << "Deploy: " << CardUtils::deployEffectToString(unit->getDeployEffect());
-                        if (unit->getEffectValue() > 0) {
-                            tooltip << " (" << unit->getEffectValue() << ")";
-                        }
-                        tooltip << "\n";
+                        tooltip << "Deploy: " 
+                              << CardUtils::getDeployEffectDescription(
+                                  unit->getDeployEffect(), 
+                                  unit->getEffectValue()
+                              ) << "\n";
                     }
                 }
                 break;
@@ -225,19 +226,23 @@ std::string CardRenderer::generateTooltipText(const Card& card) const {
                 const HeroCard* hero = dynamic_cast<const HeroCard*>(&card);
                 if (hero) {
                     tooltip << "Power: " << hero->getPower() << "\n";
-                    tooltip << "Ability: " << CardUtils::heroAbilityToString(hero->getAbility()) << "\n";
-                }
-                break;
-            }
+                    tooltip << "Ability: " 
+                    << CardUtils::getHeroAbilityDescription(
+                        hero->getAbility(),
+                        hero->getAbilityValue()
+                    ) << "\n";
+          }
+          break;
+      }
             
             case CardType::ABILITY: {
                 const AbilityCard* ability = dynamic_cast<const AbilityCard*>(&card);
                 if (ability) {
-                    tooltip << "Effect: " << CardUtils::abilityEffectToString(ability->getEffect());
-                    if (ability->getEffectValue() > 0) {
-                        tooltip << " (" << ability->getEffectValue() << ")";
-                    }
-                    tooltip << "\n";
+                    tooltip << "Effect: " 
+                          << CardUtils::getAbilityEffectDescription(
+                              ability->getEffect(),
+                              ability->getEffectValue()
+                          ) << "\n";
                 }
                 break;
             }

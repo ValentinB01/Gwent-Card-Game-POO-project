@@ -8,7 +8,7 @@
 WeatherCard::WeatherCard(const std::string& name, WeatherType type, 
     const std::vector<CombatZone>& affectedZones, int effectValue)
 : Card(name, 0, CardType::WEATHER, CombatZone::ANY, Faction::NEUTRAL, 
-    "Weather effect card applies to "+ CardUtils::zoneToString(zone) + " battle zone."),
+    ""),
   weatherType(type), affectedZones(affectedZones), effectValue(effectValue) {}
 
 void WeatherCard::play(Player& owner, Player& opponent, Board& board) {

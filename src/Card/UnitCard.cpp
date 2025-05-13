@@ -10,7 +10,7 @@ UnitCard::UnitCard(const std::string& name, int power, CombatZone zone,
                    Faction faction, bool isHero, DeployEffect effect, 
                    int effectValue, bool isSpy)
     : Card(name, power, CardType::UNIT, zone, faction, 
-           "Deploys a unit card with the deploy effect: " + CardUtils::deployEffectToString(effect)),
+           ""),
       isHero(isHero), deployEffect(effect), 
       effectValue(effectValue), isSpy(isSpy) {}
 
