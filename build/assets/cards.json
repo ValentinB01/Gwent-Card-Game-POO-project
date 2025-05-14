@@ -551,7 +551,7 @@
     {
         "name": "Biting Frost",
         "type": "WEATHER",
-        "affectedZones": ["CLOSE"],
+        "zone": "CLOSE",
         "faction": "NEUTRAL",
         "weatherType": "BITING_FROST",
         "effectValue": 1,
@@ -560,7 +560,7 @@
     {
         "name": "Impenetrable Fog",
         "type": "WEATHER",
-        "affectedZones": ["RANGED"],
+        "zone": "RANGED",
         "faction": "NEUTRAL",
         "weatherType": "IMPENETRABLE_FOG",
         "effectValue": 1,
@@ -569,7 +569,7 @@
     {
         "name": "Torrential Rain",
         "type": "WEATHER",
-        "affectedZones": ["SIEGE"],
+        "zone": "SIEGE",
         "faction": "NEUTRAL",
         "weatherType": "TORRENTIAL_RAIN",
         "effectValue": 1,
@@ -579,14 +579,14 @@
         "name": "Calming Breeze",
         "type": "WEATHER",
         "weatherType": "CLEAR_WEATHER",
-        "affectedZones": ["ANY"],
+        "zone": "ANY",
         "faction": "NEUTRAL"
     },
     {
         "name": "Clear Sky",
         "type": "WEATHER",
         "weatherType": "CLEAR_WEATHER",
-        "affectedZones": ["ANY"],
+        "zone":"ANY",
         "faction": "NEUTRAL"
         }
     ]
