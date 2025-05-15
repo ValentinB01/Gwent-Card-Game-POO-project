@@ -20,7 +20,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/Button.cpp" "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/Button.cpp.o.d"
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/CardRender.cpp" "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o.d"
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/DropdownMenu.cpp" "CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o.d"
-  "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameStateManager.cpp" "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o.d"
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameUI.cpp" "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o.d"
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameWindow.cpp" "CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o.d"
   "/home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/HelpPanel.cpp" "CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o" "gcc" "CMakeFiles/gwent.dir/src/GUI/HelpPanel.cpp.o.d"

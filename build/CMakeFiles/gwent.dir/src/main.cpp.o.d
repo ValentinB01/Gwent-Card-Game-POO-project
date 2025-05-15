@@ -297,6 +297,7 @@ CMakeFiles/gwent.dir/src/main.cpp.o: \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/../Card/WeatherCard.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/CardUtils.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/enums.h \
+ /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/CardUtils.tpp \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
  /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \

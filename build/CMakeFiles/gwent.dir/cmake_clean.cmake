@@ -23,8 +23,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/gwent.dir/src/GUI/CardRender.cpp.o.d"
   "CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o"
   "CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o.d"
-  "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o"
-  "CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o.d"
   "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o"
   "CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o.d"
   "CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o"

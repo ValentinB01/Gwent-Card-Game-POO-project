@@ -417,30 +417,6 @@ src/GUI/DropdownMenu.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.s
 .PHONY : src/GUI/DropdownMenu.cpp.s
 
-src/GUI/GameStateManager.o: src/GUI/GameStateManager.cpp.o
-.PHONY : src/GUI/GameStateManager.o
-
-# target to build an object file
-src/GUI/GameStateManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.o
-.PHONY : src/GUI/GameStateManager.cpp.o
-
-src/GUI/GameStateManager.i: src/GUI/GameStateManager.cpp.i
-.PHONY : src/GUI/GameStateManager.i
-
-# target to preprocess a source file
-src/GUI/GameStateManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.i
-.PHONY : src/GUI/GameStateManager.cpp.i
-
-src/GUI/GameStateManager.s: src/GUI/GameStateManager.cpp.s
-.PHONY : src/GUI/GameStateManager.s
-
-# target to generate assembly for a file
-src/GUI/GameStateManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gwent.dir/build.make CMakeFiles/gwent.dir/src/GUI/GameStateManager.cpp.s
-.PHONY : src/GUI/GameStateManager.cpp.s
-
 src/GUI/GameUI.o: src/GUI/GameUI.cpp.o
 .PHONY : src/GUI/GameUI.o
 
@@ -630,9 +606,6 @@ help:
 	@echo "... src/GUI/DropdownMenu.o"
 	@echo "... src/GUI/DropdownMenu.i"
 	@echo "... src/GUI/DropdownMenu.s"
-	@echo "... src/GUI/GameStateManager.o"
-	@echo "... src/GUI/GameStateManager.i"
-	@echo "... src/GUI/GameStateManager.s"
 	@echo "... src/GUI/GameUI.o"
 	@echo "... src/GUI/GameUI.i"
 	@echo "... src/GUI/GameUI.s"
