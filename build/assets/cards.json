@@ -472,7 +472,7 @@
         "name": "Bloodcurdling Roar",
         "type": "ABILITY",
         "zone": "CLOSE",
-        "faction": "MONSTERS",
+        "faction": "NEUTRAL",
         "effect": "DAMAGE_ROW",
         "effectValue": 2
     },

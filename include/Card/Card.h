@@ -1,5 +1,4 @@
-#ifndef GWENT_CARD_H
-#define GWENT_CARD_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../Utils/enums.h"
@@ -9,13 +8,6 @@
 class Player;
 class Board;
 
-enum class CardKind {
-    Unit,
-    Hero,
-    SiegeMachine,
-    WeatherEffect,
-    Ability
-  };
 class Card {
 protected:
     std::string name;
@@ -25,17 +17,7 @@ protected:
     Faction faction;
     std::string description;
 
-public:
-    sf::Vector2f position;
-    sf::Vector2f size;
-
-    bool positionSet = false;
-    
-    void setPosition(float x, float y) {
-        position = sf::Vector2f(x, y);
-        positionSet = true;
-    }
-    
+public:    
     Card(const std::string& name, int power, CardType type, CombatZone zone, 
          Faction faction, const std::string& description);
     virtual ~Card() = default;
@@ -51,11 +33,10 @@ public:
     Faction getFaction() const;
     const std::string& getDescription() const;
     virtual void takeDamage(int amount);
-
-    virtual WeatherType getWeatherType() const { 
-        return WeatherType::NONE;
-    }
+    virtual WeatherType getWeatherType() const;
     
+    sf::Vector2f position;
+    sf::Vector2f size;
+    bool positionSet = false;
+    void setPosition(float x, float y);
 };
-
-#endif

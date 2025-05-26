@@ -1,5 +1,4 @@
-#ifndef GWENT_UNITCARD_H
-#define GWENT_UNITCARD_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
@@ -27,7 +26,4 @@ public:
     bool isHeroCard() const;
     DeployEffect getDeployEffect() const;
     int getEffectValue() const;
-    bool getIsSpy() const;
 };
-
-#endif

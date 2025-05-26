@@ -1,5 +1,4 @@
-#ifndef GWENT_WEATHERCARD_H
-#define GWENT_WEATHERCARD_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../Card/Card.h"
@@ -22,8 +21,5 @@ public:
     WeatherType getWeatherType() const override;
     int getEffectValue() const;
     sf::FloatRect getGlobalBounds() const;
-
     static std::string weatherEffectDescription(WeatherType type);
 };
-
-#endif

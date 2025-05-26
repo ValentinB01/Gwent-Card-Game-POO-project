@@ -19,7 +19,6 @@ public:
 
 
 private:
-    void handleDamageZone(Player& target, Board& board);
     void handleDamageRow(Player& target, Board& board);
     void handleClearSkies(Player& owner, Board& board);
     void handleFogletSpawn(Player& owner, CombatZone zone, Board& board);

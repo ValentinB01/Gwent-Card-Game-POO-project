@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <functional>
@@ -29,15 +30,13 @@ public:
         sf::Text text;
         std::function<void()> action;
     };
+    
     std::vector<MenuOption> options;
     bool expanded = false;
 
-
 private:
     sf::Vector2f mainButtonSize;
-    void updateLayout();
-
-    
+    void updateLayout();  
 
     sf::RectangleShape mainButton;
     sf::Text mainButtonText;

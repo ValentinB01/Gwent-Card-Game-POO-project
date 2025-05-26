@@ -31,26 +31,18 @@ private:
     Player* opponent = nullptr;
     Game* game = nullptr;
 
-
 public:
     Player(const std::string& name, int id, int startingLifepoints = 2);
-
-    void setOpponent(Player* opp) { opponent = opp; }
-    void setGameReference(Game* gameRef) { game = gameRef; }
-    Player& getOpponent() const { return *opponent; }
+    void setOpponent(Player* opp);
+    void setGameReference(Game* gameRef);
+    Player& getOpponent() const;
     
     void setGameWindow(GameWindow* window);
     GameWindow* getGameWindow() const;
-    const Hero& getHero() const { return hero; }
-    const std::vector<HeroAbility>& getHeroAbilities() const {
-        return hero.abilities;
-    }
+    const Hero& getHero() const;
+    const std::vector<HeroAbility>& getHeroAbilities() const;
+    std::vector<HeroAbility>& getHeroAbilities();
 
-    std::vector<HeroAbility>& getHeroAbilities() {
-        return hero.abilities;
-    }
-
-    //Card management
     void drawCard();
     void drawCards(int count);
     void playCard(int index, Player& opponent, Board& board);
@@ -58,25 +50,21 @@ public:
     void addCardToHand(std::unique_ptr<Card> card);
 
 
-    //Selection
     void selectCard(int index);
     void deselectCard();
     int getSelectedCardIndex() const;
     const Card* getSelectedCard() const;
 
-    //Hero abilities
     bool canUseHeroAbility(const std::string& heroName) const;
     bool canUseHeroAbility() const;
     void markHeroAbilityUsed(const std::string& heroName);
     void resetHeroAbilitiesForNewRound();
     void activateHeroAbility(Board& board, Player& opponent);
 
-    //Game actions
-    void playCardTBoard(std::unique_ptr<Card> card, Player& opponent, Board& board);
     void playCardToBoard(std::unique_ptr<Card> card, Board& board);
 
 
-    const std::vector<std::unique_ptr<Card>>& getHand() const { return hand; }
+    const std::vector<std::unique_ptr<Card>>& getHand() const;
     const std::vector<std::unique_ptr<Card>>& getGraveyard() const;  
     size_t getGraveyardSize() const;
     std::vector<std::unique_ptr<Card>>& getGraveyard(Board& board);
@@ -95,5 +83,4 @@ public:
     void gainLifepoint();
     bool hasLost() const;
     void clearHand();
-    
 };

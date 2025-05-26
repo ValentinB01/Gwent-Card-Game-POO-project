@@ -65,11 +65,9 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
         case DeployEffect::MORALE_BOOST: {
             std::cout << "DEBUG - Applying Morale Boost with value: " << this->effectValue << "\n";
             
-            // Get actual card references from the board
             std::vector<UnitCard*> boostTargets;
             int minPower = 100000;
         
-            // 1. Find minimum power
             for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
                 auto& zoneCards = board.getPlayerZone(owner.getPlayerId(), zone);
                 for (auto& card : zoneCards) {
@@ -82,8 +80,6 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
                     }
                 }
             }
-        
-            // 2. Collect targets
             for (auto zone : {CombatZone::CLOSE, CombatZone::RANGED, CombatZone::SIEGE}) {
                 auto& zoneCards = board.getPlayerZone(owner.getPlayerId(), zone);
                 for (auto& card : zoneCards) {
@@ -94,8 +90,6 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
                     }
                 }
             }
-        
-            // 3. Apply boost DIRECTLY to board units
             for (auto* unit : boostTargets) {
                 int original = unit->getPower();
                 unit->setPower(original + this->effectValue);
@@ -132,9 +126,6 @@ void UnitCard::triggerDeployEffect(Player& owner, Player& opponent, Board& board
     }
     int UnitCard::getEffectValue() const {
         return effectValue;
-    }
-    bool UnitCard::getIsSpy() const {
-        return isSpy;
     }
     int UnitCard::getBasePower() const { 
         return basePower; 

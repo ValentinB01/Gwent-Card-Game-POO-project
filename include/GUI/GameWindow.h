@@ -1,5 +1,4 @@
-#ifndef GAMEWINDOW_H
-#define GAMEWINDOW_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -18,14 +17,10 @@ public:
     GameWindow(const std::string& player1Name, const std::string& player2Name);
     void run();
     void updateHoverState();
-    bool isWindowValid() const { return window.isOpen(); }; 
-    void handleEvent(const sf::Event& event);
-
+    bool isWindowValid() const;
 
 private:
     sf::FloatRect getHandCardPosition(const Player& player, int index) const;
-
-    void showHeroAbilities();
     void renderGameOverMessage();
     sf::Clock gameOverClock;
     bool gameOverTriggered = false;
@@ -51,13 +46,6 @@ private:
         sf::Text displayText;
     };
 
-    
-    std::vector<GameMessage> activeMessages;
-    
-    void addMessage(const std::string& text, float duration = 3.0f);
-    void updateMessages(float deltaTime);
-    void renderMessages();
-
     sf::Font font;
     sf::Texture backgroundTexture;
     sf::Sprite background;
@@ -70,10 +58,6 @@ private:
     
     DropdownMenu mainMenu;
     HelpPanel helpPanel;
-    
-
-    bool loadBackground();
-    sf::Color getWeatherColor(WeatherType type);
 
     sf::Texture zoneBackgrounds[3];
     sf::RectangleShape zoneDividers[3];
@@ -97,5 +81,3 @@ private:
     static constexpr unsigned int WINDOW_HEIGHT = 920;
     static constexpr float CARD_SPACING = 10.f;
 };
-
-#endif

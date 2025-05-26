@@ -1,5 +1,4 @@
-#ifndef GWENT_ENUMS_H
-#define GWENT_ENUMS_H
+#pragma once
 
 enum class CardType { UNIT, HERO,SIEGE_MACHINE, ABILITY, WEATHER };
 enum class CombatZone { CLOSE, RANGED, SIEGE, ANY };
@@ -23,14 +22,3 @@ enum class AbilityEffect {
     DAMAGE_ROW, CLEAR_SKIES, FOGLET_SPAWN, 
     COMMANDO_TRAINING, VENOM_EXTRACT
 };
-
-enum class Zone {
-    Close,
-    Ranged,
-    Siege,
-    Weather,  
-    Ability    
-};
-
-
-#endif

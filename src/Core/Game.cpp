@@ -257,3 +257,11 @@ std::string Game::getWinnerName() const {
 Player& Game::getPlayer(int index) {
     return const_cast<Player&>(static_cast<const Game*>(this)->getPlayer(index));
 }
+
+int Game::getCurrentPlayerIndex() const { 
+    return currentPlayerIndex; 
+}
+
+Board& Game::getBoard() { 
+    return board; 
+}

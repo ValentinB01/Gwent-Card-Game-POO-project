@@ -74,15 +74,24 @@ bool CardRenderer::loadResources() {
     }
 
     static const std::vector<std::pair<WeatherType, std::string>> weathers = {
-        {WeatherType::BITING_FROST, "freeze"},
+        {WeatherType::BITING_FROST, "frost"},
         {WeatherType::IMPENETRABLE_FOG, "fog"},
         {WeatherType::TORRENTIAL_RAIN, "rain"},
         {WeatherType::CLEAR_WEATHER, "clear"}
     };
-    for (auto& w : weathers) {
-        std::string fn = "assets/cards/weather_" + w.second + ".png";
-        ok &= load({CombatZone::ANY, CardType::WEATHER, Faction::NEUTRAL, w.first}, fn);
+    
+    for (const auto& [type, name] : weathers) {
+        std::string path = "assets/cards/weather_" + name + ".png";
+        sf::Texture tex;
+        if (!tex.loadFromFile(path)) {
+            std::cerr << "Failed to load weather texture: " << path << "\n";
+            ok = false;
+        } else {
+            tex.setSmooth(true);
+            textures[{CombatZone::ANY, CardType::WEATHER, Faction::NEUTRAL, type}] = std::move(tex);
+        }
     }
+    
 
     return ok;
 }
@@ -93,11 +102,16 @@ void CardRenderer::setupCardBase(sf::RectangleShape& base, Card const& card) con
     key.zone = card.getZone();
     key.type = card.getType();
     key.faction = card.getFaction();
+    key.weather = WeatherType::NONE;
 
     if (card.getType() == CardType::WEATHER) {
-        key.weather = card.getWeatherType();
-    } else {
-        key.weather = WeatherType::NONE;
+        const WeatherCard* weatherCard = static_cast<const WeatherCard*>(&card);
+        key = {
+            CombatZone::ANY, 
+            CardType::WEATHER,
+            Faction::NEUTRAL,
+            weatherCard->getWeatherType()
+        };
     }
 
     auto it = textures.find(key);
@@ -105,8 +119,7 @@ void CardRenderer::setupCardBase(sf::RectangleShape& base, Card const& card) con
         base.setTexture(&it->second);
         base.setFillColor(sf::Color::White);
     } else {
-        base.setTexture(nullptr);
-        base.setFillColor(sf::Color(200, 200, 200, 180));
+        base.setFillColor(sf::Color::Magenta); // fallback visual
     }
 
     auto colIt = factionColors.find(card.getFaction());

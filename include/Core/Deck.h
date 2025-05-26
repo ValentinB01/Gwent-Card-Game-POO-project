@@ -1,5 +1,4 @@
-#ifndef GWENT_DECK_H
-#define GWENT_DECK_H
+#pragma once
 
 #include "../Card/Card.h"
 #include <vector>
@@ -32,5 +31,3 @@ public:
     void reshuffleGraveyard();
     CombatZone getDefaultZoneForWeather(WeatherType type) const;
 };
-
-#endif

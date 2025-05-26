@@ -23,12 +23,7 @@ public:
     void render(sf::RenderWindow& window);
     
     void showMessage(const std::string& message, float duration = 3.0f);
-    void updateButtonStates(const Player& currentPlayer);
 
-    void renderCombatScores(sf::RenderTarget& target);
-    void renderRoundCounter(sf::RenderTarget& target);
-    void renderFactionBanners(sf::RenderTarget& target);
-    
 private:
     Game& game;
     CardRenderer& cardRenderer;
@@ -43,9 +38,7 @@ private:
     sf::Texture scoiatelBannerTexture;
     sf::Texture monstersBannerTexture;
     
-    void createUIElements();
     void onPassClicked();
-    void onHeroAbilityClicked();
     void onEndTurnClicked();
     void onHelpClicked();
     

@@ -20,3 +20,10 @@ void Card::takeDamage(int amount) {
         std::cout << name << " has been destroyed!" << std::endl;
     }
 }
+WeatherType Card::getWeatherType() const { 
+        return WeatherType::NONE;
+}
+void Card::setPosition(float x, float y) {
+    position = sf::Vector2f(x, y);
+    positionSet = true;
+}

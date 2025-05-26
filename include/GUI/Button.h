@@ -25,5 +25,4 @@ private:
     bool isEnabled = true;
     sf::Clock pulseClock;
     bool isActive = false;
-
 };

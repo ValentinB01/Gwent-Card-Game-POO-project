@@ -1,5 +1,4 @@
-#ifndef GWENT_BOARD_H
-#define GWENT_BOARD_H
+#pragma once
 
 #include "../Card/Card.h"
 #include "../Card/WeatherCard.h"
@@ -21,13 +20,11 @@ private:
         std::map<CombatZone, std::vector<std::unique_ptr<Card>>> zones;
         std::vector<std::unique_ptr<Card>> graveyard;
     };
-
     std::array<PlayerBoard, 2> playerBoards;
     std::vector<std::unique_ptr<Card>> weatherEffects;
 
 public:
     void addCard(int playerIndex, std::unique_ptr<Card> card);
-    
     void cleanupDestroyedUnits(int playerId, CombatZone zone);
     ScorchResult destroyStrongestEnemyUnit(int attackingPlayerId, Card* activatingCard = nullptr);   
     WeatherType getWeatherType(CombatZone zone) const;
@@ -51,12 +48,9 @@ public:
     void doubleRowPower(int playerIndex, CombatZone zone);
     void damageRow(int playerIndex, CombatZone zone, int damage);
     std::string destroyWeakestUnit(int playerIndex);
-    int destroyStrongestUnits(int playerIndex, int threshold);
     void clearBoard();
     bool hasUnitsInZone(int playerId, CombatZone zone) const;
 
     std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone);
     const std::vector<std::unique_ptr<Card>>& getPlayerZone(int playerIndex, CombatZone zone) const;
 };
-
-#endif

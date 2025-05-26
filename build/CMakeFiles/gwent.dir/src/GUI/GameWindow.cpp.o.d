@@ -258,7 +258,6 @@ CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: \
  /usr/include/c++/13/bits/enable_special_members.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/../Core/Board.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/../Core/../Card/WeatherCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/../Core/../Card/../Card/Card.h \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/../Core/Deck.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/Tooltip.h \
@@ -288,19 +287,13 @@ CMakeFiles/gwent.dir/src/GUI/GameWindow.cpp.o: \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
  /usr/include/c++/13/tr1/riemann_zeta.tcc /usr/include/c++/13/iostream \
  /usr/include/c++/13/istream /usr/include/c++/13/bits/istream.tcc \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/Card.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/UnitCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/../Card/Card.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/../Utils/enums.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/HeroCard.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/AbilityCard.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/../Card/WeatherCard.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/CardUtils.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/enums.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/../include/Utils/CardUtils.tpp \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/GameUI.h \
  /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
- /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/DropdownMenu.h \
  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/../GUI/HelpPanel.h

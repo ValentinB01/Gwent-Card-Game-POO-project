@@ -251,3 +251,31 @@ void Player::activateHeroAbility(Board& board, Player& opponent) {
     GameWindow* Player::getGameWindow() const {
         return gameWindow;
 }
+
+void Player::setOpponent(Player* opp) { 
+    opponent = opp; 
+}
+
+void Player::setGameReference(Game* gameRef) { 
+    game = gameRef; 
+}
+
+Player& Player::getOpponent() const { 
+    return *opponent; 
+}
+
+const Hero& Player::getHero() const { 
+    return hero; 
+}
+
+const std::vector<HeroAbility>& Player::getHeroAbilities() const {
+    return hero.abilities;
+}
+
+std::vector<HeroAbility>& Player::getHeroAbilities() {
+    return hero.abilities;
+}
+
+const std::vector<std::unique_ptr<Card>>& Player::getHand() const { 
+    return hand; 
+}

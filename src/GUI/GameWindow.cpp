@@ -68,7 +68,7 @@ void GameWindow::run() {
     while (window.isOpen()) {
         sf::Time deltaTime = frameClock.restart();
         float deltaSeconds = deltaTime.asSeconds();
-        deltaSeconds = std::min(deltaSeconds, 0.1f);  // Cap delta time
+        deltaSeconds = std::min(deltaSeconds, 0.1f);
 
         processEvents();
 
@@ -261,16 +261,14 @@ void GameWindow::update(float deltaTime) {
 }
 
 void GameWindow::render() {
-    window.clear(sf::Color(30, 30, 30));
+    window.clear(sf::Color(30, 22, 16));
     window.draw(background);
-    renderGameBoard();
-
     
-    renderGameBoard();
-
     const int currentIdx = game->getCurrentPlayerIndex();
+
+    renderGameBoard();
+    
     renderPlayerHand(game->getPlayer(currentIdx), true); 
-    renderPlayerHand(game->getPlayer(1 - currentIdx), false);
 
     renderPlayerInfo();
 
@@ -314,8 +312,10 @@ void GameWindow::loadResources() {
     }
     background.setTexture(backgroundTexture);
 
-    float scaleX = static_cast<float>(WINDOW_WIDTH) / backgroundTexture.getSize().x;
-    float scaleY = static_cast<float>(WINDOW_HEIGHT) / backgroundTexture.getSize().y;
+    sf::Vector2u windowSize = window.getSize();
+    sf::Vector2u texSize = backgroundTexture.getSize();
+    float scaleX = static_cast<float>(windowSize.x) / texSize.x;
+    float scaleY = static_cast<float>(windowSize.y) / texSize.y;
     background.setScale(scaleX, scaleY);
 
     if (!cardRenderer->loadResources()) {
@@ -360,7 +360,6 @@ void GameWindow::renderZoneScores() {
 
 
 void GameWindow::renderGameBoard() {
-    renderPlayerInfo();
     renderPlayerInfo();
     
     renderCombatZones();
@@ -410,7 +409,7 @@ void GameWindow::renderCombatZones() {
         
         sf::RectangleShape zoneRect(sf::Vector2f(zoneWidth, zoneHeight));
         zoneRect.setPosition(50, zoneY);
-        zoneRect.setFillColor(sf::Color(70, 70, 70, 150));
+        zoneRect.setFillColor(sf::Color(94, 70, 44));
         zoneRect.setOutlineColor(sf::Color(150, 150, 150, 200));
         zoneRect.setOutlineThickness(1.f);
         window.draw(zoneRect);
@@ -470,9 +469,7 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
         sf::FloatRect cardPos = getHandCardPosition(player, i);
 
         const_cast<Card*>(hand[i].get())->position = sf::Vector2f(xPos, yPos);
-        
-        //cardRenderer->renderCard(window, *hand[i], xPos, yPos);
-        
+            
         cardRenderer->renderCard(
             window,
             *hand[i],
@@ -483,15 +480,6 @@ void GameWindow::renderPlayerHand(const Player& player, bool isCurrentPlayer) {
         );
     }
     }  else {
-        //  float totalWidth = hand.size() * cardWidth + (hand.size() - 1) * spacing;
-        //  float startX = (window.getSize().x - totalWidth) / 2;
-        //  float y = 100;    
-        // for (size_t i = 0; i < hand.size(); ++i) {
-        //     float posX = startX + i * (cardWidth + spacing);
-        //     float posY = y + (i % 2) * 5;
-        //     cardRenderer->renderCardBack(window, posX, posY);
-        // }
-
         const float CARD_WIDTH = 80.f;
         const float SPACING = 15.f;
         auto& hand = game->getOpponent().getHand();
@@ -566,3 +554,6 @@ void GameWindow::syncPlayerIndex() {
         currentPlayerIndex = game->getCurrentPlayerIndex();
     }
 }
+bool GameWindow::isWindowValid() const { 
+    return window.isOpen(); 
+} 
