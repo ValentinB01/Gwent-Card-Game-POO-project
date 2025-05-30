@@ -1,7 +1,7 @@
 #pragma once
 #include "Deck.h"
 #include <memory>
-// design pattern-ul builder
+
 class DeckBuilder {
 private:
     std::unique_ptr<Deck> deck;
