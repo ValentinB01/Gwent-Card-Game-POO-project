@@ -16,6 +16,7 @@ struct ScorchResult {
 
 class Board {
 private:
+    static Board* instance;
     struct PlayerBoard {
         std::map<CombatZone, std::vector<std::unique_ptr<Card>>> zones;
         std::vector<std::unique_ptr<Card>> graveyard;
@@ -24,6 +25,7 @@ private:
     std::vector<std::unique_ptr<Card>> weatherEffects;
 
 public:
+    static Board* getInstance();
     void addCard(int playerIndex, std::unique_ptr<Card> card);
     void cleanupDestroyedUnits(int playerId, CombatZone zone);
     ScorchResult destroyStrongestEnemyUnit(int attackingPlayerId, Card* activatingCard = nullptr);   

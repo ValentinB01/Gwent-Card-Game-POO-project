@@ -4025,7 +4025,6 @@ CMakeFiles/gwent.dir/src/GUI/DropdownMenu.cpp.o: /home/buse-valentin/Anul1_sem2/
 CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/GUI/GameUI.cpp \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/CardUtils.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/CardUtils.tpp \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/enums.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/Card.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/WeatherCard.h \
@@ -4039,6 +4038,7 @@ CMakeFiles/gwent.dir/src/GUI/GameUI.cpp.o: /home/buse-valentin/Anul1_sem2/POO/Gw
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \
@@ -5489,6 +5489,15 @@ CMakeFiles/gwent.dir/src/Utils/CardUtils.cpp.o: /home/buse-valentin/Anul1_sem2/P
 CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/src/main.cpp \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/CardUtils.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/CardUtils.tpp \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/AbilityCard.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/HeroCard.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/UnitCard.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameWindow.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h \
+  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Utils/enums.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/Card.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/WeatherCard.h \
@@ -5496,16 +5505,7 @@ CMakeFiles/gwent.dir/src/main.cpp.o: /home/buse-valentin/Anul1_sem2/POO/GwentCG/
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/Deck.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/Player.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Core/Game.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/AbilityCard.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/HeroCard.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/Card/UnitCard.h \
   /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Button.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/CardRender.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/DropdownMenu.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameUI.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/GameWindow.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/HelpPanel.h \
-  /home/buse-valentin/Anul1_sem2/POO/GwentCG/projectGUI/proiect/include/GUI/Tooltip.h \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \

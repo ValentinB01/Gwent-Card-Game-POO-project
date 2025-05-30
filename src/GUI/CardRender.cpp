@@ -119,7 +119,7 @@ void CardRenderer::setupCardBase(sf::RectangleShape& base, Card const& card) con
         base.setTexture(&it->second);
         base.setFillColor(sf::Color::White);
     } else {
-        base.setFillColor(sf::Color::Magenta); // fallback visual
+        base.setFillColor(sf::Color::Magenta); 
     }
 
     auto colIt = factionColors.find(card.getFaction());
@@ -141,7 +141,7 @@ void CardRenderer::renderCard(sf::RenderTarget &target, const Card &card, float 
     
     if (highlight) {
         renderRoundedRectangle(target, 
-            sf::FloatRect(x + 3, y + 3, CARD_SIZE.x, CARD_SIZE.y), // Offset shadow
+            sf::FloatRect(x + 3, y + 3, CARD_SIZE.x, CARD_SIZE.y), 
             CARD_CORNER_RADIUS, 
             sf::Color(0, 0, 0, 50)
         );

@@ -8,6 +8,14 @@
 #include <limits>
 #include <random>
 
+Board* Board::instance = nullptr;
+
+Board* Board::getInstance() {
+    if(!instance)
+        instance = new Board();
+    return instance;
+}
+
 void Board::addCard(int playerIndex, std::unique_ptr<Card> card) {
     if (playerIndex < 0 || playerIndex >= playerBoards.size()) {
         throw std::out_of_range("Invalid player index.");
