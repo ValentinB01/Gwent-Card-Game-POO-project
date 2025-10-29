@@ -45,6 +45,5 @@ void HelpPanel::draw(sf::RenderWindow& window) {
     auto windowSize = window.getSize();
     background.setPosition(windowSize.x - background.getSize().x - 20, 20);        
     window.draw(background);
-    window.draw(helpText);
-    
+    window.draw(helpText);   
 }

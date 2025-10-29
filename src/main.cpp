@@ -1,5 +1,5 @@
-#include "GUI/GameWindow.h"
 #include <iostream>
+#include "../GUI/GameWindow.h"
 
 int main() {
     try {
@@ -19,7 +19,7 @@ int main() {
         std::cout << "OpenGL context created successfully\n";
         std::cout << "Loading game resources...\n";
 
-        GameWindow gameWindow("Player 1", "Player 2");
+        GameWindow gameWindow("Valentin", "Ion");
         
         std::cout << "Game initialized, entering main loop...\n";
         gameWindow.run();

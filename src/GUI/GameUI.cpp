@@ -1,5 +1,5 @@
-#include "../GUI/GameUI.h"
 #include <iostream>
+#include "GUI/GameUI.h"
 
 GameUI::GameUI(Game& game, CardRenderer& renderer, const sf::Font& font) 
     : game(game), cardRenderer(renderer), font(font) {
