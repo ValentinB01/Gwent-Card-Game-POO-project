@@ -24,12 +24,15 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 * **Smart Tooltips**: Real-time information display via hover-detection, showing vital card stats and effects.
 * **Visual Fog of War**: Enemy cards remain face-down, while the current player's hand is fully rendered.
 
+<img width="1573" height="942" alt="image" src="https://github.com/user-attachments/assets/3d0e40b6-a6ae-4d03-95b2-5b9973dc94b2" />
+<img width="1573" height="942" alt="image" src="https://github.com/user-attachments/assets/bedc9a41-fe6e-4b65-9f40-a047aa634ddf" />
+
+
 ### Advanced OOP & Design Patterns
 * **Singleton Pattern**: Ensures a single, consistent instance of the `Board` throughout the game session.
 * **Builder Pattern**: Implemented via `DeckBuilder` to handle the complex construction of faction-specific decks.
 * **Polymorphism & Templates**: Extensive use of abstract base classes for cards and C++ templates for optimized GUI helper functions.
 * **State Management**: Orchestrates transitions between different game phases (Deploying, Passing, Round End).
-
 
 ## Tech Stack
 
