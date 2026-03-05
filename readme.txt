@@ -6,7 +6,6 @@
 
 A strategic, turn-based card game simulation inspired by the Witcher universe. This project focuses on high-level **C++ Software Architecture**, implementing complex game logic and an interactive Graphical User Interface (GUI).
 
----
 
 ## Game Overview
 
@@ -16,7 +15,6 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 * **Strategy**: Manage your limited hand wisely—there is no automatic card draw between rounds.
 * **Mechanics**: Deploy unit cards, powerful heroes, weather effects, and special abilities to manipulate the battlefield's score.
 
----
 
 ## Key Features
 
@@ -32,7 +30,6 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 * **Polymorphism & Templates**: Extensive use of abstract base classes for cards and C++ templates for optimized GUI helper functions.
 * **State Management**: Orchestrates transitions between different game phases (Deploying, Passing, Round End).
 
----
 
 ## Tech Stack
 
@@ -43,7 +40,6 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 | **Build System** | CMake |
 | **Data Format** | JSON (for card attributes and deck configurations) |
 
----
 
 🔧 Installation & Setup
 Follow these instructions to build and run the game on your local machine.
