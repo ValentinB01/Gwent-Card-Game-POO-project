@@ -25,6 +25,8 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 * **Visual Fog of War**: Enemy cards remain face-down, while the current player's hand is fully rendered.
 
 <img width="1573" height="942" alt="image" src="https://github.com/user-attachments/assets/3d0e40b6-a6ae-4d03-95b2-5b9973dc94b2" />
+
+
 <img width="1573" height="942" alt="image" src="https://github.com/user-attachments/assets/bedc9a41-fe6e-4b65-9f40-a047aa634ddf" />
 
 
