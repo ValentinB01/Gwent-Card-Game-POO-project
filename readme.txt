@@ -1,45 +1,86 @@
-In acest proiect 
-Gwent este un joc de cărți strategic în care doi jucători își construiesc un pachet (deck) format din unități, 
-cărți speciale, carti de vreme și eroi, și concurează pe o tablă împărțită în rânduri (melee, ranged, siege), pentru a obține 
-un total de puncte mai mare decât adversarul în două din trei runde. Fiecare jucător începe cu o mână de cărți 
-(fără tragere automată ulterioară), plasând cărți pe teren pentru a-și mari scorul sau folosind efecte speciale 
-(vreme, abilități, eroi) care pot influența jocul. Rundele se termină când ambii jucători pasează, iar scorul total 
-determină câștigătorul rundei. Primul care câștigă două runde câștigă jocul. Pentru abordarea celei dea 3 a teme am 
-utilizat template pentru helper functions care ajuta la afisarea detallilor unei carti, avand click-ul pozitionat peste aceasta.
-Iar ca design patterns am utilizat singleton in functia board iar apoi am creat classa deckbuilder ce foloseste design pattern-ul builder.
-Am implementat o interfata grafica ce presupune imbunatatirea exerientei jocului. Tabla e impartita in 6 zone: 2 de close, 2 de ranged, 
-2 de siege , o zona din fiecare pentru ambii jucatori. Cartile sunt randate pentru jucatorul curent cu fata in sus, avand fiecare
-un design unic in functie de factiunea din care face parte, de tipul de care este: unitate, carte erou, carde de abilitate, carte
-de vreme. Iar cartile inamicului sunt randate cu fata in jos. Cand player-ul curent da hover cu mouse-ul peste o carte, apare tooltipul.
-In acest tooltip apar informatiile vitale despre carte si ce poate face aceasta.
+# Gwent Card Game Simulation
 
+[![C++ Version](https://img.shields.io/badge/C++-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
+[![SFML](https://img.shields.io/badge/Library-SFML%202.5-green.svg)](https://www.sfml-dev.org/)
+[![Build](https://img.shields.io/badge/Build-CMake-orange.svg)](https://cmake.org/)
 
-Bibliografie:
+A strategic, turn-based card game simulation inspired by the Witcher universe. This project focuses on high-level **C++ Software Architecture**, implementing complex game logic and an interactive Graphical User Interface (GUI).
 
-https://witcher.fandom.com/wiki/Gwent -> Pentru a prelua o mare parte din regulile de joc ale acestui proiect.
+---
 
-Stroustrup, B. (2013). *The C++ Programming Language (4th ed.)*. Addison-Wesley.
-    Practici pentru gestionarea memoriei cu std: unique_ptr și polimorfism.
+## Game Overview
 
-Gamma, E., et al. (1994). Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley.
-    Modele aplicate: State (pentru fazele de joc), Factory (crearea de cărți), Observer (evenimente de joc).
+Gwent is a high-stakes duel where two players clash on a battlefield divided into three tactical rows: **Close Combat**, **Ranged**, and **Siege**. 
 
-Microsoft Docs (2023). C++ Standard Library Reference.
-    https://learn.microsoft.com/en-us/cpp/standard-library/cpp-standard-library-reference?view=msvc-170
-    Referinte pentru utilizarea std::vector, std::map, si algorithms.
+* **Objective**: Outscore your opponent in two out of three rounds.
+* **Strategy**: Manage your limited hand wisely—there is no automatic card draw between rounds.
+* **Mechanics**: Deploy unit cards, powerful heroes, weather effects, and special abilities to manipulate the battlefield's score.
 
-Nystrom, R. (2014). Game Programming Patterns. Genever Benning.
-    https://gameprogrammingpatterns.com/
-    Folosit pentru sistemul turn-based și secvențierea efectului cardului.
+---
 
-Google Test (2023). C++ Unit Testing Framework.
-    https://github.com/google/googletest
-    Pentru a verifica interactiunile cartilor si regulile jocului.
+## Key Features
 
+### Interactive GUI (SFML)
+* **Dynamic Board**: A 6-zone interactive layout (3 rows per player) with real-time score calculation.
+* **Visual Fidelity**: Custom textures for different factions and card types (Units, Heroes, Weather, Abilities).
+* **Smart Tooltips**: Real-time information display via hover-detection, showing vital card stats and effects.
+* **Visual Fog of War**: Enemy cards remain face-down, while the current player's hand is fully rendered.
 
-https://github.com/mcmarius/poo/blob/master/README.md
-https://github.com/mcmarius/poo/tree/master/libs
+### Advanced OOP & Design Patterns
+* **Singleton Pattern**: Ensures a single, consistent instance of the `Board` throughout the game session.
+* **Builder Pattern**: Implemented via `DeckBuilder` to handle the complex construction of faction-specific decks.
+* **Polymorphism & Templates**: Extensive use of abstract base classes for cards and C++ templates for optimized GUI helper functions.
+* **State Management**: Orchestrates transitions between different game phases (Deploying, Passing, Round End).
 
+---
 
-Acest cod se va rula cu ajutorul comenzii: cmake .. ,iar apoi cu make in directorul build
-Iar apoi se va rula executabilul cu: ./gwent
+## Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Language** | C++17 |
+| **Graphics Library** | SFML (Simple and Fast Multimedia Library) |
+| **Build System** | CMake |
+| **Data Format** | JSON (for card attributes and deck configurations) |
+
+---
+
+🔧 Installation & Setup
+Follow these instructions to build and run the game on your local machine.
+
+1. Prerequisites
+Ensure you have the following installed on your system:
+
+C++ Compiler: A compiler supporting C++17 (e.g., g++ or clang).
+
+CMake: Version 3.10 or higher.
+
+SFML 2.5: The Simple and Fast Multimedia Library.
+
+Ubuntu/Debian: sudo apt-get install libsfml-dev
+
+MacOS: brew install sfml
+
+Windows: Download the SDK from SFML Website and set the path in CMake.
+
+2. Clone the Repository
+Bash
+git clone https://github.com/ValentinB01/Gwent-Card-Game-POO-project.git
+cd Gwent-Card-Game-POO-project
+3. Build the Project
+We use a separate build directory to keep the project structure clean:
+
+Bash
+# Create and enter the build directory
+mkdir build && cd build
+
+# Generate build files with CMake
+cmake ..
+
+# Compile the executable
+make
+4. Run the Game
+After a successful build, the assets folder (containing card data and textures) is automatically copied to the build directory. Run the executable:
+
+Bash
+./gwent
