@@ -46,10 +46,10 @@ Gwent is a high-stakes duel where two players clash on a battlefield divided int
 | **Data Format** | JSON (for card attributes and deck configurations) |
 
 
-🔧 Installation & Setup
+## 🔧 Installation & Setup
 Follow these instructions to build and run the game on your local machine.
 
-1. Prerequisites
+### Prerequisites
 Ensure you have the following installed on your system:
 
 C++ Compiler: A compiler supporting C++17 (e.g., g++ or clang).
@@ -58,30 +58,44 @@ CMake: Version 3.10 or higher.
 
 SFML 2.5: The Simple and Fast Multimedia Library.
 
-Ubuntu/Debian: sudo apt-get install libsfml-dev
+Ubuntu/Debian: 
+```bash
+sudo apt-get install libsfml-dev
+```
 
-MacOS: brew install sfml
+MacOS: 
+```bash
+brew install sfml
+```
 
 Windows: Download the SDK from SFML Website and set the path in CMake.
 
-2. Clone the Repository
-Bash
+### Clone the Repository
+```bash
 git clone https://github.com/ValentinB01/Gwent-Card-Game-POO-project.git
 cd Gwent-Card-Game-POO-project
-3. Build the Project
+```
+### Build the Project
 We use a separate build directory to keep the project structure clean:
 
 Bash
 # Create and enter the build directory
+```bash
 mkdir build && cd build
+```
 
 # Generate build files with CMake
+```bash
 cmake ..
+```
 
 # Compile the executable
+```bash
 make
-4. Run the Game
+```
+### Run the Game
 After a successful build, the assets folder (containing card data and textures) is automatically copied to the build directory. Run the executable:
 
-Bash
+```bash
 ./gwent
+```
